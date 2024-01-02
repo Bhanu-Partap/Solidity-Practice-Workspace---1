@@ -1,0 +1,53 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "attack",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Naut/CoinFlip.sol": "Attack"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Naut/CoinFlip.sol": {
+			"keccak256": "0x8d4fa7fe50852b2ab9af4c9ced289a8e33d92b76b4aceeab5aed60429ebc606e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6d908610edb14944d709afb43bb0688078bd4562aeaf966302ba448f4241ba62",
+				"dweb:/ipfs/QmfX5uKxtZU5PKU95fLfQ7hGcqNr4uChHQ68YXX9qxMtqu"
+			]
+		}
+	},
+	"version": 1
+}

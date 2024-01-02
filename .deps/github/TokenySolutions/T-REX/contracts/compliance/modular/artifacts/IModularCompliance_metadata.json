@@ -1,0 +1,410 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_module",
+						"type": "address"
+					}
+				],
+				"name": "ModuleAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "target",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes4",
+						"name": "selector",
+						"type": "bytes4"
+					}
+				],
+				"name": "ModuleInteraction",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_module",
+						"type": "address"
+					}
+				],
+				"name": "ModuleRemoved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "TokenBound",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "TokenUnbound",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_module",
+						"type": "address"
+					}
+				],
+				"name": "addModule",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "bindToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "_module",
+						"type": "address"
+					}
+				],
+				"name": "callModuleFunction",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "canTransfer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "created",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "destroyed",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getModules",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTokenBound",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_module",
+						"type": "address"
+					}
+				],
+				"name": "isModuleBound",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_module",
+						"type": "address"
+					}
+				],
+				"name": "removeModule",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transferred",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "unbindToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"events": {
+				"ModuleInteraction(address,bytes4)": {
+					"details": "Event emitted for each executed interaction with a module contract.  For gas efficiency, only the interaction calldata selector (first 4  bytes) is included in the event. For interactions without calldata or  whose calldata is shorter than 4 bytes, the selector will be `0`."
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"addModule(address)": {
+					"details": "adds a module to the list of compliance modules",
+					"params": {
+						"_module": "address of the module to add  there cannot be more than 25 modules bound to the modular compliance for gas cost reasons  This function can be called ONLY by the owner of the compliance contract  Emits a ModuleAdded event"
+					}
+				},
+				"bindToken(address)": {
+					"details": "binds a token to the compliance contract",
+					"params": {
+						"_token": "address of the token to bind  This function can be called ONLY by the owner of the compliance contract  Emits a TokenBound event"
+					}
+				},
+				"callModuleFunction(bytes,address)": {
+					"details": "calls any function on bound modules  can be called only on bound modules",
+					"params": {
+						"_module": "The address of the module  This function can be called only by the modular compliance owner  emits a `ModuleInteraction` event",
+						"callData": "the bytecode for interaction with the module, abi encoded"
+					}
+				},
+				"canTransfer(address,address,uint256)": {
+					"details": "checks that the transfer is compliant.  default compliance always returns true  READ ONLY FUNCTION, this function cannot be used to increment  counters, emit events, ...",
+					"params": {
+						"_amount": "The amount of tokens involved in the transfer  This function will call moduleCheck() on every module bound to the compliance  If each of the module checks return TRUE, this function will return TRUE as well  returns FALSE otherwise",
+						"_from": "The address of the sender",
+						"_to": "The address of the receiver"
+					}
+				},
+				"created(address,uint256)": {
+					"details": "function called whenever tokens are created on a wallet  this function can update state variables in the modules bound to the compliance  these state variables being used by the module checks to decide if a transfer  is compliant or not depending on the values stored in these state variables and on  the parameters of the modules  This function can be called ONLY by the token contract bound to the compliance",
+					"params": {
+						"_amount": "The amount of tokens involved in the minting  This function calls moduleMintAction() on each module bound to the compliance contract",
+						"_to": "The address of the receiver"
+					}
+				},
+				"destroyed(address,uint256)": {
+					"details": "function called whenever tokens are destroyed from a wallet  this function can update state variables in the modules bound to the compliance  these state variables being used by the module checks to decide if a transfer  is compliant or not depending on the values stored in these state variables and on  the parameters of the modules  This function can be called ONLY by the token contract bound to the compliance",
+					"params": {
+						"_amount": "The amount of tokens involved in the burn  This function calls moduleBurnAction() on each module bound to the compliance contract",
+						"_from": "The address on which tokens are burnt"
+					}
+				},
+				"getModules()": {
+					"details": "getter for the modules bound to the compliance contract  returns address array of module contracts bound to the compliance"
+				},
+				"getTokenBound()": {
+					"details": "getter for the address of the token bound  returns the address of the token"
+				},
+				"isModuleBound(address)": {
+					"details": "checks if a module is bound to the compliance contract  returns true if module is bound, false otherwise"
+				},
+				"removeModule(address)": {
+					"details": "removes a module from the list of compliance modules",
+					"params": {
+						"_module": "address of the module to remove  This function can be called ONLY by the owner of the compliance contract  Emits a ModuleRemoved event"
+					}
+				},
+				"transferred(address,address,uint256)": {
+					"details": "function called whenever tokens are transferred  from one wallet to another  this function can update state variables in the modules bound to the compliance  these state variables being used by the module checks to decide if a transfer  is compliant or not depending on the values stored in these state variables and on  the parameters of the modules  This function can be called ONLY by the token contract bound to the compliance",
+					"params": {
+						"_amount": "The amount of tokens involved in the transfer  This function calls moduleTransferAction() on each module bound to the compliance contract",
+						"_from": "The address of the sender",
+						"_to": "The address of the receiver"
+					}
+				},
+				"unbindToken(address)": {
+					"details": "unbinds a token from the compliance contract",
+					"params": {
+						"_token": "address of the token to unbind  This function can be called ONLY by the owner of the compliance contract  Emits a TokenUnbound event"
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"events": {
+				"ModuleAdded(address)": {
+					"notice": "this event is emitted when a module has been added to the list of modules bound to the compliance contract  the event is emitted by the addModule function  `_module` is the address of the compliance module"
+				},
+				"ModuleRemoved(address)": {
+					"notice": "this event is emitted when a module has been removed from the list of modules bound to the compliance contract  the event is emitted by the removeModule function  `_module` is the address of the compliance module"
+				},
+				"TokenBound(address)": {
+					"notice": "this event is emitted when a token has been bound to the compliance contract  the event is emitted by the bindToken function  `_token` is the address of the token to bind"
+				},
+				"TokenUnbound(address)": {
+					"notice": "this event is emitted when a token has been unbound from the compliance contract  the event is emitted by the unbindToken function  `_token` is the address of the token to unbind"
+				}
+			},
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			".deps/github/TokenySolutions/T-REX/contracts/compliance/modular/IModularCompliance.sol": "IModularCompliance"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		".deps/github/TokenySolutions/T-REX/contracts/compliance/modular/IModularCompliance.sol": {
+			"keccak256": "0xf632b47a306502ce66a0e432c7c3a7d3290ab8325a854bdefe2268d61fb7cc7f",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://988eb31577cdd253e9ff2743983c466f81fdb6b944b24d3c55b0263ae45f3d3d",
+				"dweb:/ipfs/QmZFixdMi55m78eEfrLN3yiNL4VR3AWSgKcjaRBBq4FskX"
+			]
+		}
+	},
+	"version": 1
+}

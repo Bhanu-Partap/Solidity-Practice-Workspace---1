@@ -1,0 +1,66 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "constructData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "contractLogic",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"stateMutability": "nonpayable",
+				"type": "fallback"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Proxy Practice/proxy.sol": "Proxy"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Proxy Practice/proxy.sol": {
+			"keccak256": "0xd806b12655b0b6328f75ad2d39f3eeb868444c55f9c4c31ff9951e28aef9fcdf",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://db9dcfd41fcf69a678b4887a72230dc85b9cd5f275dbb319b7460a5d39acec6e",
+				"dweb:/ipfs/QmdRkSrZNS49XYxVX5NMyCRCsVa2buTTCLH9Vc86VKuKpy"
+			]
+		}
+	},
+	"version": 1
+}

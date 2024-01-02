@@ -1,0 +1,64 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_val",
+						"type": "uint256"
+					}
+				],
+				"name": "target",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Naut/Token.sol": "hackToken"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Naut/Token.sol": {
+			"keccak256": "0x52eb1fb71c6967c5a136333784ac872a4fec5ae8189718230633c7cf5335d3e4",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://74f1260cbe7ce8e4cfc298bc94748365c9b828a3b370270d6d5967d779c4505b",
+				"dweb:/ipfs/QmVQMKDvi1c4HjYcqwCV48dyqQqLex35mqWTqPqMj3qE5b"
+			]
+		}
+	},
+	"version": 1
+}

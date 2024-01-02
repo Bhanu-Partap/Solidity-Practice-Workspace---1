@@ -1,0 +1,254 @@
+{
+	"compiler": {
+		"version": "0.8.9+commit.e5eed63a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_endpoint",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "_srcChainId",
+						"type": "uint16"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint16",
+						"name": "_count",
+						"type": "uint16"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "ReceiveMsg",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "endpoint",
+				"outputs": [
+					{
+						"internalType": "contract ILayerZeroEndpoint",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "_userApplication",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bool",
+						"name": "_payInZRO",
+						"type": "bool"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_adapterParams",
+						"type": "bytes"
+					}
+				],
+				"name": "estimateFees",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "nativeFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "zroFee",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_srcChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_from",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "lzReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "message",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "messageCount",
+				"outputs": [
+					{
+						"internalType": "uint16",
+						"name": "",
+						"type": "uint16"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_dstChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_destination",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "payload",
+						"type": "bytes"
+					}
+				],
+				"name": "sendMsg",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CrossChain/message.sol": "LayerZeroDemo1"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CrossChain/interfaces/ILayerZeroEndpoint.sol": {
+			"keccak256": "0xf3cdf2f3f3ca78845124d2b9757ca2b493cecd67bf385435524231dc1cfe39b6",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://aaf94686a97c6c10f8196b05e8cff877a2bf040c9abad81e6a6237bb1d331e74",
+				"dweb:/ipfs/QmWQGg2qcNatZ4oqKSf5nexmM35s2StPrgEkxbHFW4iRKG"
+			]
+		},
+		"CrossChain/interfaces/ILayerZeroReceiver.sol": {
+			"keccak256": "0x80a725683372a9b53ad68d646e0405375706425467554f928f1cf1f40e4c6ff3",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://1635ed2beef317fa940e7c4cc1d89ba780f1063945a75faf513c8d87488864cb",
+				"dweb:/ipfs/QmXesKRhWtJ9az3ppQM5o9SpqFPBedNBY2V2QNib9BSnBa"
+			]
+		},
+		"CrossChain/interfaces/ILayerZeroUserApplicationConfig.sol": {
+			"keccak256": "0xb437c73699e3ce3cabc291296b1be467bf4bf5870bc1861e42d75d86e0cc19d8",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://c65eaa9ab9fcf0dfc29509e29075ea9342cef9b1b499ad624e7f276151740726",
+				"dweb:/ipfs/QmbVMZURA5VggxANYdvRQzb3QnKy1ps2MyHNEJ5wtzV8m2"
+			]
+		},
+		"CrossChain/message.sol": {
+			"keccak256": "0x1f089b9f6e6bcce4f087ba68ccba392acc346b6bc4c4b699e6746f4880231775",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c8c69cc835f04c014468263e2a6e4b009ace3a6ad07b0518845591be0df59cef",
+				"dweb:/ipfs/QmYQTqrnRJSKRWc6XvLionX4fxuQTEn425YWjJbjZzH8Ns"
+			]
+		},
+		"hardhat/console.sol": {
+			"keccak256": "0x60b0215121bf25612a6739fb2f1ec35f31ee82e4a8216c032c8243d904ab3aa9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6e29880d33dd479bb046ba306993d26ccb779a4b1d94a046cb3567f22948bb4d",
+				"dweb:/ipfs/QmfTY1qzPt5C63Wc7y6JqfZr5899NRvXYdCpyLzR5FXQic"
+			]
+		}
+	},
+	"version": 1
+}

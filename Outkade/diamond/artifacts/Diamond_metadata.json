@@ -1,0 +1,102 @@
+{
+	"compiler": {
+		"version": "0.8.10+commit.fc410830"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_contractOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_diamondCutFacet",
+						"type": "address"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_initializationContractAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_calldata",
+						"type": "bytes"
+					}
+				],
+				"name": "InitializationFunctionReverted",
+				"type": "error"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Outkade/diamond/Diamond.sol": "Diamond"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Outkade/diamond/Diamond.sol": {
+			"keccak256": "0x86213a30559ea3ed0b6b248c96d8da9668028ce2d021d9f0083a8b0e3c9d2809",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c516fa884f98eb10d069d890dcd360c73f8a6e433703552f79391e80c564377f",
+				"dweb:/ipfs/QmeCAKmd5dURqSQVD5h3tyPugDYnjJ5JTxjzSQymAmULCz"
+			]
+		},
+		"Outkade/diamond/interfaces/IDiamondCut.sol": {
+			"keccak256": "0x6f8d533b4e201803ea97774e12a3baab8df93948d14b211dd88ceb369851f0ea",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d0d694caa4c5f30983daa1096503f4a90bc617f2d647932407f45b3348991a4b",
+				"dweb:/ipfs/QmRMXxWHtmJxWnQZ6jEWnHfA1AWpToSkUSscYEjRX9raYv"
+			]
+		},
+		"Outkade/diamond/libraries/LibDiamond.sol": {
+			"keccak256": "0x8f2a0f613b6ef827d06ec4abba77f1ecdba9e82a06f8868f2a2687bd5113ed76",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://eda10bb71fd6f0d3bd959c65169e0a40835fc48f3749d6809424b80e0831a85f",
+				"dweb:/ipfs/QmSKiKN3EuLSLYAH59VQCpW1a6Cqg5can5pS5SyvcMmmJd"
+			]
+		}
+	},
+	"version": 1
+}

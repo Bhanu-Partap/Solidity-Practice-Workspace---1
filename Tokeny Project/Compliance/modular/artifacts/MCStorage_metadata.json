@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Tokeny Project/Compliance/modular/MCStorage.sol": "MCStorage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Tokeny Project/Compliance/modular/MCStorage.sol": {
+			"keccak256": "0xc2f7353ffd1544ed9a32a686f08e19638cc8565ed11a813d82bb06b592cf1825",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ba1de12e376bc9dcbb70119a351a7b0d752b9554f8c3536bcfc07cee9a3e8462",
+				"dweb:/ipfs/QmU46tA1a2c58kTv5J1XMCKutcQ6NotVSLLNGkzPgwwn4a"
+			]
+		}
+	},
+	"version": 1
+}

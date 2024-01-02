@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.10+commit.fc410830"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CrossChain/utils/ExcessivelySafeCall.sol": "ExcessivelySafeCall"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CrossChain/utils/ExcessivelySafeCall.sol": {
+			"keccak256": "0xca098dfa0d4b2c06921b5d4dec815027ca7a8d0326198b26a3a8fabcf3eda8c5",
+			"license": "MIT OR Apache-2.0",
+			"urls": [
+				"bzz-raw://2b346b8bb66923691641940a2ffeecb8d0fa96cbd0ea9daf0086ba401426cbf9",
+				"dweb:/ipfs/QmcKcD8xuEGias1UcMfeCfqauMyG6NyA37YnHN44rLGjX7"
+			]
+		}
+	},
+	"version": 1
+}
