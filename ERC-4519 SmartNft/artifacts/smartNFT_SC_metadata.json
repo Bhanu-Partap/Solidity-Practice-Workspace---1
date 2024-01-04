@@ -892,7 +892,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ERC-3519 SmartNft/SmartNFT.sol": "smartNFT_SC"
+			"ERC-4519 SmartNft/SmartNFT.sol": "smartNFT_SC"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -906,7 +906,7 @@
 		"remappings": []
 	},
 	"sources": {
-		"ERC-3519 SmartNft/ERC721_interface.sol": {
+		"ERC-4519 SmartNft/ERC721_interface.sol": {
 			"keccak256": "0x4904c99c81d0f0919f6288aa55a1e4cc17d4128611ec58383a9a6e7fddc1ff6c",
 			"license": "CC0-1.0",
 			"urls": [
@@ -914,7 +914,7 @@
 				"dweb:/ipfs/QmZU4AnQxgRXwPyuqQ7VoVpAH8xtMnHn7VxsLyCXMobT8e"
 			]
 		},
-		"ERC-3519 SmartNft/SmartNFT.sol": {
+		"ERC-4519 SmartNft/SmartNFT.sol": {
 			"keccak256": "0x3137322dda097cf008e3680266cb41249a9fdf22d1dd458e39ef407ec22fc398",
 			"license": "CC0-1.0",
 			"urls": [
@@ -922,7 +922,7 @@
 				"dweb:/ipfs/QmSZrQQ7isJjHa4fU7qAnGega8aNrPAWq1HhVBmCDkvqvN"
 			]
 		},
-		"ERC-3519 SmartNft/smartNFT_interface.sol": {
+		"ERC-4519 SmartNft/smartNFT_interface.sol": {
 			"keccak256": "0x32f5e82bc8f948bb7aee3f1406c1c875d6b50cb834f78cdc9914284fbe595970",
 			"license": "CC0-1.0",
 			"urls": [
