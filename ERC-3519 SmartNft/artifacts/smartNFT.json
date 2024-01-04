@@ -1,0 +1,406 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"checkTimeout(uint256)": "5329c681",
+			"createToken(address,address)": "6ed776b2",
+			"ownerEngagement(uint256)": "ad2661fc",
+			"ownerOfFromBCA(address)": "f7b44a0f",
+			"setTimeout(uint256,uint256)": "0b6df367",
+			"setUser(uint256,address)": "db4d295b",
+			"startOwnerEngagement(uint256,uint256,uint256)": "128da698",
+			"startUserEngagement(uint256,uint256,uint256)": "adadaf40",
+			"tokenFromBCA(address)": "e61e3a76",
+			"updateTimestamp()": "1c5be3d7",
+			"userBalanceOf(address)": "0cb22289",
+			"userBalanceOfAnOwner(address,address)": "5a9f8682",
+			"userEngagement(uint256)": "531f2bcd",
+			"userOf(uint256)": "c2f1f14a",
+			"userOfFromBCA(address)": "d1553258"
+		}
+	},
+	"abi": [
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "tokenID",
+					"type": "uint256"
+				}
+			],
+			"name": "OwnerEngaged",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "tokenID",
+					"type": "uint256"
+				}
+			],
+			"name": "TimeoutAlarm",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "tokenID",
+					"type": "uint256"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "_addressUser",
+					"type": "address"
+				}
+			],
+			"name": "UserAssigned",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "uint256",
+					"name": "tokenID",
+					"type": "uint256"
+				}
+			],
+			"name": "UserEngaged",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "checkTimeout",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_addressSD",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_addressOwner",
+					"type": "address"
+				}
+			],
+			"name": "createToken",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_hashK_D",
+					"type": "uint256"
+				}
+			],
+			"name": "ownerEngagement",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_addressSD",
+					"type": "address"
+				}
+			],
+			"name": "ownerOfFromBCA",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_tokenId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_timeout",
+					"type": "uint256"
+				}
+			],
+			"name": "setTimeout",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_tokenId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "_addressUser",
+					"type": "address"
+				}
+			],
+			"name": "setUser",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_tokenId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_dataEngage",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_hashK_O",
+					"type": "uint256"
+				}
+			],
+			"name": "startOwnerEngagement",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_tokenId",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_dataEngage",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_hashK_U",
+					"type": "uint256"
+				}
+			],
+			"name": "startUserEngagement",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_addressSD",
+					"type": "address"
+				}
+			],
+			"name": "tokenFromBCA",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "updateTimestamp",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_addressUser",
+					"type": "address"
+				}
+			],
+			"name": "userBalanceOf",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_addressUser",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_addressOwner",
+					"type": "address"
+				}
+			],
+			"name": "userBalanceOfAnOwner",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_hashK_D",
+					"type": "uint256"
+				}
+			],
+			"name": "userEngagement",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_tokenId",
+					"type": "uint256"
+				}
+			],
+			"name": "userOf",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_addressSD",
+					"type": "address"
+				}
+			],
+			"name": "userOfFromBCA",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}
