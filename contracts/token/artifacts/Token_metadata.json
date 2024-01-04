@@ -1317,7 +1317,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"erc3643/erc3643/token/token.sol": "Token"
+			"contracts/token/token.sol": "Token"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -1459,7 +1459,7 @@
 				"dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
 			]
 		},
-		"erc3643/erc3643/Compliance/modular/IModularCompliance.sol": {
+		"contracts/Compliance/modular/IModularCompliance.sol": {
 			"keccak256": "0xb007145580f9c5680438044ffd012a318ed509a64fa5433aa32da0105fd385f1",
 			"license": "MIT",
 			"urls": [
@@ -1467,7 +1467,7 @@
 				"dweb:/ipfs/QmXZeLGRz1dKSUSizcCzWpKB9KL4cJBPLZr2GndVdDMZDd"
 			]
 		},
-		"erc3643/erc3643/registry/interface/IClaimTopicsRegistry.sol": {
+		"contracts/registry/interface/IClaimTopicsRegistry.sol": {
 			"keccak256": "0x209963b4e545f78c8fbf76bd3779bedc134bd3f3419b4b8eb0af63249689f2ea",
 			"license": "GPL-3.0",
 			"urls": [
@@ -1475,7 +1475,7 @@
 				"dweb:/ipfs/QmT7QJHzkoBvx4Xp58BhL2PRhHMdtJKPNgcpvhBfPjnNyf"
 			]
 		},
-		"erc3643/erc3643/registry/interface/IIdentityRegistry.sol": {
+		"contracts/registry/interface/IIdentityRegistry.sol": {
 			"keccak256": "0x0a78c51c1a0b9adf7f90741828b7c48d504340f5c5753a8f45f867233b6e03c2",
 			"license": "GPL-3.0",
 			"urls": [
@@ -1483,7 +1483,7 @@
 				"dweb:/ipfs/QmV4EjwueWYU8Dw2Erpps74esHUKbBr3Pmdx2zQUNXuMry"
 			]
 		},
-		"erc3643/erc3643/registry/interface/IIdentityRegistryStorage.sol": {
+		"contracts/registry/interface/IIdentityRegistryStorage.sol": {
 			"keccak256": "0x1bceb5cfc0da1a742c663fe4425001ccbdb2112e7718173cfb3243088e5999bd",
 			"license": "GPL-3.0",
 			"urls": [
@@ -1491,7 +1491,7 @@
 				"dweb:/ipfs/QmcF5uQzZpFZ7qC53afv4osebpAYAHupUyrQD6nmv17E9U"
 			]
 		},
-		"erc3643/erc3643/registry/interface/ITrustedIssuersRegistry.sol": {
+		"contracts/registry/interface/ITrustedIssuersRegistry.sol": {
 			"keccak256": "0x461f5ba0f4e76ee6106a484a2d010009aa540202cb5c917a6ee9f91ae42351c2",
 			"license": "GPL-3.0",
 			"urls": [
@@ -1499,7 +1499,7 @@
 				"dweb:/ipfs/QmcYoXQ5AujdqVnJDjBSygDTibum4WMubZKeUt98uiT6P9"
 			]
 		},
-		"erc3643/erc3643/token/Itoken.sol": {
+		"contracts/token/Itoken.sol": {
 			"keccak256": "0x5cd33a944e8ac78cd58e8a30d89680bbe693c15d9e232c796d3a1d4d5671094c",
 			"license": "GPL-3.0",
 			"urls": [
@@ -1507,7 +1507,7 @@
 				"dweb:/ipfs/QmRXQyHQWMkwC3XKuZdAnmtWHUZcfK6qfPByz94Rkvz5Jh"
 			]
 		},
-		"erc3643/erc3643/token/token.sol": {
+		"contracts/token/token.sol": {
 			"keccak256": "0xb08eb33447fcdac32bcee1e7c91400381c3a21d1f88300b1669d16e2ed34f72c",
 			"license": "GPL-3.0",
 			"urls": [
@@ -1515,7 +1515,7 @@
 				"dweb:/ipfs/QmafChSHaX9R5bikcrMnWmNpU75Trx15VA6odYTvwkfQSf"
 			]
 		},
-		"erc3643/erc3643/token/tokenStorage.sol": {
+		"contracts/token/tokenStorage.sol": {
 			"keccak256": "0xebf5411e98b4296d51e304f07a4534ffef69ad9723e960d032d15d9bbf1c590a",
 			"license": "GPL-3.0",
 			"urls": [

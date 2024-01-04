@@ -383,7 +383,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"erc3643/registry/interface/IIdentityRegistry.sol": "IIdentityRegistry"
+			"contracts/registry/interface/IIdentityRegistry.sol": "IIdentityRegistry"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -429,7 +429,7 @@
 				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
 			]
 		},
-		"erc3643/registry/interface/IClaimTopicsRegistry.sol": {
+		"contracts/registry/interface/IClaimTopicsRegistry.sol": {
 			"keccak256": "0x209963b4e545f78c8fbf76bd3779bedc134bd3f3419b4b8eb0af63249689f2ea",
 			"license": "GPL-3.0",
 			"urls": [
@@ -437,7 +437,7 @@
 				"dweb:/ipfs/QmT7QJHzkoBvx4Xp58BhL2PRhHMdtJKPNgcpvhBfPjnNyf"
 			]
 		},
-		"erc3643/registry/interface/IIdentityRegistry.sol": {
+		"contracts/registry/interface/IIdentityRegistry.sol": {
 			"keccak256": "0x0a78c51c1a0b9adf7f90741828b7c48d504340f5c5753a8f45f867233b6e03c2",
 			"license": "GPL-3.0",
 			"urls": [
@@ -445,20 +445,20 @@
 				"dweb:/ipfs/QmV4EjwueWYU8Dw2Erpps74esHUKbBr3Pmdx2zQUNXuMry"
 			]
 		},
-		"erc3643/registry/interface/IIdentityRegistryStorage.sol": {
-			"keccak256": "0xc72261d19bfa105e542372b3fea00ab7e089008e331ee4fe9a12a8b1ef41cf53",
+		"contracts/registry/interface/IIdentityRegistryStorage.sol": {
+			"keccak256": "0x1bceb5cfc0da1a742c663fe4425001ccbdb2112e7718173cfb3243088e5999bd",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://6887e3f38745906b55aa69e9b2445aa5e18c37ad71254933efc1d962ed7b47f4",
-				"dweb:/ipfs/QmXPhfexHqNohFfBs5NdDKixJYB47osnx3TycoDoGkSoKv"
+				"bzz-raw://b1f71e93952528462a65db44e568ac64a74ee01b44031f0c9e4ace353396827c",
+				"dweb:/ipfs/QmcF5uQzZpFZ7qC53afv4osebpAYAHupUyrQD6nmv17E9U"
 			]
 		},
-		"erc3643/registry/interface/ITrustedIssuersRegistry.sol": {
-			"keccak256": "0x1fd29f5dc1624674718bd431ef94222727e6a9b2945355149ab47d5c2f992245",
+		"contracts/registry/interface/ITrustedIssuersRegistry.sol": {
+			"keccak256": "0x461f5ba0f4e76ee6106a484a2d010009aa540202cb5c917a6ee9f91ae42351c2",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://aae8b0dbc758617ebfdd48af551bc0b3eb029557a4b5f01d281f34b09aa44ed4",
-				"dweb:/ipfs/QmeGQYvo1AiwobNDEPfENceRnpjzRn7RmxwjbXSXaui8xy"
+				"bzz-raw://c6d8abd21d71763eade0cd28deb6f93e3fcbce49bfca2e2e2d8e983755534e34",
+				"dweb:/ipfs/QmcYoXQ5AujdqVnJDjBSygDTibum4WMubZKeUt98uiT6P9"
 			]
 		}
 	},
