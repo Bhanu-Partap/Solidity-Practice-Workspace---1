@@ -8,27 +8,79 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "_token0",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "_token0Name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_token0symbol",
+						"type": "string"
 					},
 					{
 						"internalType": "uint256",
-						"name": "_token1",
+						"name": "_token0totalSupply",
 						"type": "uint256"
 					},
 					{
-						"internalType": "address",
-						"name": "_to",
-						"type": "address"
+						"internalType": "string",
+						"name": "_token1Name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_token1symbol",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token1totalSupply",
+						"type": "uint256"
 					}
 				],
-				"name": "depositLiquidity",
+				"name": "createPair",
 				"outputs": [
 					{
-						"internalType": "uint256",
+						"components": [
+							{
+								"internalType": "contract erc20",
+								"name": "token0",
+								"type": "address"
+							},
+							{
+								"internalType": "contract erc20",
+								"name": "token1",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "token0Name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "token1Name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reserve0",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reserve1",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "Timestamp",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Pair.pairdata",
 						"name": "",
-						"type": "uint256"
+						"type": "tuple"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -42,17 +94,27 @@
 						"type": "uint256"
 					}
 				],
-				"name": "tokenDetails",
+				"name": "pairDetails",
 				"outputs": [
 					{
-						"internalType": "address",
+						"internalType": "contract erc20",
 						"name": "token0",
 						"type": "address"
 					},
 					{
-						"internalType": "address",
+						"internalType": "contract erc20",
 						"name": "token1",
 						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "token0Name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "token1Name",
+						"type": "string"
 					},
 					{
 						"internalType": "uint256",
@@ -68,37 +130,9 @@
 						"internalType": "uint256",
 						"name": "Timestamp",
 						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_token0",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_token1",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_to",
-						"type": "address"
-					}
-				],
-				"name": "withdrawLiquidity",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -138,11 +172,11 @@
 			]
 		},
 		"Custom-Dex/Pair.sol": {
-			"keccak256": "0x899670cb184b7b93a2440085581a161b673aa5ba9a835407f8cbcd654fa29b9d",
+			"keccak256": "0xffac57a62470e2cb67697638f982600faf335d071190bdb0f80b71d7ae32a8cb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bc662f773a4e50e22510a6b1e175c4677d3a53aecb68e79a89efbd5bc6443c0c",
-				"dweb:/ipfs/QmQxpN1mir635uvvxjVdNfdZri595LYfeDMkhVztdptiVw"
+				"bzz-raw://a8b9ac94f5ce4bc52566a4d5ba8f5ca68a4c83f0c3e2c6c76c679c571e940476",
+				"dweb:/ipfs/QmQZXuwAQEsntVeLaHaXPn9jxfs3xZC9zDuGUNf7xbq2WR"
 			]
 		}
 	},
