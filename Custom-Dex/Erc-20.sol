@@ -29,7 +29,6 @@ contract erc20 is IERC20{
          totalSupply_=_totalSupply;
          balances[msg.sender]= totalSupply_;
          admin = msg.sender;
-
     }
 
     function totalSupply() public override view returns(uint){
@@ -66,7 +65,7 @@ contract erc20 is IERC20{
         return totalSupply_; 
     }
 
-    function allowence(address _owner,address _spender) public view returns(uint){
+    function allowance(address _owner,address _spender) public view returns(uint){
         return allowed[_owner][_spender];
     }
 
@@ -75,8 +74,7 @@ contract erc20 is IERC20{
         emit Approval(msg.sender,_spender,_value);
         return true;
     }
-
-
+    
     //spender will run transfer from function
     function transferFrom(address _from,address _to,uint _value) public returns (bool){
         uint allow = allowed[_from][msg.sender];
@@ -86,6 +84,5 @@ contract erc20 is IERC20{
         allowed[_from][msg.sender] -=_value; 
          emit Transfer(_from,_to,_value);
          return true;
-        
     }
 }

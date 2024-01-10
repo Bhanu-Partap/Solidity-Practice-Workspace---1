@@ -6,84 +6,47 @@
 	"output": {
 		"abi": [
 			{
-				"anonymous": false,
 				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "from",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "value",
-						"type": "uint256"
-					}
-				],
-				"name": "Transfer",
-				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "account",
-						"type": "address"
-					}
-				],
-				"name": "balanceOf",
-				"outputs": [
 					{
 						"internalType": "uint256",
 						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "tokenDetails",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "token0",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "token1",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserve0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserve1",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "blockTimestampLast",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "id",
 						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "totalSupply",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "recipient",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "transfer",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -100,7 +63,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Custom-Dex/Erc-20.sol": "IERC20"
+			"Custom-Dex/Pair.sol": "Pair"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -120,6 +83,14 @@
 			"urls": [
 				"bzz-raw://f1817a3438d0a1398a2c9e3aabb2f136c7ece283dd4473a6ee3a0646e92e7620",
 				"dweb:/ipfs/QmREVJzL845ENA6Jk8EJ3zsbiFHukewTvuHaUVa5LoEUCx"
+			]
+		},
+		"Custom-Dex/Pair.sol": {
+			"keccak256": "0x6dc0dab7d9d28a51410eb299852ca2b6ffd90ac1cbe72c7f47cede8d55507d39",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ac8c88888a1f0b5f42e968b18eed341a6b5e1ecc5a9feec07d69a3be14be4c81",
+				"dweb:/ipfs/QmasP6WRm8oWEVbycpRG4Lxg49qt91LTj2w81wMLztnjQs"
 			]
 		}
 	},
