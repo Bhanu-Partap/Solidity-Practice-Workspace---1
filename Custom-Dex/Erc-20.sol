@@ -15,20 +15,18 @@ contract erc20 is IERC20{
     string public  name;
     string public symbol;
     uint public  decimals =18;
+    uint totalSupply_;
+    address admin;
 
     event Approval(address indexed tokenOwner,address indexed spender ,uint tokens);
-    
 
     mapping(address=>uint) balances;
     mapping(address=>mapping(address =>uint)) allowed;
-
-    uint totalSupply_ =10000;
-    address admin;
     
-    constructor(string memory name_, string memory symbol_, uint totalSupply_)  {
+    constructor(string memory name_, string memory symbol_, uint _totalSupply)  {
          name=name_;
          symbol=symbol_;
-         totalSupply=totalSupply_;
+         totalSupply_=_totalSupply;
          balances[msg.sender]= totalSupply_;
          admin = msg.sender;
 
@@ -57,22 +55,22 @@ contract erc20 is IERC20{
     }
 
     function mint(uint _qty) public  onlyAdmin returns(uint){
-        totalSupply += qty;
+        totalSupply_ += _qty;
         balances[msg.sender] += _qty;
         return totalSupply_; 
     }
 
     function burn(uint _qty) public  onlyAdmin returns(uint){
-        totalSupply -= qty;
+        totalSupply_ -= _qty;
         balances[msg.sender] -= _qty;
         return totalSupply_; 
     }
 
-    function allowence(address owner,address spender) public view returns(uint){
+    function allowence(address _owner,address _spender) public view returns(uint){
         return allowed[_owner][_spender];
     }
 
-    function approve(address spender,uint value) public returns(bool){
+    function approve(address _spender,uint _value) public returns(bool){
         allowed[msg.sender][_spender] =_value;
         emit Approval(msg.sender,_spender,_value);
         return true;
@@ -80,7 +78,7 @@ contract erc20 is IERC20{
 
 
     //spender will run transfer from function
-    function transferFrom(address from,address to,uint _value) public returns (bool){
+    function transferFrom(address _from,address _to,uint _value) public returns (bool){
         uint allow = allowed[_from][msg.sender];
         require(balances[_from]>=_value && allow>=_value);
         balances[_to] += _value;
