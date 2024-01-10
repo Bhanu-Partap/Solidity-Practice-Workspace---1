@@ -9,6 +9,35 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "_token0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token1",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "depositLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
 					}
@@ -37,7 +66,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "blockTimestampLast",
+						"name": "Timestamp",
 						"type": "uint256"
 					},
 					{
@@ -47,6 +76,29 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_token0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token1",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "withdrawLiquidity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -86,11 +138,11 @@
 			]
 		},
 		"Custom-Dex/Pair.sol": {
-			"keccak256": "0x6dc0dab7d9d28a51410eb299852ca2b6ffd90ac1cbe72c7f47cede8d55507d39",
+			"keccak256": "0x899670cb184b7b93a2440085581a161b673aa5ba9a835407f8cbcd654fa29b9d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ac8c88888a1f0b5f42e968b18eed341a6b5e1ecc5a9feec07d69a3be14be4c81",
-				"dweb:/ipfs/QmasP6WRm8oWEVbycpRG4Lxg49qt91LTj2w81wMLztnjQs"
+				"bzz-raw://bc662f773a4e50e22510a6b1e175c4677d3a53aecb68e79a89efbd5bc6443c0c",
+				"dweb:/ipfs/QmQxpN1mir635uvvxjVdNfdZri595LYfeDMkhVztdptiVw"
 			]
 		}
 	},
