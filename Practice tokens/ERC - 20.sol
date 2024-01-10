@@ -4,7 +4,7 @@ pragma solidity ^0.8.10;
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol";
 
 
-contract ERC20{
+contract ERC_20{
     string public  name;
     string public  symbol;
     uint8 public  decimals;
