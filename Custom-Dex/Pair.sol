@@ -26,6 +26,7 @@ contract Pair {
     }  
 
     function createPair(string memory _token0Name, string memory _token0symbol, uint _token0totalSupply,string memory _token1Name, string memory _token1symbol, uint _token1totalSupply)public returns( pairdata memory ){      
+        require();
         erc20 token0Address= new erc20(_token0Name,_token0symbol,_token0totalSupply);
         erc20 token1Address = new erc20(_token1Name,_token1symbol,_token1totalSupply);
         pairId++;
@@ -34,11 +35,8 @@ contract Pair {
         pairDetails[pairId].token0Name= _token0Name;
         pairDetails[pairId].token1Name= _token1Name;
         pairDetails[pairId].Timestamp= block.timestamp;
-        
-
-
-    
-        // return(pairDetails[pairId].token0Name);
+        pairDetails[pairId].reserve0= token0Address.balanceOf(address(this));
+        pairDetails[pairId].reserve1= token1Address.balanceOf(address(this));
     }
 
     // function depositLiquidity(uint _token0, uint _token1, address _to)public returns(uint){

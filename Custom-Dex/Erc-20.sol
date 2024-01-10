@@ -33,7 +33,6 @@ contract erc20 is IERC20{
 
     function totalSupply() public override view returns(uint){
         return totalSupply_;
-
     }
 
     function balanceOf(address tokenOwner) public override view returns(uint){
