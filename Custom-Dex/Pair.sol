@@ -33,7 +33,8 @@ contract Pair {
         pairDetails[pairId].token1= token1Address;
         pairDetails[pairId].token0Name= _token0Name;
         pairDetails[pairId].token1Name= _token1Name;
-        pairDetails[pairId].token1Name= _token1Name;
+        pairDetails[pairId].Timestamp= block.timestamp;
+        
 
 
     
