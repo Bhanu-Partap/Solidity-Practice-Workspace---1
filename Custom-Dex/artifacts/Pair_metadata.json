@@ -76,6 +76,28 @@
 								"internalType": "uint256",
 								"name": "Timestamp",
 								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "token0Amount",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "token1Amount",
+										"type": "uint256"
+									},
+									{
+										"internalType": "address",
+										"name": "liquidityProviderAddress",
+										"type": "address"
+									}
+								],
+								"internalType": "struct Pair.Liquidity[]",
+								"name": "liquidity",
+								"type": "tuple[]"
 							}
 						],
 						"internalType": "struct Pair.pairdata",
@@ -108,6 +130,40 @@
 					}
 				],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "liquidityProviders",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "token0Amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "token1Amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "liquidityProviderAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -196,11 +252,11 @@
 			]
 		},
 		"Custom-Dex/Pair.sol": {
-			"keccak256": "0xe0ad42c21cd3644641f6fdaf4456689d19ece8e2580746c8a7b72f18a71c15d2",
+			"keccak256": "0x703c1129329ae7f7570d16e844c7e54d5cc8fbf363dd83a3c54aafeb17413043",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1426fca341217148492f01da62207d550c33f5524307ebdc2266b89be549fb04",
-				"dweb:/ipfs/QmYs3YpVUrPzftEuJN7dCspmx48izi7ExSJY17q4hw4yW8"
+				"bzz-raw://3ac706363117cb4b11c576b0d5977c17c3d18ff0edd358132315bdf5931ac589",
+				"dweb:/ipfs/QmZnfsTi279QjNJB6CJ9MUyS9yYGuLnuWRtFWJExHboUpm"
 			]
 		}
 	},

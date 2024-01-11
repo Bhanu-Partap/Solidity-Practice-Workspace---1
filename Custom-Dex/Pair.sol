@@ -16,9 +16,18 @@ contract Pair {
         uint reserve0;
         uint reserve1;
         uint Timestamp; 
+        Liquidity [] liquidity;
+    }
+
+    struct Liquidity{
+        uint token0Amount;
+        uint token1Amount;
+        address liquidityProviderAddress;
+
     }
 
     mapping(uint256=>pairdata) public pairDetails;
+    mapping(uint256 => mapping(uint256=>Liquidity)) public liquidityProviders;
 
     modifier  onlyOwner(){
     owner= msg.sender;
@@ -40,7 +49,7 @@ contract Pair {
     }
 
     function depositLiquidity(uint _token0Amount, uint _token1Amount)public returns(uint){
-        
+        pairDetails[pairId].liquidity[pairId].token0Amount= _token0Amount ;
     }
 
     // function withdrawLiquidity(uint _token0, uint _token1, address _to)public{
@@ -51,3 +60,10 @@ contract Pair {
 
 
 }
+
+
+
+
+// Method to enter the struct value in one tym
+// pairDetails[pairId]=pairdata({
+// });
