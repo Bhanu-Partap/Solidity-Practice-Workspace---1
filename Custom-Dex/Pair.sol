@@ -70,7 +70,12 @@ contract Pair {
     }
 
     function withdrawLiquidity(uint _pairId)public{
+        require(liquidityProviders[msg.sender][_pairId].token0Amount & liquidityProviders[msg.sender][_pairId].token1Amount > 0,"You have't provided the liquidity");
         
+        token0Address.transferFrom(address(this),msg.sender ,liquidityProviders[msg.sender][_pairId].token0Amount);
+        token1Address.transferFrom(address(this),msg.sender, liquidityProviders[msg.sender][_pairId].token1Amount);
+        pairDetails[pairId].reserve0 -=liquidityProviders[msg.sender][_pairId].token0Amount;
+        pairDetails[pairId].reserve1 -=liquidityProviders[msg.sender][_pairId].token1Amount;
     }
 
 
