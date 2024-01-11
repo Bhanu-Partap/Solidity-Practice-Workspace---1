@@ -243,19 +243,19 @@
 	},
 	"sources": {
 		"Custom-Dex/Erc-20.sol": {
-			"keccak256": "0x4f6c3e91c198dc0d8ce45d4a0b198cf8e825f3e636a9f72ed3a75018cfc2ad98",
+			"keccak256": "0x77f32aac0ca1d835e88d0cf282cf81369e11de071f171f72acbbb230298bf2e1",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://e27c581f4643d05847a403fbd7ca5370d5eec52dcc2c760936e9929b105576fa",
-				"dweb:/ipfs/QmUENcn9YNssL9rqLY4R6Jmsb66jSMnnrrBaRWAyDMWvdY"
+				"bzz-raw://e867059a658ff886e9f656761a3c6896c42f6eb7719f64c744248b174e2df0af",
+				"dweb:/ipfs/QmQfA8kc8Rb2mVP2ujFGMJwB2zwP7gfuGoCScC4JjM92Mz"
 			]
 		},
 		"Custom-Dex/Pair.sol": {
-			"keccak256": "0x89105765149ece5e9abfdd762b5d65af2083b417f576aca8179100fbef07842a",
+			"keccak256": "0x0f55c58f7c207b94914d60d8b474fa5757d22513a9bd04d56aa3368ab43c791f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://03b9dfe6f6ea21b6984c9418a3c58624cc6a439c349307c8385ad36a9dc6fed9",
-				"dweb:/ipfs/QmaSdPVzbmJPbxvLrER1FAFEwAUotLo4Wzq156aFeQCxcD"
+				"bzz-raw://3c2f088d204f5460472181b71d43c4e1189857f4d154d1b855389281c1c70da9",
+				"dweb:/ipfs/QmUjgJQZ4nc6hbsdn2JYVAccJQyDP7i1fh7WgyyzSnTvNa"
 			]
 		}
 	},
