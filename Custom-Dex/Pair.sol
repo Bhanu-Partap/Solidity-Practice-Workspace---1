@@ -7,6 +7,8 @@ contract Pair {
 
     address owner;
     uint pairId;
+    erc20 token0Address;
+    erc20 token1Address;
 
     struct pairdata{
         erc20 token0;
@@ -35,8 +37,8 @@ contract Pair {
     }  
 
     function createPair(string memory _token0Name, string memory _token0symbol, uint _token0totalSupply,string memory _token1Name, string memory _token1symbol, uint _token1totalSupply)public returns( pairdata memory ){
-        erc20 token0Address= new erc20(_token0Name,_token0symbol,_token0totalSupply);
-        erc20 token1Address = new erc20(_token1Name,_token1symbol,_token1totalSupply);
+        token0Address= new erc20(_token0Name,_token0symbol,_token0totalSupply);
+        token1Address = new erc20(_token1Name,_token1symbol,_token1totalSupply);
         // require(token0Address != token1Address,"Both tokens can't be same");
         pairId++;
         pairDetails[pairId].token0= token0Address;
@@ -48,8 +50,23 @@ contract Pair {
         pairDetails[pairId].reserve1= token1Address.balanceOf(address(this));
     }
 
-    function depositLiquidity(uint _token0Amount, uint _token1Amount)public returns(uint){
+    function depositLiquidity(uint _token0Amount, uint _token1Amount)public payable  returns(Liquidity memory){
+        // require(_token0Amount > 0 && _token1Amount > 0, "Deposited amounts must be greater than zero");
+        token0Address.approve(address(this), _token0Amount);
+        token0Address.transferFrom(msg.sender, address(this), msg.value);
         pairDetails[pairId].liquidity[pairId].token0Amount= _token0Amount ;
+        pairDetails[pairId].reserve0 += _token0Amount;
+        pairDetails[pairId].liquidity[pairId].liquidityProviderAddress = msg.sender;
+
+
+
+
+
+        pairDetails[pairId].liquidity[pairId].token1Amount= _token1Amount ;
+        pairDetails[pairId].reserve1 += _token1Amount;
+
+
+
     }
 
     // function withdrawLiquidity(uint _token0, uint _token1, address _to)public{
