@@ -213,6 +213,19 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_pairId",
+						"type": "uint256"
+					}
+				],
+				"name": "withdrawLiquidity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -243,19 +256,19 @@
 	},
 	"sources": {
 		"Custom-Dex/Erc-20.sol": {
-			"keccak256": "0x77f32aac0ca1d835e88d0cf282cf81369e11de071f171f72acbbb230298bf2e1",
+			"keccak256": "0x8ef72ff97217d685c003f96b48d0c0f1f712ae90ead469a025873559af7a1893",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://e867059a658ff886e9f656761a3c6896c42f6eb7719f64c744248b174e2df0af",
-				"dweb:/ipfs/QmQfA8kc8Rb2mVP2ujFGMJwB2zwP7gfuGoCScC4JjM92Mz"
+				"bzz-raw://3fb46ea75ebfd046d58c9485bfc21c7d092ebb4fdcaaef278da4b9b9ac80103e",
+				"dweb:/ipfs/QmVw2dZazt1G4ufFjpUmP6pjRnQCTAe8WD7dcfH4x5UHCa"
 			]
 		},
 		"Custom-Dex/Pair.sol": {
-			"keccak256": "0x0f55c58f7c207b94914d60d8b474fa5757d22513a9bd04d56aa3368ab43c791f",
+			"keccak256": "0xe47bed57223315b7a9226d2db35836c6d4cc8c616c4903c0788df03b27ac182f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3c2f088d204f5460472181b71d43c4e1189857f4d154d1b855389281c1c70da9",
-				"dweb:/ipfs/QmUjgJQZ4nc6hbsdn2JYVAccJQyDP7i1fh7WgyyzSnTvNa"
+				"bzz-raw://642262a2b699149c2d0cb5ba6c8ea26f278ea350146920dea54858b6efbba51a",
+				"dweb:/ipfs/QmcJUbWko5AqSRwgfbHXBXbT8FFtraiNut5p2hAbxV949d"
 			]
 		}
 	},

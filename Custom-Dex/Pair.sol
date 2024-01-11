@@ -54,24 +54,24 @@ contract Pair {
     }
 
     function depositLiquidity(uint _token0Amount, uint _token1Amount, uint _pairId)public {
-        // require(_token0Amount > 0 && _token1Amount > 0, "Deposited amounts must be greater than zero");
         token0Address.mint(msg.sender,_token0Amount);
         token1Address.mint(msg.sender,_token1Amount);
+        require(_token0Amount > 0 && _token1Amount > 0, "Deposited amounts must be greater than zero");
         require(token0Address.balanceOf(msg.sender)>0,"Balance should be greater than 0");
         token0Address.approve(msg.sender,address(this), _token0Amount);
         token0Address.transferFrom(msg.sender, address(this), _token0Amount);
         liquidityProviders[msg.sender][_pairId].token0Amount= _token0Amount ;
         pairDetails[pairId].reserve0 += _token0Amount;
-        token0Address.approve(msg.sender,address(this), _token1Amount);
-        token0Address.transferFrom(msg.sender, address(this), _token1Amount);
+        token1Address.approve(msg.sender,address(this), _token1Amount);
+        token1Address.transferFrom(msg.sender, address(this), _token1Amount);
         liquidityProviders[msg.sender][_pairId].token1Amount= _token1Amount ;
         pairDetails[pairId].reserve1 += _token1Amount;
         liquidityProviders[msg.sender][_pairId].liquidityProviderAddress = msg.sender;
     }
 
-    // function withdrawLiquidity(uint _token0, uint _token1, address _to)public{
-
-    // }
+    function withdrawLiquidity(uint _pairId)public{
+        
+    }
 
 
 

@@ -52,9 +52,9 @@ contract erc20 is IERC20{
         _;
     }
 
-    function mint(address _user, uint _qty) public  onlyAdmin returns(uint){
+    function mint(address _to, uint _qty) public  onlyAdmin returns(uint){
         totalSupply_ += _qty;
-        balances[_user] += _qty;
+        balances[_to] += _qty;
         return totalSupply_;
     }
 
