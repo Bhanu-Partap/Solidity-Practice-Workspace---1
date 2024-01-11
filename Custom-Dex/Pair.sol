@@ -29,7 +29,7 @@ contract Pair {
     }
 
     mapping(uint256=>pairdata) public pairDetails;
-    mapping(uint256 => mapping(uint256=>Liquidity)) public liquidityProviders;
+    mapping(address => mapping(uint256=>Liquidity)) public liquidityProviders;
 
     modifier  onlyOwner(){
     owner= msg.sender;
@@ -48,22 +48,26 @@ contract Pair {
         pairDetails[pairId].Timestamp= block.timestamp;
         pairDetails[pairId].reserve0= token0Address.balanceOf(address(this));
         pairDetails[pairId].reserve1= token1Address.balanceOf(address(this));
+        liquidityProviders[msg.sender][pairId].token0Amount= _token0totalSupply ;
+        liquidityProviders[msg.sender][pairId].token1Amount= _token1totalSupply ;
+        liquidityProviders[msg.sender][pairId].liquidityProviderAddress= msg.sender ;
+
+
+
     }
 
-    function depositLiquidity(uint _token0Amount, uint _token1Amount)public payable  returns(Liquidity memory){
+    function depositLiquidity(uint _token0Amount, uint _token1Amount, uint _pairId)public {
         // require(_token0Amount > 0 && _token1Amount > 0, "Deposited amounts must be greater than zero");
-        token0Address.approve(address(this), _token0Amount);
-        token0Address.transferFrom(msg.sender, address(this), msg.value);
-        pairDetails[pairId].liquidity[pairId].token0Amount= _token0Amount ;
+        token0Address.approve(msg.sender,address(this), _token0Amount);
+        token0Address.transferFrom(msg.sender, address(this), _token0Amount);
+        liquidityProviders[msg.sender][_pairId].token0Amount= _token0Amount ;
         pairDetails[pairId].reserve0 += _token0Amount;
-        pairDetails[pairId].liquidity[pairId].liquidityProviderAddress = msg.sender;
-
-
-
-
-
-        pairDetails[pairId].liquidity[pairId].token1Amount= _token1Amount ;
+        token0Address.approve(msg.sender,address(this), _token1Amount);
+        token0Address.transferFrom(msg.sender, address(this), _token1Amount);
+        liquidityProviders[msg.sender][_pairId].token1Amount= _token1Amount ;
         pairDetails[pairId].reserve1 += _token1Amount;
+        liquidityProviders[msg.sender][_pairId].liquidityProviderAddress = msg.sender;
+
 
 
 

@@ -55,7 +55,7 @@ contract erc20 is IERC20{
     function mint(uint _qty) public  onlyAdmin returns(uint){
         totalSupply_ += _qty;
         balances[msg.sender] += _qty;
-        return totalSupply_; 
+        return totalSupply_;
     }
 
     function burn(uint _qty) public  onlyAdmin returns(uint){
@@ -68,9 +68,9 @@ contract erc20 is IERC20{
         return allowed[_owner][_spender];
     }
 
-    function approve(address _spender,uint _value) public returns(bool){
-        allowed[msg.sender][_spender] =_value;
-        emit Approval(msg.sender,_spender,_value);
+    function approve(address _owner, address _spender,uint _value) public returns(bool){
+        allowed[_owner][_spender] =_value;
+        emit Approval(_owner,_spender,_value);
         return true;
     }
     
