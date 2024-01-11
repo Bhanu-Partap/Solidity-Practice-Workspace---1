@@ -25,10 +25,10 @@ contract Pair {
     _;
     }  
 
-    function createPair(string memory _token0Name, string memory _token0symbol, uint _token0totalSupply,string memory _token1Name, string memory _token1symbol, uint _token1totalSupply)public returns( pairdata memory ){      
-        require();
+    function createPair(string memory _token0Name, string memory _token0symbol, uint _token0totalSupply,string memory _token1Name, string memory _token1symbol, uint _token1totalSupply)public returns( pairdata memory ){
         erc20 token0Address= new erc20(_token0Name,_token0symbol,_token0totalSupply);
         erc20 token1Address = new erc20(_token1Name,_token1symbol,_token1totalSupply);
+        // require(token0Address != token1Address,"Both tokens can't be same");
         pairId++;
         pairDetails[pairId].token0= token0Address;
         pairDetails[pairId].token1= token1Address;
@@ -39,9 +39,9 @@ contract Pair {
         pairDetails[pairId].reserve1= token1Address.balanceOf(address(this));
     }
 
-    // function depositLiquidity(uint _token0, uint _token1, address _to)public returns(uint){
-
-    // }
+    function depositLiquidity(uint _token0Amount, uint _token1Amount)public returns(uint){
+        
+    }
 
     // function withdrawLiquidity(uint _token0, uint _token1, address _to)public{
 

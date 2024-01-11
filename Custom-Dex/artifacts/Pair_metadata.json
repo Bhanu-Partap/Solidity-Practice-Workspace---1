@@ -90,6 +90,30 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "_token0Amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token1Amount",
+						"type": "uint256"
+					}
+				],
+				"name": "depositLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
 					}
@@ -172,11 +196,11 @@
 			]
 		},
 		"Custom-Dex/Pair.sol": {
-			"keccak256": "0x3a7d20fd83423a6d5cbeea6c1f9f8f1b7c21a73a4717416dfaefe38bb5bf16c9",
+			"keccak256": "0xe0ad42c21cd3644641f6fdaf4456689d19ece8e2580746c8a7b72f18a71c15d2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3b339a1653ecc410dcb5062e23ed8bf440115dcd9b87ae96bf9bd5af5fa7345f",
-				"dweb:/ipfs/QmQYv8NKRGkCn1wuBjNrFFrckrSM1jNCPyogvyvpy6joh2"
+				"bzz-raw://1426fca341217148492f01da62207d550c33f5524307ebdc2266b89be549fb04",
+				"dweb:/ipfs/QmYs3YpVUrPzftEuJN7dCspmx48izi7ExSJY17q4hw4yW8"
 			]
 		}
 	},
