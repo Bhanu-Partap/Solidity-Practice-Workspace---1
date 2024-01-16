@@ -1,0 +1,52 @@
+{
+	"compiler": {
+		"version": "0.8.20+commit.a1b79de6"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Custom-Dex/LpToken.sol": "LpTokens"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Custom-Dex/Erc-20.sol": {
+			"keccak256": "0x8ef72ff97217d685c003f96b48d0c0f1f712ae90ead469a025873559af7a1893",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://3fb46ea75ebfd046d58c9485bfc21c7d092ebb4fdcaaef278da4b9b9ac80103e",
+				"dweb:/ipfs/QmVw2dZazt1G4ufFjpUmP6pjRnQCTAe8WD7dcfH4x5UHCa"
+			]
+		},
+		"Custom-Dex/LpToken.sol": {
+			"keccak256": "0xc9de492810a43fb4872a8a057ce8aa5b0055a8484282fb345d6b637969680954",
+			"urls": [
+				"bzz-raw://98ef3acd3b718a705bc2198beb926b4af4bafeff5af42db1e6816327693bd455",
+				"dweb:/ipfs/Qmer3m78JG3MoADFqg23yoftuYb2m3Ew2L5BFzaFDCdmUq"
+			]
+		}
+	},
+	"version": 1
+}
