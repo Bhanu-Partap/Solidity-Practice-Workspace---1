@@ -41,10 +41,10 @@
 			]
 		},
 		"Custom-Dex/LpToken.sol": {
-			"keccak256": "0xc095cc1ef56f0acd81614a461aa792a28c8e6b27ad3117230553f954b294e98a",
+			"keccak256": "0x2d533229c75da7cab3058f2fa0a5c75f767af33a1c98292b9d2a77ffcccc4f64",
 			"urls": [
-				"bzz-raw://0ba0a18f8e714622811cb3235b5f5e000265103d8253ee768aab4079fcc5029b",
-				"dweb:/ipfs/QmS6wdQEHsdnh1gTUFJveTNrtadBFAuYjsEGiDjXGxkHMV"
+				"bzz-raw://f4db058019a648212f78610e3cd452e04df8b42c6cbd24f59a3f0aec38347aa5",
+				"dweb:/ipfs/QmakDmLmzrw2HaNY8sua8AowgeXW9ahJUYy75UbExMj4b8"
 			]
 		}
 	},
