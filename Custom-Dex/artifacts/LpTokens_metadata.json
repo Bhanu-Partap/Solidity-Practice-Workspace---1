@@ -4,7 +4,42 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [],
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token0",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_token1",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount1",
+						"type": "uint256"
+					}
+				],
+				"name": "mintingLpTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -41,10 +76,10 @@
 			]
 		},
 		"Custom-Dex/LpToken.sol": {
-			"keccak256": "0x2d533229c75da7cab3058f2fa0a5c75f767af33a1c98292b9d2a77ffcccc4f64",
+			"keccak256": "0xa41b0f2dfaa3203d01179815ed3c291c9f756f908258b50f988f20f266c7da3f",
 			"urls": [
-				"bzz-raw://f4db058019a648212f78610e3cd452e04df8b42c6cbd24f59a3f0aec38347aa5",
-				"dweb:/ipfs/QmakDmLmzrw2HaNY8sua8AowgeXW9ahJUYy75UbExMj4b8"
+				"bzz-raw://ecc5e21f63a7a5491b4d206bd5fdd9561bc339dcef012dea78955e74a5d29e76",
+				"dweb:/ipfs/QmYRJW2M9PgfFSKzUbaWmRkf4GQcevt2PL7RJqGSKfFmxk"
 			]
 		}
 	},

@@ -14,10 +14,10 @@ contract LpTokens{
 
     function mintingLpTokens(uint _amount0, uint _amount1) external {
         require(_amount0 > 0 && _amount1 > 0, "Amounts must be greater than zero");
-        uint256 totalSupply = totalSupply(); 
+        uint256 totalSupply = lptokens.totalSupply(); 
         require(token0.transferFrom(msg.sender, address(this), _amount0), "TokenA transfer failed");
         require(token1.transferFrom(msg.sender, address(this), _amount1), "TokenB transfer failed");
-        erc20.mint(msg.sender,address(this),_amount0 + _amount1);
+        lptokens.mint(msg.sender,_amount0 + _amount1);
     }
 }
 
