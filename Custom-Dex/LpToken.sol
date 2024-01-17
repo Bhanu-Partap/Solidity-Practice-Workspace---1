@@ -2,7 +2,7 @@ import "./Erc-20.sol";
 
 contract LpTokens{
 
-    function mintLpTokens() private{
-        
-    }
+    erc20 token0;
+
+    function deposit
 }

@@ -1,5 +1,5 @@
 {
-	"id": "d19150368554ddb9a832c208cd887839",
+	"id": "4c398e83f7351eb47d494505204997e0",
 	"_format": "hh-sol-build-info-1",
 	"solcVersion": "0.8.20",
 	"solcLongVersion": "0.8.20+commit.a1b79de6",
@@ -7,7 +7,7 @@
 		"language": "Solidity",
 		"sources": {
 			"Custom-Dex/LpToken.sol": {
-				"content": "import \"./Erc-20.sol\";\n\ncontract LpTokens{\n\n    function mintLpTokens() private{\n        \n    }\n}"
+				"content": "import \"./Erc-20.sol\";\n\ncontract LpTokens{\n\n    erc20 token0;\n\n    \n}"
 			},
 			"Custom-Dex/Erc-20.sol": {
 				"content": "// SPDX-License-Identifier: GPL-3.0\npragma solidity ^0.8.0;\n\ninterface IERC20{\n    function totalSupply() external view returns(uint);\n    function balanceOf(address account) external view returns(uint);\n    function transfer(address recipient,uint amount) external returns(bool);\n\n    event Transfer(address indexed from, address indexed to , uint value);\n\n}\n\n\ncontract erc20 is IERC20{\n    string public  name;\n    string public symbol;\n    uint public  decimals =18;\n    uint totalSupply_;\n    address admin;\n\n    event Approval(address indexed tokenOwner,address indexed spender ,uint tokens);\n\n    mapping(address=>uint) balances;\n    mapping(address=>mapping(address =>uint)) allowed;\n    \n    constructor(string memory name_, string memory symbol_, uint _totalSupply)  {\n         name=name_;\n         symbol=symbol_;\n         totalSupply_=_totalSupply;\n         balances[msg.sender]= totalSupply_;\n         admin = msg.sender;\n    }\n\n    function totalSupply() public override view returns(uint){\n        return totalSupply_;\n    }\n\n    function balanceOf(address tokenOwner) public override view returns(uint){\n        return balances[tokenOwner];\n    }\n\n    function transfer(address receiver,uint numTokens) public override returns(bool){\n        require(numTokens <= balances[msg.sender]);\n        balances[msg.sender] -=numTokens;\n        balances[receiver] += numTokens;\n        emit Transfer(msg.sender,receiver,numTokens);\n        return true;\n    }\n\n    modifier onlyAdmin{\n        require(msg.sender == admin , \"only admin can run this function\");\n        _;\n    }\n\n    function mint(address _to, uint _qty) public  onlyAdmin returns(uint){\n        totalSupply_ += _qty;\n        balances[_to] += _qty;\n        return totalSupply_;\n    }\n\n    function burn(uint _qty) public  onlyAdmin returns(uint){\n        totalSupply_ -= _qty;\n        balances[msg.sender] -= _qty;\n        return totalSupply_; \n    }\n\n    function allowance(address _owner,address _spender) public view returns(uint){\n        return allowed[_owner][_spender];\n    }\n\n    function approve(address _owner, address _spender,uint _value) public returns(bool){\n        allowed[_owner][_spender] =_value;\n        emit Approval(_owner,_spender,_value);\n        return true;\n    }\n    \n    //spender will run transfer from function\n    function transferFrom(address _from,address _to,uint _value) public returns (bool){\n        uint allow = allowed[_from][msg.sender];\n        require(balances[_from]>=_value && allow>=_value);\n        balances[_to] += _value;\n        balances[_from] -= _value;\n        allowed[_from][msg.sender] -=_value; \n         emit Transfer(_from,_to,_value);\n         return true;\n    }\n}\n"
@@ -19710,212 +19710,209 @@
 						"version": 1
 					},
 					"evm": {
-						"assembly": "    /* \"Custom-Dex/LpToken.sol\":24:97  contract LpTokens{... */\n  mstore(0x40, 0x80)\n  callvalue\n  dup1\n  iszero\n  tag_1\n  jumpi\n  0x00\n  dup1\n  revert\ntag_1:\n  pop\n  dataSize(sub_0)\n  dup1\n  dataOffset(sub_0)\n  0x00\n  codecopy\n  0x00\n  return\nstop\n\nsub_0: assembly {\n        /* \"Custom-Dex/LpToken.sol\":24:97  contract LpTokens{... */\n      mstore(0x40, 0x80)\n      0x00\n      dup1\n      revert\n\n    auxdata: 0xa264697066735822122078d3db0ff44e6abdf3a9bcee9f497453cf495b93cea3ec619a24f63912905a7064736f6c63430008140033\n}\n",
+						"assembly": "    /* \"Custom-Dex/LpToken.sol\":24:69  contract LpTokens{... */\n  mstore(0x40, 0x80)\n  callvalue\n  dup1\n  iszero\n  tag_1\n  jumpi\n  0x00\n  dup1\n  revert\ntag_1:\n  pop\n  dataSize(sub_0)\n  dup1\n  dataOffset(sub_0)\n  0x00\n  codecopy\n  0x00\n  return\nstop\n\nsub_0: assembly {\n        /* \"Custom-Dex/LpToken.sol\":24:69  contract LpTokens{... */\n      mstore(0x40, 0x80)\n      0x00\n      dup1\n      revert\n\n    auxdata: 0xa2646970667358221220f517d1b1042ff94664246f21ebe8e2fc03dc9166ced8009c20f531283b1f9a6764736f6c63430008140033\n}\n",
 						"bytecode": {
 							"functionDebugData": {},
 							"generatedSources": [],
 							"linkReferences": {},
-							"object": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122078d3db0ff44e6abdf3a9bcee9f497453cf495b93cea3ec619a24f63912905a7064736f6c63430008140033",
-							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x3F DUP1 PUSH1 0x1D PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 PUSH25 0xD3DB0FF44E6ABDF3A9BCEE9F497453CF495B93CEA3EC619A24 0xF6 CODECOPY SLT SWAP1 GAS PUSH17 0x64736F6C63430008140033000000000000 ",
-							"sourceMap": "24:73:1:-:0;;;;;;;;;;;;;;;;;;;"
+							"object": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220f517d1b1042ff94664246f21ebe8e2fc03dc9166ced8009c20f531283b1f9a6764736f6c63430008140033",
+							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x3F DUP1 PUSH1 0x1D PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 CREATE2 OR 0xD1 0xB1 DIV 0x2F 0xF9 CHAINID PUSH5 0x246F21EBE8 0xE2 0xFC SUB 0xDC SWAP2 PUSH7 0xCED8009C20F531 0x28 EXTCODESIZE 0x1F SWAP11 PUSH8 0x64736F6C63430008 EQ STOP CALLER ",
+							"sourceMap": "24:45:1:-:0;;;;;;;;;;;;;;;;;;;"
 						},
 						"deployedBytecode": {
 							"functionDebugData": {},
 							"generatedSources": [],
 							"immutableReferences": {},
 							"linkReferences": {},
-							"object": "6080604052600080fdfea264697066735822122078d3db0ff44e6abdf3a9bcee9f497453cf495b93cea3ec619a24f63912905a7064736f6c63430008140033",
-							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 PUSH25 0xD3DB0FF44E6ABDF3A9BCEE9F497453CF495B93CEA3EC619A24 0xF6 CODECOPY SLT SWAP1 GAS PUSH17 0x64736F6C63430008140033000000000000 ",
-							"sourceMap": "24:73:1:-:0;;;;;"
+							"object": "6080604052600080fdfea2646970667358221220f517d1b1042ff94664246f21ebe8e2fc03dc9166ced8009c20f531283b1f9a6764736f6c63430008140033",
+							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 CREATE2 OR 0xD1 0xB1 DIV 0x2F 0xF9 CHAINID PUSH5 0x246F21EBE8 0xE2 0xFC SUB 0xDC SWAP2 PUSH7 0xCED8009C20F531 0x28 EXTCODESIZE 0x1F SWAP11 PUSH8 0x64736F6C63430008 EQ STOP CALLER ",
+							"sourceMap": "24:45:1:-:0;;;;;"
 						},
 						"gasEstimates": {
 							"creation": {
 								"codeDepositCost": "12600",
 								"executionCost": "66",
 								"totalCost": "12666"
-							},
-							"internal": {
-								"mintLpTokens()": "infinite"
 							}
 						},
 						"legacyAssembly": {
 							".code": [
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH",
 									"source": 1,
 									"value": "80"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH",
 									"source": 1,
 									"value": "40"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "MSTORE",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "CALLVALUE",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "DUP1",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "ISZERO",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH [tag]",
 									"source": 1,
 									"value": "1"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "JUMPI",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH",
 									"source": 1,
 									"value": "0"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "DUP1",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "REVERT",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "tag",
 									"source": 1,
 									"value": "1"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "JUMPDEST",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "POP",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH #[$]",
 									"source": 1,
 									"value": "0000000000000000000000000000000000000000000000000000000000000000"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "DUP1",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH [$]",
 									"source": 1,
 									"value": "0000000000000000000000000000000000000000000000000000000000000000"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH",
 									"source": 1,
 									"value": "0"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "CODECOPY",
 									"source": 1
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "PUSH",
 									"source": 1,
 									"value": "0"
 								},
 								{
 									"begin": 24,
-									"end": 97,
+									"end": 69,
 									"name": "RETURN",
 									"source": 1
 								}
 							],
 							".data": {
 								"0": {
-									".auxdata": "a264697066735822122078d3db0ff44e6abdf3a9bcee9f497453cf495b93cea3ec619a24f63912905a7064736f6c63430008140033",
+									".auxdata": "a2646970667358221220f517d1b1042ff94664246f21ebe8e2fc03dc9166ced8009c20f531283b1f9a6764736f6c63430008140033",
 									".code": [
 										{
 											"begin": 24,
-											"end": 97,
+											"end": 69,
 											"name": "PUSH",
 											"source": 1,
 											"value": "80"
 										},
 										{
 											"begin": 24,
-											"end": 97,
+											"end": 69,
 											"name": "PUSH",
 											"source": 1,
 											"value": "40"
 										},
 										{
 											"begin": 24,
-											"end": 97,
+											"end": 69,
 											"name": "MSTORE",
 											"source": 1
 										},
 										{
 											"begin": 24,
-											"end": 97,
+											"end": 69,
 											"name": "PUSH",
 											"source": 1,
 											"value": "0"
 										},
 										{
 											"begin": 24,
-											"end": 97,
+											"end": 69,
 											"name": "DUP1",
 											"source": 1
 										},
 										{
 											"begin": 24,
-											"end": 97,
+											"end": 69,
 											"name": "REVERT",
 											"source": 1
 										}
@@ -19930,10 +19927,25 @@
 						},
 						"methodIdentifiers": {}
 					},
-					"metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"Custom-Dex/LpToken.sol\":\"LpTokens\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"Custom-Dex/Erc-20.sol\":{\"keccak256\":\"0x8ef72ff97217d685c003f96b48d0c0f1f712ae90ead469a025873559af7a1893\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://3fb46ea75ebfd046d58c9485bfc21c7d092ebb4fdcaaef278da4b9b9ac80103e\",\"dweb:/ipfs/QmVw2dZazt1G4ufFjpUmP6pjRnQCTAe8WD7dcfH4x5UHCa\"]},\"Custom-Dex/LpToken.sol\":{\"keccak256\":\"0xc9de492810a43fb4872a8a057ce8aa5b0055a8484282fb345d6b637969680954\",\"urls\":[\"bzz-raw://98ef3acd3b718a705bc2198beb926b4af4bafeff5af42db1e6816327693bd455\",\"dweb:/ipfs/Qmer3m78JG3MoADFqg23yoftuYb2m3Ew2L5BFzaFDCdmUq\"]}},\"version\":1}",
+					"metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"Custom-Dex/LpToken.sol\":\"LpTokens\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"Custom-Dex/Erc-20.sol\":{\"keccak256\":\"0x8ef72ff97217d685c003f96b48d0c0f1f712ae90ead469a025873559af7a1893\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://3fb46ea75ebfd046d58c9485bfc21c7d092ebb4fdcaaef278da4b9b9ac80103e\",\"dweb:/ipfs/QmVw2dZazt1G4ufFjpUmP6pjRnQCTAe8WD7dcfH4x5UHCa\"]},\"Custom-Dex/LpToken.sol\":{\"keccak256\":\"0xc095cc1ef56f0acd81614a461aa792a28c8e6b27ad3117230553f954b294e98a\",\"urls\":[\"bzz-raw://0ba0a18f8e714622811cb3235b5f5e000265103d8253ee768aab4079fcc5029b\",\"dweb:/ipfs/QmS6wdQEHsdnh1gTUFJveTNrtadBFAuYjsEGiDjXGxkHMV\"]}},\"version\":1}",
 					"storageLayout": {
-						"storage": [],
-						"types": null
+						"storage": [
+							{
+								"astId": 331,
+								"contract": "Custom-Dex/LpToken.sol:LpTokens",
+								"label": "token0",
+								"offset": 0,
+								"slot": "0",
+								"type": "t_contract(erc20)326"
+							}
+						],
+						"types": {
+							"t_contract(erc20)326": {
+								"encoding": "inplace",
+								"label": "contract erc20",
+								"numberOfBytes": "20"
+							}
+						}
 					},
 					"userdoc": {
 						"kind": "user",
@@ -23934,13 +23946,13 @@
 							31
 						],
 						"LpTokens": [
-							333
+							332
 						],
 						"erc20": [
 							326
 						]
 					},
-					"id": 334,
+					"id": 333,
 					"nodeType": "SourceUnit",
 					"nodes": [
 						{
@@ -23949,7 +23961,7 @@
 							"id": 328,
 							"nameLocation": "-1:-1:-1",
 							"nodeType": "ImportDirective",
-							"scope": 334,
+							"scope": 333,
 							"sourceUnit": 327,
 							"src": "0:22:1",
 							"symbolAliases": [],
@@ -23962,54 +23974,59 @@
 							"contractDependencies": [],
 							"contractKind": "contract",
 							"fullyImplemented": true,
-							"id": 333,
+							"id": 332,
 							"linearizedBaseContracts": [
-								333
+								332
 							],
 							"name": "LpTokens",
 							"nameLocation": "33:8:1",
 							"nodeType": "ContractDefinition",
 							"nodes": [
 								{
-									"body": {
-										"id": 331,
-										"nodeType": "Block",
-										"src": "79:16:1",
-										"statements": []
+									"constant": false,
+									"id": 331,
+									"mutability": "mutable",
+									"name": "token0",
+									"nameLocation": "54:6:1",
+									"nodeType": "VariableDeclaration",
+									"scope": 332,
+									"src": "48:12:1",
+									"stateVariable": true,
+									"storageLocation": "default",
+									"typeDescriptions": {
+										"typeIdentifier": "t_contract$_erc20_$326",
+										"typeString": "contract erc20"
 									},
-									"id": 332,
-									"implemented": true,
-									"kind": "function",
-									"modifiers": [],
-									"name": "mintLpTokens",
-									"nameLocation": "57:12:1",
-									"nodeType": "FunctionDefinition",
-									"parameters": {
-										"id": 329,
-										"nodeType": "ParameterList",
-										"parameters": [],
-										"src": "69:2:1"
-									},
-									"returnParameters": {
+									"typeName": {
 										"id": 330,
-										"nodeType": "ParameterList",
-										"parameters": [],
-										"src": "79:0:1"
+										"nodeType": "UserDefinedTypeName",
+										"pathNode": {
+											"id": 329,
+											"name": "erc20",
+											"nameLocations": [
+												"48:5:1"
+											],
+											"nodeType": "IdentifierPath",
+											"referencedDeclaration": 326,
+											"src": "48:5:1"
+										},
+										"referencedDeclaration": 326,
+										"src": "48:5:1",
+										"typeDescriptions": {
+											"typeIdentifier": "t_contract$_erc20_$326",
+											"typeString": "contract erc20"
+										}
 									},
-									"scope": 333,
-									"src": "48:47:1",
-									"stateMutability": "nonpayable",
-									"virtual": false,
-									"visibility": "private"
+									"visibility": "internal"
 								}
 							],
-							"scope": 334,
-							"src": "24:73:1",
+							"scope": 333,
+							"src": "24:45:1",
 							"usedErrors": [],
 							"usedEvents": []
 						}
 					],
-					"src": "0:97:1"
+					"src": "0:69:1"
 				},
 				"id": 1
 			}
