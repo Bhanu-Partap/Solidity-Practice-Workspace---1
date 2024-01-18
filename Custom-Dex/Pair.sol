@@ -2,6 +2,8 @@
 pragma solidity 0.8.20;
 
 import "./Erc-20.sol";
+import "./LpToken.sol";
+
 
 contract Pair {
 
@@ -9,6 +11,7 @@ contract Pair {
     uint pairId;
     erc20 token0Address;
     erc20 token1Address;
+    LpTokens lptokens;
 
     struct pairdata{
         erc20 token0;
@@ -31,10 +34,10 @@ contract Pair {
     mapping(uint256=>pairdata) public pairDetails;
     mapping(address => mapping(uint256=>Liquidity)) public liquidityProviders;
 
-    modifier  onlyOwner(){
-    owner= msg.sender;
-    _;
-    }  
+    // modifier  onlyOwner(){
+    // owner= msg.sender;
+    // _;
+    // }  
 
     function createPair(string memory _token0Name, string memory _token0symbol, uint _token0totalSupply,string memory _token1Name, string memory _token1symbol, uint _token1totalSupply)public returns( pairdata memory ){
         token0Address= new erc20(_token0Name,_token0symbol,_token0totalSupply);
@@ -67,6 +70,7 @@ contract Pair {
         liquidityProviders[msg.sender][_pairId].token1Amount= _token1Amount ;
         pairDetails[pairId].reserve1 += _token1Amount;
         liquidityProviders[msg.sender][_pairId].liquidityProviderAddress = msg.sender;
+        // lptokens.mintingLpTokens(_token0Amount,_token1Amount);
     }
 
     function withdrawLiquidity(uint _pairId)public{
@@ -76,10 +80,6 @@ contract Pair {
         pairDetails[pairId].reserve0 -=liquidityProviders[msg.sender][_pairId].token0Amount;
         pairDetails[pairId].reserve1 -=liquidityProviders[msg.sender][_pairId].token1Amount;
     }
-
-
-
-
 }
 
 
