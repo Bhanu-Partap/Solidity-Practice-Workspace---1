@@ -28,7 +28,6 @@ contract Pair {
         uint token0Amount;
         uint token1Amount;
         address liquidityProviderAddress;
-
     }
 
     mapping(uint256=>pairdata) public pairDetails;
