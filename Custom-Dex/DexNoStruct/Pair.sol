@@ -14,13 +14,22 @@ contract Pair{
     uint256 private timestamp;
     uint256 private token0Amount;
     uint256 private token1Amount;
+    uint public constant MINIMUM_LIQUIDITY = 10**3;
+
+
+    mapping(address => mapping(address => address)) public getPair;
+    address[] public allPairs;
     
-    constructor(string memory _name, string memory _symbol){
-        token0address = new erc20token(_name,_symbol);
+
+    function getErcAddress()public view returns(erc20token ){
+        return token0address;
     }
 
-    function createPair(address token0address, address token1address)  public returns(uint256){
-                    
+    function createPair(string memory _name, string memory _symbol)  public returns(uint256){ 
+        token0address = new erc20token(_name,_symbol);
+        token1address = new erc20token(_name,_symbol);
+        
+
     }
 
 }

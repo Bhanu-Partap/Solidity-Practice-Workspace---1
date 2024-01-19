@@ -69,7 +69,6 @@ contract Pair {
         liquidityProviders[msg.sender][_pairId].token1Amount= _token1Amount ;
         pairDetails[pairId].reserve1 += _token1Amount;
         liquidityProviders[msg.sender][_pairId].liquidityProviderAddress = msg.sender;
-        // lptokens.mintingLpTokens(_token0Amount,_token1Amount);
     }
 
     function withdrawLiquidity(uint _pairId)public{

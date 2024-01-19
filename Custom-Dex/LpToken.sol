@@ -17,7 +17,7 @@ contract LpTokens{
     }
 
     function mintingLpTokens(uint _amount0, uint _amount1) external returns(uint){
-        
+
         // // require(_amount0 > 0 && _amount1 > 0, "Amounts must be greater than zero");
         // // uint256 totalSupply = lptokens.totalSupply(); 
         // // console.log(totalSupply);
@@ -31,6 +31,6 @@ contract LpTokens{
         // // return totalSupply;
     }
 
-    function burningLpTokens() external 
+    function burningLpTokens() external {}
 }
 
