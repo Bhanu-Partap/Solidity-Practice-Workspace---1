@@ -20,15 +20,32 @@ contract Pair{
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
     
+    constructor(string memory _name, string memory _symbol){
+        token0address = new erc20token(_name,_symbol);
+        token1address = new erc20token(_name,_symbol);
+    }
+
 
     function getErcAddress()public view returns(erc20token ){
         return token0address;
     }
 
-    function createPair(string memory _name, string memory _symbol)  public returns(uint256){ 
-        token0address = new erc20token(_name,_symbol);
-        token1address = new erc20token(_name,_symbol);
-        
+    function createPair(address _token0Address, address _token1Address, uint256 _token0Amount, uint256 _token1Amount )  public returns(uint256){
+
+    }
+
+
+    function addLiquidity(address _token0Address, address token1Address, uint256 _token0Amount, uint256 _token1Amount )  public returns(uint256){
+
+    }
+
+    
+    function removeLiquidity(address _token0Address, address token1Address)  public returns(uint256){
+
+    }
+
+
+    function swap(address from, address to , uint256 amount)  public returns(uint256){
 
     }
 

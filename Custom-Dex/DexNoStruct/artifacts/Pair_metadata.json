@@ -4,7 +4,214 @@
 	},
 	"language": "Solidity",
 	"output": {
-		"abi": [],
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_symbol",
+						"type": "string"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "MINIMUM_LIQUIDITY",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token0Address",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "token1Address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token0Amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token1Amount",
+						"type": "uint256"
+					}
+				],
+				"name": "addLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "allPairs",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token0Address",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_token1Address",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token0Amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_token1Amount",
+						"type": "uint256"
+					}
+				],
+				"name": "createPair",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getErcAddress",
+				"outputs": [
+					{
+						"internalType": "contract erc20token",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "getPair",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token0Address",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "token1Address",
+						"type": "address"
+					}
+				],
+				"name": "removeLiquidity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "swap",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
 		"devdoc": {
 			"kind": "dev",
 			"methods": {},
@@ -33,11 +240,11 @@
 	},
 	"sources": {
 		"Custom-Dex/DexNoStruct/Pair.sol": {
-			"keccak256": "0xee6d510c037eda000371c7957aedaa51875b043765e5c1dfa1ca91d1d0791337",
+			"keccak256": "0x51bcf422a4d5f84dde855d483b8de3dde5be8c9d0fa8337dc3f69d6bebbd758a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3648c72e3cf542b77c46d19191af7a26506d864395eb089201840f1fee9c1c23",
-				"dweb:/ipfs/QmZBXVwX2TajC5n2ZaaJAzcejUugxLGYJ2A9i6JRCjqAX5"
+				"bzz-raw://fa57fc895b8e0b8a608461583d763dd1db8b1645b511cd5d0d67b4af4e1916d4",
+				"dweb:/ipfs/QmVfSW838SyJpDbNWGQbDi9Qrk7BwZRnyTKsiNJw3nX4bX"
 			]
 		},
 		"Custom-Dex/DexNoStruct/erc-20.sol": {
