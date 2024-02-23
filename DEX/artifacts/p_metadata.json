@@ -1,0 +1,184 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "Pair",
+				"outputs": [
+					{
+						"internalType": "contract erc20token",
+						"name": "token0",
+						"type": "address"
+					},
+					{
+						"internalType": "contract erc20token",
+						"name": "token1",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "NameToken0",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "NameToken1",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "supplyToken0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "supplyToken1",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reserveToken0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reservetoken1",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_NameToken0",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_symbolToken0",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_supplyToken0",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_NameToken1",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_symbolToken1",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_supplyToken1",
+						"type": "uint256"
+					}
+				],
+				"name": "createPair",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"DEX/pair.sol": "p"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"DEX/Token.sol": {
+			"keccak256": "0xc8ee41b9da760df69cac39a2aa5908536b2fd11a277a0d362afb8e9d5a1fa57c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://67576c6ce15e9506514e51485b7361f93ebb2bf46f934a89936aa466be80f79d",
+				"dweb:/ipfs/QmWzYQexfWiitZ1AqXivT3kAMWVBR5dhQSW3tp8orbCBrm"
+			]
+		},
+		"DEX/pair.sol": {
+			"keccak256": "0xe783c9388b1922cbecb0a6733131525fcf68dcdb5aa98cfa91f6c1557e3c6432",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://807b3858fbd607f80fc558a9d8703ffbbbf4d43410105c494cd71dc7deb7d5ca",
+				"dweb:/ipfs/Qmcinyfd5b7Ltnhzn8qPFmSFQx5J11tXkb3B1amfDtArju"
+			]
+		},
+		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.1/contracts/token/ERC20/ERC20.sol": {
+			"keccak256": "0x4ffc0547c02ad22925310c585c0f166f8759e2648a09e9b489100c42f15dd98d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://15f52f51413a9de1ff191e2f6367c62178e1df7806d7880fe857a98b0b66253d",
+				"dweb:/ipfs/QmaQG1fwfgUt5E9nu2cccFiV47B2V78MM1tCy1qB7n4MsH"
+			]
+		},
+		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.1/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+			]
+		},
+		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.1/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+			"keccak256": "0x8de418a5503946cabe331f35fe242d3201a73f67f77aaeb7110acb1f30423aca",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a376d3dda2cb70536c0a45c208b29b34ac560c4cb4f513a42079f96ba47d2dd",
+				"dweb:/ipfs/QmZQg6gn1sUpM8wHzwNvSnihumUCAhxD119MpXeKp8B9s8"
+			]
+		},
+		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.1/contracts/utils/Context.sol": {
+			"keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+			]
+		}
+	},
+	"version": 1
+}
