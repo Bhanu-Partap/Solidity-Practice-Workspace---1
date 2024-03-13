@@ -17,7 +17,7 @@ contract Staking is ReentrancyGuard {
 
     mapping(address=>uint) public stakedBalance;
     mapping(address=>uint) public rewards;
-    mapping(address=>uint) public userRewardPerToken;
+    mapping(address=>uint) public userRewardPerTokenPaid;
 
     event Staked(address indexed user, uint indexed  amount);
     event Withdraw(address indexed user, uint indexed  amount);
@@ -27,8 +27,17 @@ contract Staking is ReentrancyGuard {
         stakingToken = IERC20(_stakingToken);
         rewardToken = IERC20(_rewardToken);
     }
+    
+        modifier updateReward(address user){
+        rewardperTokenStored = rewardPerToken();
+        lastUpdateTime = block.timestamp;
+        rewards[user]= rewardsEarned(user);
+        userRewardPerTokenPaid[user] = rewardperTokenStored;
+        _;
 
-    function rewardPerPair()public view  returns(uint) {
+    }
+
+    function rewardPerToken()public view  returns(uint) {
         if(totalStakedTokens == 0){
             return rewardperTokenStored;
         }
@@ -36,5 +45,10 @@ contract Staking is ReentrancyGuard {
         uint totalReward = Reward_Rate * totalTime;
         return rewardperTokenStored + totalReward / totalStakedTokens;
     }
+
+    function rewardsEarned(address user) public view returns(uint){
+        return (stakedBalance[user] * (rewardPerToken()-userRewardPerTokenPaid[user]));
+    }
+
 
 }

@@ -106,7 +106,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "rewardPerPair",
+				"name": "rewardPerToken",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -166,6 +166,25 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "rewardsEarned",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "",
 						"type": "address"
 					}
@@ -202,7 +221,7 @@
 						"type": "address"
 					}
 				],
-				"name": "userRewardPerToken",
+				"name": "userRewardPerTokenPaid",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -266,11 +285,11 @@
 			]
 		},
 		"Staking/staking.sol": {
-			"keccak256": "0x1aacf791ce89537286fa3c068e0a925986f474a458df43515f78af738e797852",
+			"keccak256": "0x6e7c0d104d07afed313b7f3420fc53344306a5e07d333a26ffb243ba8a1ce9a1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://14c06b993c27e53a59afdd099912b8072dadd9c3e3eccd8dfd5e404dc5008886",
-				"dweb:/ipfs/QmRat3fTeNSuAghwVLTK2WJvLsvZwXPPJiaoHZDjPHFQHH"
+				"bzz-raw://56ec1cbe6127a8bb4734529c07253b81e9bc1945dffd557ac480c58096c77888",
+				"dweb:/ipfs/QmSpurSBK366iyVyc2qPoqr33GtoyUUuR5HjCEm5izjD4a"
 			]
 		}
 	},
