@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.22+commit.4fc1097e"
+		"version": "0.8.20+commit.a1b79de6"
 	},
 	"language": "Solidity",
 	"output": {
@@ -279,13 +279,13 @@
 		"compilationTarget": {
 			"Final Assignment/final_assignment_staking 1.sol": "Staking_Token"
 		},
-		"evmVersion": "shanghai",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -300,11 +300,11 @@
 			]
 		},
 		"Final Assignment/final_assignment_staking 1.sol": {
-			"keccak256": "0x824e830be042b7da4898cbd06e42773407a965d679d5c58816d06d9ae25bfbb1",
+			"keccak256": "0x0c832c9f3eee08eb7cfb3d384be5db80bb7c179101667d5864c10108e136ca5c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://eaf8c03da25c2f0472de94a0437d64ca29b62f049e91ce3f8fcfa2740451e7c4",
-				"dweb:/ipfs/QmcNWxLKmMbb9pcehB3St98L2dbUD8iAnQdK4HaBr4VYFD"
+				"bzz-raw://398187dc607bb4ef262d43e4feaad3621a3671bdacf6fae2aa51b903894d5cbf",
+				"dweb:/ipfs/QmXDXwPooyttWWULoSAfdypWfamqYKHxaGm7nZtFA5w6qP"
 			]
 		}
 	},

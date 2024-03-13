@@ -34,7 +34,6 @@ contract Staking_Token {
 
     event tokensStaked(address from, uint256 amount, uint256 _duration);
 
-
     function staking(uint256 _amount,string memory _type,uint256 _duration, bool _isFixed) public {
         require(Token.balanceOf(msg.sender) >= _amount, "Insufficient Balance");
         //fixed staking
