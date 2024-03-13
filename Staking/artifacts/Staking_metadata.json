@@ -75,7 +75,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "Withdraw",
+				"name": "Withdrawn",
 				"type": "event"
 			},
 			{
@@ -89,6 +89,13 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "claimReward",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -184,6 +191,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "stake",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "",
 						"type": "address"
@@ -230,6 +250,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -285,11 +318,11 @@
 			]
 		},
 		"Staking/staking.sol": {
-			"keccak256": "0x6e7c0d104d07afed313b7f3420fc53344306a5e07d333a26ffb243ba8a1ce9a1",
+			"keccak256": "0x63ed133cdc2137aa98d838ac7cf6a8378ce138f2046b9c5afe165087b77f6c40",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://56ec1cbe6127a8bb4734529c07253b81e9bc1945dffd557ac480c58096c77888",
-				"dweb:/ipfs/QmSpurSBK366iyVyc2qPoqr33GtoyUUuR5HjCEm5izjD4a"
+				"bzz-raw://124ef87f89e72cfa0cad7d0114f8f5e014ea2bb9a205ccc64a3d7da76019bb06",
+				"dweb:/ipfs/QmUBETSZhUAYoQoe5QXTiNehDWftzjKPzu35vtEWniVksk"
 			]
 		}
 	},

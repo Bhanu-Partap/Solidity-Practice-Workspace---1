@@ -20,14 +20,14 @@ contract Staking is ReentrancyGuard {
     mapping(address=>uint) public userRewardPerTokenPaid;
 
     event Staked(address indexed user, uint indexed  amount);
-    event Withdraw(address indexed user, uint indexed  amount);
+    event Withdrawn(address indexed user, uint indexed  amount);
     event RewardsClaimed(address indexed user, uint indexed  amount);
 
     constructor(address _stakingToken, address _rewardToken){
         stakingToken = IERC20(_stakingToken);
         rewardToken = IERC20(_rewardToken);
     }
-    
+
         modifier updateReward(address user){
         rewardperTokenStored = rewardPerToken();
         lastUpdateTime = block.timestamp;
@@ -48,6 +48,33 @@ contract Staking is ReentrancyGuard {
 
     function rewardsEarned(address user) public view returns(uint){
         return (stakedBalance[user] * (rewardPerToken()-userRewardPerTokenPaid[user]));
+    }
+
+    function stake(uint amount) external nonReentrant updateReward(msg.sender){
+        require(amount > 0,"Amount must be greater than 0");
+        totalStakedTokens+=amount;
+        stakedBalance[msg.sender]+=amount;
+        emit Staked(msg.sender, amount);
+        bool success = stakingToken.transferFrom(msg.sender, address(this), amount);
+        require(success,"Transfer Failed");
+    }
+
+    function withdraw(uint amount) external nonReentrant updateReward(msg.sender){
+        require(amount > 0,"Amount must be greater than 0");
+        totalStakedTokens-=amount;
+        stakedBalance[msg.sender]-=amount;
+        emit Withdrawn(msg.sender, amount);
+        bool success = stakingToken.transfer(msg.sender,amount); 
+        require(success,"Transfer Failed");
+    }
+
+    function claimReward() external nonReentrant updateReward(msg.sender){
+        uint reward = rewards[msg.sender];
+        require(reward > 0, " Not having any rewards");
+        rewards[msg.sender] = 0;
+        emit RewardsClaimed(msg.sender, reward);
+        bool success = rewardToken.transfer(msg.sender,reward); 
+        require(success,"Transfer Failed");
     }
 
 
