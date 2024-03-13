@@ -14,4 +14,18 @@ contract Staking is ReentrancyGuard {
     uint256 private  totalStakeTokens;
     uint256 public  rewardperTokenStored;
     uint256 public lastUpdateTime;
+
+    mapping(address=>uint) public stakedBalance;
+    mapping(address=>uint) public rewards;
+    mapping(address=>uint) public userRewardPerToken;
+
+    event Staked(address indexed user, uint indexed  amount);
+    event Withdraw(address indexed user, uint indexed  amount);
+    event RewardsClaimed(address indexed user, uint indexed  amount);
+
+    constructor(address _stakingToken, address _rewardToken){
+        stakingToken = IERC20(_stakingToken);
+        rewardToken = IERC20(_rewardToken);
+    }
+
 }
