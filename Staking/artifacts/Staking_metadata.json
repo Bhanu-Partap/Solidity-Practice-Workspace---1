@@ -106,6 +106,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "rewardPerPair",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "rewardToken",
 				"outputs": [
 					{
@@ -253,11 +266,11 @@
 			]
 		},
 		"Staking/staking.sol": {
-			"keccak256": "0x2a26155a19bbc0192513a9df9f9bbf2a8dc1865fe6d202c5b9f179ae4319f5e3",
+			"keccak256": "0x1aacf791ce89537286fa3c068e0a925986f474a458df43515f78af738e797852",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9fae811e8f4529240315233d5c0ed9b6a3073d251f96c9083651ce3a2527f3db",
-				"dweb:/ipfs/QmUVjxNeSei2vXjsGv31ZDAiacRmhMGsbySF9KtiSJCTjC"
+				"bzz-raw://14c06b993c27e53a59afdd099912b8072dadd9c3e3eccd8dfd5e404dc5008886",
+				"dweb:/ipfs/QmRat3fTeNSuAghwVLTK2WJvLsvZwXPPJiaoHZDjPHFQHH"
 			]
 		}
 	},

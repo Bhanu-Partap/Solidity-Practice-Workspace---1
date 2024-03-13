@@ -11,7 +11,7 @@ contract Staking is ReentrancyGuard {
     IERC20 public rewardToken;
 
     uint256 public constant Reward_Rate = 10;  
-    uint256 private  totalStakeTokens;
+    uint256 private  totalStakedTokens;
     uint256 public  rewardperTokenStored;
     uint256 public lastUpdateTime;
 
@@ -26,6 +26,15 @@ contract Staking is ReentrancyGuard {
     constructor(address _stakingToken, address _rewardToken){
         stakingToken = IERC20(_stakingToken);
         rewardToken = IERC20(_rewardToken);
+    }
+
+    function rewardPerPair()public view  returns(uint) {
+        if(totalStakedTokens == 0){
+            return rewardperTokenStored;
+        }
+        uint totalTime= block.timestamp - lastUpdateTime;
+        uint totalReward = Reward_Rate * totalTime;
+        return rewardperTokenStored + totalReward / totalStakedTokens;
     }
 
 }
