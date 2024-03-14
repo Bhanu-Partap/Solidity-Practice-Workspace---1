@@ -10,7 +10,8 @@ contract Staking is ReentrancyGuard {
     IERC20 public stakingToken;
     IERC20 public rewardToken;
 
-    uint256 public constant Reward_Rate = 10;  
+    using SafeMath for uint256;
+    uint256 public constant Reward_Rate = 1e18;  
     uint256 private  totalStakedTokens;
     uint256 public  rewardperTokenStored;
     uint256 public lastUpdateTime;
@@ -28,7 +29,7 @@ contract Staking is ReentrancyGuard {
         rewardToken = IERC20(_rewardToken);
     }
 
-        modifier updateReward(address user){
+    modifier updateReward(address user){
         rewardperTokenStored = rewardPerToken();
         lastUpdateTime = block.timestamp;
         rewards[user]= rewardsEarned(user);
@@ -41,13 +42,13 @@ contract Staking is ReentrancyGuard {
         if(totalStakedTokens == 0){
             return rewardperTokenStored;
         }
-        uint totalTime= block.timestamp - lastUpdateTime;
-        uint totalReward = Reward_Rate * totalTime;
-        return rewardperTokenStored + totalReward / totalStakedTokens;
+        uint totalTime= block.timestamp.sub(lastUpdateTime);
+        uint totalReward = Reward_Rate.mul(totalTime);
+        return rewardperTokenStored.add(totalReward.mul(1e18)).div(totalStakedTokens);
     }
 
     function rewardsEarned(address user) public view returns(uint){
-        return (stakedBalance[user] * (rewardPerToken()-userRewardPerTokenPaid[user]));
+        return (stakedBalance[user].mul(rewardPerToken().sub(userRewardPerTokenPaid[user])));
     }
 
     function stake(uint amount) external nonReentrant updateReward(msg.sender){

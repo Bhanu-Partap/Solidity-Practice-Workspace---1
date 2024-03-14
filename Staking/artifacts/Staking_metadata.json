@@ -318,11 +318,11 @@
 			]
 		},
 		"Staking/staking.sol": {
-			"keccak256": "0x63ed133cdc2137aa98d838ac7cf6a8378ce138f2046b9c5afe165087b77f6c40",
+			"keccak256": "0x6b29701f8e3b2bb0a6971686e643d67daac4b1e60b49b819b50f7f0911bb19ea",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://124ef87f89e72cfa0cad7d0114f8f5e014ea2bb9a205ccc64a3d7da76019bb06",
-				"dweb:/ipfs/QmUBETSZhUAYoQoe5QXTiNehDWftzjKPzu35vtEWniVksk"
+				"bzz-raw://07e4251876ccf6b3754126602dee0fa8e26e978b202dc6ba72a4c7395109cc32",
+				"dweb:/ipfs/Qme4J3DbjSvHaZwwkxPCV4vCLV23n4G4wsjwaJnXdBGMX4"
 			]
 		}
 	},

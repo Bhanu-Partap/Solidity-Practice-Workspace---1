@@ -483,11 +483,11 @@
 			]
 		},
 		"Staking/StakingToken.sol": {
-			"keccak256": "0x3eb60203be00e3ba2d1f6adbde83c7f19f38d1f974663c824eb3f85c5ebdaa0e",
+			"keccak256": "0x2c6f593d6905c9db1699c05afdb3329d880d32835a6e27da9079938449e3b1bf",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e12da8cb415230062b6e29ea5e36c26160b4dcee52efa2444b0f5133bd94405c",
-				"dweb:/ipfs/QmNiCkBRzfwnxMx5pNWXfxQGm6u8EZZX4PmYimggoUErPr"
+				"bzz-raw://f75097957e0fabec9a442fce3854a95b38c8b89dfcb9ff099ba468f3f7e3d305",
+				"dweb:/ipfs/QmfV9PcX33REHNbPA1Hg9wBhG9yjt4djZt9FHtfj4Gdawb"
 			]
 		}
 	},

@@ -483,11 +483,11 @@
 			]
 		},
 		"Staking/RewardToken.sol": {
-			"keccak256": "0x8e44d6ef113d19cf36f626c4bd7c342d5810551efb0b6518624750f21716bdf9",
+			"keccak256": "0x3cc2c38befda158f23258dbf488af4165e88851ab579c37f936e2f2549ada56f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c547f2ffb0354856d0fb4a5f9ad59563acf795e05abe20d7e732505e0e044b87",
-				"dweb:/ipfs/QmSMr7ZB3jijRBKry9okUCwia3QucXJQKGN1tTw9oCWi62"
+				"bzz-raw://3d989dba3294eca4951d3cb87437e9634c7baa332a650ed667a93f0750c7888c",
+				"dweb:/ipfs/QmVnj1Z3FaoEWkfFxhfiKUwUFgwdK5qEcQ7LAJRBXw4UaF"
 			]
 		}
 	},
