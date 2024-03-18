@@ -683,13 +683,13 @@
 		"compilationTarget": {
 			"Practice tokens/DynamicNFT.sol": "DynamicNFT"
 		},
-		"evmVersion": "shanghai",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -768,11 +768,11 @@
 			]
 		},
 		"@openzeppelin/contracts/utils/Context.sol": {
-			"keccak256": "0x75a4ee64c68dbd5f38bddd06e664a64c8271b4caa554fb6f0607dfd672bb4bf3",
+			"keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0c4e6cb30d3601e2f7af5af09e265508147cb275a8dcd99d6f7363645cc56867",
-				"dweb:/ipfs/QmNgFkoXNWoUbAyw71rr1sKQ95Rj2GfvYiWg79xEYDn2NY"
+				"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+				"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
 			]
 		},
 		"@openzeppelin/contracts/utils/Strings.sol": {
@@ -792,11 +792,11 @@
 			]
 		},
 		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-			"keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+			"keccak256": "0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://87b3541437c8c443ccd36795e56a338ed12855eec17f8da624511b8d1a7e14df",
-				"dweb:/ipfs/QmeJQCtZrQjtJLr6u7ZHWeH3pBnjtLWzvRrKViAi7UZqxL"
+				"bzz-raw://be161e54f24e5c6fae81a12db1a8ae87bc5ae1b0ddc805d82a1440a68455088f",
+				"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
 			]
 		},
 		"@openzeppelin/contracts/utils/math/Math.sol": {
@@ -816,11 +816,11 @@
 			]
 		},
 		"Practice tokens/DynamicNFT.sol": {
-			"keccak256": "0x9e8ac6605476410f5e57cc402c750ad4852ff45a546997d25b1d7014b5aee1c3",
+			"keccak256": "0xb21fec7bd3bf9b10d28b62f0c1ea743cf4c62c1825cfbbfeec590ea6acada388",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://641e242e7c13d4ce130c3bf5616ba3f94a6c74f78f5c8ee9fc3eab7585c36ab0",
-				"dweb:/ipfs/QmZt7E8YZpet4nWM2jqnk6H1hDJ4LSiDQEBqPeSQwFBSbY"
+				"bzz-raw://c4ff914462f4590decc786d5787fc32153893ce20a9dfa4d69987849ead64865",
+				"dweb:/ipfs/QmZRZeHtYgFz3j5CGDctLL61WWZS1MLKF7UzUDGebjyGkm"
 			]
 		}
 	},

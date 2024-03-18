@@ -75,7 +75,7 @@
 
 // contracts/GameItem.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
@@ -85,9 +85,9 @@ contract DynamicNFT is ERC721URIStorage {
     uint lastTimeStamp;
 
      string[] IpfsUri = [
-        "https://gateway.ipfs.io/ipfs/bafybeihazdlyqco2a6jc4ptc4shl4gsybsvm2y3j3npvgyewgwc43f4tcu/yannis-zaugg-YKVIswI0iS8-unsplash.jpg",
-        "https://gateway.ipfs.io/ipfs/bafybeia5asmaaqfp7vbmuqppollg2nd5xu4gpvrnfkuf5zxslute3oep3q/wes-tindel-jpIrQ1Qm3gg-unsplash.jpg",
-        "https://gateway.ipfs.io/ipfs/bafybeiassvkzusygpyifpp23yxkpag4ia3thlxl4inijjwhwwobtkqi7xa/flavien-ESXhISyyHho-unsplash.jpg"
+        "https://red-nervous-jellyfish-192.mypinata.cloud/ipfs/QmTpJzqYLksmZnVtf3ymyUfjREbQPiKBim3atuEeHZRKGN/pexels-abdulwahab-alawadhi-3422964.jpg",
+        "https://red-nervous-jellyfish-192.mypinata.cloud/ipfs/QmTpJzqYLksmZnVtf3ymyUfjREbQPiKBim3atuEeHZRKGN/pexels-auto-records-10394782.jpg",
+        "https://red-nervous-jellyfish-192.mypinata.cloud/ipfs/QmTpJzqYLksmZnVtf3ymyUfjREbQPiKBim3atuEeHZRKGN/pexels-leif-bergerson-9545683.jpg"
   ];
 
     constructor(uint256 _interval) ERC721("DynamicNFT", "DNFTs") {
