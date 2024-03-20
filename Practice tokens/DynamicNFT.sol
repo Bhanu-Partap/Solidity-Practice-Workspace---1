@@ -85,10 +85,9 @@ contract DynamicNFT is ERC721URIStorage {
     uint lastTimeStamp;
 
      string[] IpfsUri = [
-        "https://red-nervous-jellyfish-192.mypinata.cloud/ipfs/QmTpJzqYLksmZnVtf3ymyUfjREbQPiKBim3atuEeHZRKGN/pexels-abdulwahab-alawadhi-3422964.jpg",
-        "https://red-nervous-jellyfish-192.mypinata.cloud/ipfs/QmTpJzqYLksmZnVtf3ymyUfjREbQPiKBim3atuEeHZRKGN/pexels-auto-records-10394782.jpg",
-        "https://red-nervous-jellyfish-192.mypinata.cloud/ipfs/QmTpJzqYLksmZnVtf3ymyUfjREbQPiKBim3atuEeHZRKGN/pexels-leif-bergerson-9545683.jpg"
-  ];
+        "https://api.npoint.io/2367a54a38c79bbe9a95",
+        "https://api.npoint.io/6bdca0b1ab9c55094110"
+    ];
 
     constructor(uint256 _interval) ERC721("DynamicNFT", "DNFTs") {
         interval = _interval ;
@@ -98,6 +97,10 @@ contract DynamicNFT is ERC721URIStorage {
     function safeMint(address to, uint256 tokenId, string memory uri) public {
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+        // lastTimeStamp = block.timestamp;
+        // if(lastTimeStamp + interval < block.timestamp){
+        //     _setTokenURI(tokenId, IpfsUri[1]);
+        // }
     }
 
     function checkUpkeep(bytes calldata ) external view returns(bool upkeepNeeded, bytes memory){
@@ -105,8 +108,13 @@ contract DynamicNFT is ERC721URIStorage {
     }
 
     function performUpkeep(bytes calldata ) external{
-            if((block.timestamp - lastTimeStamp)> interval){
+            if((block.timestamp - lastTimeStamp) > interval){
                 lastTimeStamp = block.timestamp;
             }
     }
+
+    function changeUri(uint id,uint i) public {
+        _setTokenURI(id, IpfsUri[i]);
+    }
+
 }

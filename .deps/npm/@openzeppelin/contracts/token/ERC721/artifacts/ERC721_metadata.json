@@ -8,17 +8,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "_interval",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "sender",
 						"type": "address"
@@ -173,38 +162,6 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "_fromTokenId",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "_toTokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "BatchMetadataUpdate",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "_tokenId",
-						"type": "uint256"
-					}
-				],
-				"name": "MetadataUpdate",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "from",
@@ -258,48 +215,6 @@
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "id",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "i",
-						"type": "uint256"
-					}
-				],
-				"name": "changeUri",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes",
-						"name": "",
-						"type": "bytes"
-					}
-				],
-				"name": "checkUpkeep",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "upkeepNeeded",
-						"type": "bool"
-					},
-					{
-						"internalType": "bytes",
-						"name": "",
-						"type": "bytes"
 					}
 				],
 				"stateMutability": "view",
@@ -378,42 +293,6 @@
 					}
 				],
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes",
-						"name": "",
-						"type": "bytes"
-					}
-				],
-				"name": "performUpkeep",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "tokenId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "uri",
-						"type": "string"
-					}
-				],
-				"name": "safeMint",
-				"outputs": [],
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -561,6 +440,7 @@
 			}
 		],
 		"devdoc": {
+			"details": "Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including the Metadata extension, but not including the Enumerable extension, which is available separately as {ERC721Enumerable}.",
 			"errors": {
 				"ERC721IncorrectOwner(address,uint256,address)": [
 					{
@@ -637,12 +517,6 @@
 				"ApprovalForAll(address,address,bool)": {
 					"details": "Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets."
 				},
-				"BatchMetadataUpdate(uint256,uint256)": {
-					"details": "This event emits when the metadata of a range of tokens is changed. So that the third-party platforms such as NFT market could timely update the images and related attributes of the NFTs."
-				},
-				"MetadataUpdate(uint256)": {
-					"details": "This event emits when the metadata of a token is changed. So that the third-party platforms such as NFT market could timely update the images and related attributes of the NFT."
-				},
 				"Transfer(address,address,uint256)": {
 					"details": "Emitted when `tokenId` token is transferred from `from` to `to`."
 				}
@@ -654,6 +528,9 @@
 				},
 				"balanceOf(address)": {
 					"details": "See {IERC721-balanceOf}."
+				},
+				"constructor": {
+					"details": "Initializes the contract by setting a `name` and a `symbol` to the token collection."
 				},
 				"getApproved(uint256)": {
 					"details": "See {IERC721-getApproved}."
@@ -677,7 +554,7 @@
 					"details": "See {IERC721-setApprovalForAll}."
 				},
 				"supportsInterface(bytes4)": {
-					"details": "See {IERC165-supportsInterface}"
+					"details": "See {IERC165-supportsInterface}."
 				},
 				"symbol()": {
 					"details": "See {IERC721Metadata-symbol}."
@@ -699,45 +576,21 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Practice tokens/DynamicNFT.sol": "DynamicNFT"
+			".deps/npm/@openzeppelin/contracts/token/ERC721/ERC721.sol": "ERC721"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"@openzeppelin/contracts/interfaces/IERC165.sol": {
-			"keccak256": "0xde7e9fd9aee8d4f40772f96bb3b58836cbc6dfc0227014a061947f8821ea9724",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://11fea9f8bc98949ac6709f0c1699db7430d2948137aa94d5a9e95a91f61a710a",
-				"dweb:/ipfs/QmQdfRXxQjwP6yn3DVo1GHPpriKNcFghSPi94Z1oKEFUNS"
-			]
-		},
-		"@openzeppelin/contracts/interfaces/IERC4906.sol": {
-			"keccak256": "0xb31b86c03f4677dcffa4655285d62433509513be9bafa0e04984565052d34e44",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://a89c6fb0cd5fef4244500b633f63def9f2bb2134debb961e590bd5a2910662fd",
-				"dweb:/ipfs/QmNqWyCxyopvb99RbRomPpfTZGXRi5MnzgpFXE2BFLLgMc"
-			]
-		},
-		"@openzeppelin/contracts/interfaces/IERC721.sol": {
-			"keccak256": "0xc4d7ebf63eb2f6bf3fee1b6c0ee775efa9f31b4843a5511d07eea147e212932d",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://01c66a2fad66bc710db7510419a7eee569b40b67cd9f01b70a3fc90d6f76c03b",
-				"dweb:/ipfs/QmT1CjJZq4eTNA4nu8E9ZrWfaZu6ReUsDbjcK8DbEFqwx5"
-			]
-		},
-		"@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+		".deps/npm/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
 			"keccak256": "0x60c65f701957fdd6faea1acb0bb45825791d473693ed9ecb34726fdfaa849dd7",
 			"license": "MIT",
 			"urls": [
@@ -745,7 +598,7 @@
 				"dweb:/ipfs/QmcLLJppxKeJWqHxE2CUkcfhuRTgHSn8J4kijcLa5MYhSt"
 			]
 		},
-		"@openzeppelin/contracts/token/ERC721/ERC721.sol": {
+		".deps/npm/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
 			"keccak256": "0x13dd061770956c8489b80cfc89d9cdfc8ea2783d953691ea037a380731d52784",
 			"license": "MIT",
 			"urls": [
@@ -753,7 +606,7 @@
 				"dweb:/ipfs/QmUtm9bQGvjr9hHGwkPWrbgFmVqzaJcxjkaYDex2oGsonS"
 			]
 		},
-		"@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+		".deps/npm/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
 			"keccak256": "0x5ef46daa3b58ef2702279d514780316efaa952915ee1aa3396f041ee2982b0b4",
 			"license": "MIT",
 			"urls": [
@@ -761,7 +614,7 @@
 				"dweb:/ipfs/QmPV4ZS4tPVv4mTCf9ejyZ1ai57EEibDRj7mN2ARDCLV5n"
 			]
 		},
-		"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+		".deps/npm/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
 			"keccak256": "0x7f7a26306c79a65fb8b3b6c757cd74660c532cd8a02e165488e30027dd34ca49",
 			"license": "MIT",
 			"urls": [
@@ -769,15 +622,7 @@
 				"dweb:/ipfs/QmWBAn6y2D1xgftci97Z3qR9tQnkvwQpYwFwkTvDMvqU4i"
 			]
 		},
-		"@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
-			"keccak256": "0xcc6f49e0c57072d6a18eef0d5fc22a4cc20462c18f0c365d2dd9a2c732fde670",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://24915e61c7896c336b60788408cd5792b97b782e98e392920a2c55eb1803fe96",
-				"dweb:/ipfs/QmVHhcmFnMYZBCjnVUk6f5quMCDsBR2j669a1nuMiGWY9Z"
-			]
-		},
-		"@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
+		".deps/npm/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
 			"keccak256": "0x37d1aaaa5a2908a09e9dcf56a26ddf762ecf295afb5964695937344fc6802ce1",
 			"license": "MIT",
 			"urls": [
@@ -785,7 +630,7 @@
 				"dweb:/ipfs/Qmbwp8VDerjS5SV1quwHH1oMXxPQ93fzfLVqJ2RCqbowGE"
 			]
 		},
-		"@openzeppelin/contracts/utils/Context.sol": {
+		".deps/npm/@openzeppelin/contracts/utils/Context.sol": {
 			"keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
 			"license": "MIT",
 			"urls": [
@@ -793,7 +638,7 @@
 				"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
 			]
 		},
-		"@openzeppelin/contracts/utils/Strings.sol": {
+		".deps/npm/@openzeppelin/contracts/utils/Strings.sol": {
 			"keccak256": "0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792",
 			"license": "MIT",
 			"urls": [
@@ -801,7 +646,7 @@
 				"dweb:/ipfs/QmZEeeXoFPW47amyP35gfzomF9DixqqTEPwzBakv6cZw6i"
 			]
 		},
-		"@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+		".deps/npm/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
 			"keccak256": "0x9e8778b14317ba9e256c30a76fd6c32b960af621987f56069e1e819c77c6a133",
 			"license": "MIT",
 			"urls": [
@@ -809,7 +654,7 @@
 				"dweb:/ipfs/QmZFdC626GButBApwDUvvTnUzdinevC3B24d7yyh57XkiA"
 			]
 		},
-		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+		".deps/npm/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
 			"keccak256": "0x447a5f3ddc18419d41ff92b3773fb86471b1db25773e07f877f548918a185bf1",
 			"license": "MIT",
 			"urls": [
@@ -817,7 +662,7 @@
 				"dweb:/ipfs/QmP7C3CHdY9urF4dEMb9wmsp1wMxHF6nhA2yQE5SKiPAdy"
 			]
 		},
-		"@openzeppelin/contracts/utils/math/Math.sol": {
+		".deps/npm/@openzeppelin/contracts/utils/math/Math.sol": {
 			"keccak256": "0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d",
 			"license": "MIT",
 			"urls": [
@@ -825,20 +670,12 @@
 				"dweb:/ipfs/QmQyRpyPRL5SQuAgj6SHmbir3foX65FJjbVTTQrA2EFg6L"
 			]
 		},
-		"@openzeppelin/contracts/utils/math/SignedMath.sol": {
+		".deps/npm/@openzeppelin/contracts/utils/math/SignedMath.sol": {
 			"keccak256": "0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72",
 			"license": "MIT",
 			"urls": [
 				"bzz-raw://7d533a1c97cd43a57cd9c465f7ee8dd0e39ae93a8fb8ff8e5303a356b081cdcc",
 				"dweb:/ipfs/QmVBEei6aTnvYNZp2CHYVNKyZS4q1KkjANfY39WVXZXVoT"
-			]
-		},
-		"Practice tokens/DynamicNFT.sol": {
-			"keccak256": "0x2accb1da6af4e90bdb0aa1e41b59b030f681fd00b82660bbd55146fed140fab4",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://f02810d22df50eddfee4d61bd81b6cbb70869e21782eb593d54631cb5fceb961",
-				"dweb:/ipfs/QmapBMcnbVrfWxigcKGzRGytDEPAhG6JhYPERHd4Z4P2zg"
 			]
 		}
 	},

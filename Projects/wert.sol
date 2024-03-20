@@ -7,13 +7,14 @@ pragma solidity ^0.8.0;
 // import "./Address.sol";
 // import "./SafeMath.sol";
 
-import "@openzeppelin@4.8.2/contracts/access/Ownable.sol";
-import "@openzeppelin@4.8.2/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin@4.8.2/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin@4.8.2/contracts/utils/Address.sol";
-import "@openzeppelin@4.8.2/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin@4.8.2/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin@4.8.2/contracts/token/ERC721/extensions/IERC721Metadata.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin@3.0/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol";
 
 /**
  * @title Wert SampleNFT Contract
