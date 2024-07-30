@@ -1,0 +1,77 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"erc3643/erc3643/registry/storage/TIRStorage.sol": "TIRStorage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
+				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
+				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
+				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
+				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+			]
+		},
+		"erc3643/erc3643/registry/storage/TIRStorage.sol": {
+			"keccak256": "0x030b233ec7ba802db48eccbaef736efc0047922c7f78fcf9cbee8b2f55881bce",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://e719a094c92d3d302951ace40ecb5e772d1b25128f16810a15bed6bbcc476173",
+				"dweb:/ipfs/QmR9YRWagjaYZntTUMDUjkcjPhPvzSE8eibPb1XRAkD3hN"
+			]
+		}
+	},
+	"version": 1
+}

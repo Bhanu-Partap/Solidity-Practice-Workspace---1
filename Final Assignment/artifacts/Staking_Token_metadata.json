@@ -1,0 +1,312 @@
+{
+	"compiler": {
+		"version": "0.8.20+commit.a1b79de6"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "contract ERC20Basic",
+						"name": "_addressERC20",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_duration",
+						"type": "uint256"
+					}
+				],
+				"name": "tokensStaked",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "Stake_details",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "stake_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "stake_type",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "stake_time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "starting_stake_time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isFixed",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "isClaimed",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "TokenBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "claimedRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getcontractaddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "getstaking_details",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "stake_amount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "stake_type",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "stake_time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "starting_stake_time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isFixed",
+								"type": "bool"
+							},
+							{
+								"internalType": "address",
+								"name": "owner",
+								"type": "address"
+							},
+							{
+								"internalType": "bool",
+								"name": "isClaimed",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Staking_Token.Stake",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_type",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_duration",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "_isFixed",
+						"type": "bool"
+					}
+				],
+				"name": "staking",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "unclaimedRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "unstaking",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Final Assignment/final_assignment_staking 1.sol": "Staking_Token"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Final Assignment/ERC-20.sol": {
+			"keccak256": "0xbd38bf37f4420ee85a9e3e33cf19872d33f0a7d7d5794ad62fa3a066f37f53f1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7f73eac771641f2e8f5e9c2e15acbcc6f6726cbc572ea82ed1e703e961bfdcaf",
+				"dweb:/ipfs/QmTBE8L2sHeBEzg4Rxz5LeDbBEWxDgEWXqQF4JaaewbVV3"
+			]
+		},
+		"Final Assignment/final_assignment_staking 1.sol": {
+			"keccak256": "0x0c832c9f3eee08eb7cfb3d384be5db80bb7c179101667d5864c10108e136ca5c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://398187dc607bb4ef262d43e4feaad3621a3671bdacf6fae2aa51b903894d5cbf",
+				"dweb:/ipfs/QmXDXwPooyttWWULoSAfdypWfamqYKHxaGm7nZtFA5w6qP"
+			]
+		}
+	},
+	"version": 1
+}

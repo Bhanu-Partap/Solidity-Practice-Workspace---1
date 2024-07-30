@@ -1,0 +1,74 @@
+{
+	"compiler": {
+		"version": "0.8.10+commit.fc410830"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_srcChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_srcAddress",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "_nonce",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "lzReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CrossChain/interfaces/ILayerZeroReceiver.sol": "ILayerZeroReceiver"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CrossChain/interfaces/ILayerZeroReceiver.sol": {
+			"keccak256": "0x80a725683372a9b53ad68d646e0405375706425467554f928f1cf1f40e4c6ff3",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://1635ed2beef317fa940e7c4cc1d89ba780f1063945a75faf513c8d87488864cb",
+				"dweb:/ipfs/QmXesKRhWtJ9az3ppQM5o9SpqFPBedNBY2V2QNib9BSnBa"
+			]
+		}
+	},
+	"version": 1
+}

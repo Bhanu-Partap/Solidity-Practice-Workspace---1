@@ -1,0 +1,59 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "proxiableUUID",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Proxy Practice/Proxiable.sol": "Proxiable"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Proxy Practice/Proxiable.sol": {
+			"keccak256": "0xff24fbac900176daa611e28f876a2480271f535487a01a610d24fa30441c60a1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7eb61656d222baf6fd4c0e90ae95d454acfb2bb27bce10738533ff790caff9e5",
+				"dweb:/ipfs/QmTqNP253iiGkQCCLuHyje5GhiY65571p4SVHPMtShPjQp"
+			]
+		}
+	},
+	"version": 1
+}

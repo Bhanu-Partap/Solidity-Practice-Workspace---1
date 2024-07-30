@@ -1,0 +1,77 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pwn",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Naut/Delegation.sol": "Delegate"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Naut/Delegation.sol": {
+			"keccak256": "0xab923a0bb6aa371b34028bbb0f8630d5bb0fa72adb882d36e5188791fb0254a8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d6ef7751c0103876a31f43f48428c30b542e605186ac7de3d2c8e377049e377f",
+				"dweb:/ipfs/Qmd6qPapP4WTMRK1g9k63Geqn6hoL3VvBk4QFrEAJxAew9"
+			]
+		}
+	},
+	"version": 1
+}

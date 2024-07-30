@@ -1,0 +1,75 @@
+{
+	"compiler": {
+		"version": "0.8.21+commit.d9974bed"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "x_",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "y_",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "stateAdd",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"SMTchecker.sol": "Overflow"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"SMTchecker.sol": {
+			"keccak256": "0x2337bb7b4db9047ac0d79584b7369cfdda44b7b35a81a3629fad0b5aae0136f7",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8dafea87414b7abf8a2cc04f4906dffcbb9bf721bc2ed6b450fbec86bab66bfe",
+				"dweb:/ipfs/QmWEDHqph9a9kBPq5cNdrvic3vgew2jax7E3vN5UvRf6gt"
+			]
+		}
+	},
+	"version": 1
+}

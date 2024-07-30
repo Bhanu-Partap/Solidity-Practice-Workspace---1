@@ -1,0 +1,210 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "createClaimIssuer",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "createidentity",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "getClaimIssuer",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "getidentity",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GemNFT/IdentityFactory.sol": "factory"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@onchain-id/solidity/contracts/ClaimIssuer.sol": {
+			"keccak256": "0x365ec0bb679e64f7907e2fa7edfaeba90c350b0722ed2ea6aadbfbfa01b2d486",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://fa1444b5c9d83df3e5a225a29bf32c410b87325ea96b4f60968ec9b2aa77acc3",
+				"dweb:/ipfs/QmbJt1Hhy9QkNghQAV6xqZ5QAZsYt8G5ZRwqbaZ6HBTYAc"
+			]
+		},
+		"@onchain-id/solidity/contracts/Identity.sol": {
+			"keccak256": "0xe1f0221f2d210d55035545c65abac4300a8972125dba25cda6b8952426252d77",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8fad1227ecd0e21f1d85ff3cecf47e64730bd9ae70df9e74c5e48866aa00cca4",
+				"dweb:/ipfs/QmVpiWesqokQ9iqx7JDs5826cV8aQAEQtfJyNTKnhxh8mp"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
+				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
+				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
+				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
+				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+			]
+		},
+		"@onchain-id/solidity/contracts/storage/Storage.sol": {
+			"keccak256": "0x5656735571a3d856fd1aa3f3ca21f1053c338f052f517e7aaa72d9b65e967e5c",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f26768949c1c9aa8cb0f3479c7f4d81dd65215be51f95b779675a636a45b0af",
+				"dweb:/ipfs/QmT1GSegmoSJLTsLjAQqERCgZvPGoSyiMLCR7mLiDJVHge"
+			]
+		},
+		"@onchain-id/solidity/contracts/storage/Structs.sol": {
+			"keccak256": "0xe0058f3c22e8347e96387def25b6027b440273688b9f2a4cec113928b1cbf5c9",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://a49321f35e3110069426c720a093356f75705673ff0a281b60142c3d5bd199f9",
+				"dweb:/ipfs/QmNMey1QZUw9QyG2NmLLTTv4coshP2dU6uhSTCUNyqKKL4"
+			]
+		},
+		"@onchain-id/solidity/contracts/version/Version.sol": {
+			"keccak256": "0x72b12b88f0266d69a3bf42730d00d1abf9ca0c05a7b5c25a27ea1945640e0007",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://9da7981589ef9638f1f0ff902ccada20d80af8abb7e65cf7bedf568aa83604f1",
+				"dweb:/ipfs/QmRe58fcQ4p8utwQ99HyTqqfswW3QduUDqng3CD3fsTm5k"
+			]
+		},
+		"GemNFT/Identities/Identity.sol": {
+			"keccak256": "0x5ebaeefc7e74d0f04740263d7a3d9980fdc672bc2a7a2d0e371561da6a4ada6e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f2d83a0bcd04011be5add84e1d38b313f02c09090ce1415deedb461878f8108e",
+				"dweb:/ipfs/QmbApWMFKVKfFBD8MTB51vQ73zvYfCpNQZW1dUDTyPA2aW"
+			]
+		},
+		"GemNFT/Identities/claimIssuer.sol": {
+			"keccak256": "0x79062c4c665109cdbfa7023e8583bbe99cc6c2e30f9ccee710c5ac0a3d6dc4d1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1d096537ffd62cafa546551b3d608e3ff02ac0aab86f3a60b9e670fc19e5f88c",
+				"dweb:/ipfs/QmV3AaofvCDEehRTshXXdhGtQob5a8C9Y7EQtbHyu57CKG"
+			]
+		},
+		"GemNFT/IdentityFactory.sol": {
+			"keccak256": "0xce13199a1a280d4e2c130c8adf9596b7e17d81f3b37ab1719d27b5c0de597eb8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4f1bcc973a541a7ac3ed35fb23ef0f64062ce2933683fc184659f6aa4c3e4dac",
+				"dweb:/ipfs/QmTfmK2GkkYs9sYiSYNhx4aHpCDwu2J7XvnbRbG7TgVmQQ"
+			]
+		}
+	},
+	"version": 1
+}

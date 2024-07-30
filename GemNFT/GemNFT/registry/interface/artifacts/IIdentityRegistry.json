@@ -1,0 +1,435 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"batchRegisterIdentity(address[],address[],uint16[])": "653dc9f1",
+			"contains(address)": "5dbe47e8",
+			"deleteIdentity(address)": "a8d29d1d",
+			"identity(address)": "f0eb5e54",
+			"identityStorage()": "f11abfd8",
+			"investorCountry(address)": "7e42683b",
+			"isVerified(address)": "b9209e33",
+			"issuersRegistry()": "b4f3fcb7",
+			"registerIdentity(address,address,uint16)": "454a03e0",
+			"setClaimTopicsRegistry(address)": "670af6a9",
+			"setIdentityRegistryStorage(address)": "26d941ae",
+			"setTrustedIssuersRegistry(address)": "e744d789",
+			"topicsRegistry()": "3b3e12f4",
+			"updateCountry(address,uint16)": "3b239a7f",
+			"updateIdentity(address,address)": "8e098ca1"
+		}
+	},
+	"abi": [
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "claimTopicsRegistry",
+					"type": "address"
+				}
+			],
+			"name": "ClaimTopicsRegistrySet",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "investorAddress",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "uint16",
+					"name": "country",
+					"type": "uint16"
+				}
+			],
+			"name": "CountryUpdated",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "investorAddress",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "contract IIdentity",
+					"name": "identity",
+					"type": "address"
+				}
+			],
+			"name": "IdentityRegistered",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "investorAddress",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "contract IIdentity",
+					"name": "identity",
+					"type": "address"
+				}
+			],
+			"name": "IdentityRemoved",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "identityStorage",
+					"type": "address"
+				}
+			],
+			"name": "IdentityStorageSet",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "contract IIdentity",
+					"name": "oldIdentity",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "contract IIdentity",
+					"name": "newIdentity",
+					"type": "address"
+				}
+			],
+			"name": "IdentityUpdated",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "trustedIssuersRegistry",
+					"type": "address"
+				}
+			],
+			"name": "TrustedIssuersRegistrySet",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address[]",
+					"name": "_userAddresses",
+					"type": "address[]"
+				},
+				{
+					"internalType": "contract IIdentity[]",
+					"name": "_identities",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint16[]",
+					"name": "_countries",
+					"type": "uint16[]"
+				}
+			],
+			"name": "batchRegisterIdentity",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				}
+			],
+			"name": "contains",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				}
+			],
+			"name": "deleteIdentity",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				}
+			],
+			"name": "identity",
+			"outputs": [
+				{
+					"internalType": "contract IIdentity",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "identityStorage",
+			"outputs": [
+				{
+					"internalType": "contract IIdentityRegistryStorage",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				}
+			],
+			"name": "investorCountry",
+			"outputs": [
+				{
+					"internalType": "uint16",
+					"name": "",
+					"type": "uint16"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				}
+			],
+			"name": "isVerified",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "issuersRegistry",
+			"outputs": [
+				{
+					"internalType": "contract ITrustedIssuersRegistry",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "contract IIdentity",
+					"name": "_identity",
+					"type": "address"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_country",
+					"type": "uint16"
+				}
+			],
+			"name": "registerIdentity",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_claimTopicsRegistry",
+					"type": "address"
+				}
+			],
+			"name": "setClaimTopicsRegistry",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_identityRegistryStorage",
+					"type": "address"
+				}
+			],
+			"name": "setIdentityRegistryStorage",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_trustedIssuersRegistry",
+					"type": "address"
+				}
+			],
+			"name": "setTrustedIssuersRegistry",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "topicsRegistry",
+			"outputs": [
+				{
+					"internalType": "contract IClaimTopicsRegistry",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_country",
+					"type": "uint16"
+				}
+			],
+			"name": "updateCountry",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_userAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "contract IIdentity",
+					"name": "_identity",
+					"type": "address"
+				}
+			],
+			"name": "updateIdentity",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+	]
+}

@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GemNFT/registry/storage/CTRStorage.sol": "CTRStorage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GemNFT/registry/storage/CTRStorage.sol": {
+			"keccak256": "0xdf6acb1c9827e36cf73a909c1a929706b4c229c0ded14171b2bfdb0d463739eb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://112b37f5d7170a2db2b8e681f59a28c31c02b0d9c8346260262d1706e4a4c2cb",
+				"dweb:/ipfs/QmVFYkjDEzWUczKyiPa7Uue1isLVcZqip3PqUWDt4Nc5in"
+			]
+		}
+	},
+	"version": 1
+}

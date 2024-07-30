@@ -1,0 +1,958 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "claimTopicsRegistry",
+						"type": "address"
+					}
+				],
+				"name": "ClaimTopicsRegistrySet",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "investorAddress",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint16",
+						"name": "country",
+						"type": "uint16"
+					}
+				],
+				"name": "CountryUpdated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "investorAddress",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "contract IIdentity",
+						"name": "identity",
+						"type": "address"
+					}
+				],
+				"name": "IdentityRegistered",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "investorAddress",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "contract IIdentity",
+						"name": "identity",
+						"type": "address"
+					}
+				],
+				"name": "IdentityRemoved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "identityStorage",
+						"type": "address"
+					}
+				],
+				"name": "IdentityStorageSet",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "contract IIdentity",
+						"name": "oldIdentity",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "contract IIdentity",
+						"name": "newIdentity",
+						"type": "address"
+					}
+				],
+				"name": "IdentityUpdated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint8",
+						"name": "version",
+						"type": "uint8"
+					}
+				],
+				"name": "Initialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "previousAdminRole",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "newAdminRole",
+						"type": "bytes32"
+					}
+				],
+				"name": "RoleAdminChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "RoleGranted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "RoleRevoked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "trustedIssuersRegistry",
+						"type": "address"
+					}
+				],
+				"name": "TrustedIssuersRegistrySet",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "AGENT_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "DEFAULT_ADMIN_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "OWNER_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address[]",
+						"name": "_userAddresses",
+						"type": "address[]"
+					},
+					{
+						"internalType": "contract IIdentity[]",
+						"name": "_identities",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint16[]",
+						"name": "_countries",
+						"type": "uint16[]"
+					}
+				],
+				"name": "batchRegisterIdentity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					}
+				],
+				"name": "contains",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					}
+				],
+				"name": "deleteIdentity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					}
+				],
+				"name": "getRoleAdmin",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "grantRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "hasRole",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					}
+				],
+				"name": "identity",
+				"outputs": [
+					{
+						"internalType": "contract IIdentity",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "identityStorage",
+				"outputs": [
+					{
+						"internalType": "contract IIdentityRegistryStorage",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_trustedIssuersRegistry",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_claimTopicsRegistry",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_identityStorage",
+						"type": "address"
+					}
+				],
+				"name": "init",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					}
+				],
+				"name": "investorCountry",
+				"outputs": [
+					{
+						"internalType": "uint16",
+						"name": "",
+						"type": "uint16"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					}
+				],
+				"name": "isVerified",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "issuersRegistry",
+				"outputs": [
+					{
+						"internalType": "contract ITrustedIssuersRegistry",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "contract IIdentity",
+						"name": "_identity",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_country",
+						"type": "uint16"
+					}
+				],
+				"name": "registerIdentity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "renounceRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "revokeRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_claimTopicsRegistry",
+						"type": "address"
+					}
+				],
+				"name": "setClaimTopicsRegistry",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_identityRegistryStorage",
+						"type": "address"
+					}
+				],
+				"name": "setIdentityRegistryStorage",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_trustedIssuersRegistry",
+						"type": "address"
+					}
+				],
+				"name": "setTrustedIssuersRegistry",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes4",
+						"name": "interfaceId",
+						"type": "bytes4"
+					}
+				],
+				"name": "supportsInterface",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "topicsRegistry",
+				"outputs": [
+					{
+						"internalType": "contract IClaimTopicsRegistry",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_country",
+						"type": "uint16"
+					}
+				],
+				"name": "updateCountry",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_userAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "contract IIdentity",
+						"name": "_identity",
+						"type": "address"
+					}
+				],
+				"name": "updateIdentity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"contains(address)": {
+					"details": "See {IIdentityRegistry-contains}."
+				},
+				"deleteIdentity(address)": {
+					"details": "See {IIdentityRegistry-deleteIdentity}."
+				},
+				"getRoleAdmin(bytes32)": {
+					"details": "Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}."
+				},
+				"grantRole(bytes32,address)": {
+					"details": "Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleGranted} event."
+				},
+				"hasRole(bytes32,address)": {
+					"details": "Returns `true` if `account` has been granted `role`."
+				},
+				"identity(address)": {
+					"details": "See {IIdentityRegistry-identity}."
+				},
+				"identityStorage()": {
+					"details": "See {IIdentityRegistry-identityStorage}."
+				},
+				"investorCountry(address)": {
+					"details": "See {IIdentityRegistry-investorCountry}."
+				},
+				"isVerified(address)": {
+					"details": "See {IIdentityRegistry-isVerified}."
+				},
+				"issuersRegistry()": {
+					"details": "See {IIdentityRegistry-issuersRegistry}."
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"registerIdentity(address,address,uint16)": {
+					"details": "See {IIdentityRegistry-registerIdentity}."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"renounceRole(bytes32,address)": {
+					"details": "Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been revoked `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `account`. May emit a {RoleRevoked} event."
+				},
+				"revokeRole(bytes32,address)": {
+					"details": "Revokes `role` from `account`. If `account` had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleRevoked} event."
+				},
+				"setClaimTopicsRegistry(address)": {
+					"details": "See {IIdentityRegistry-setClaimTopicsRegistry}."
+				},
+				"setIdentityRegistryStorage(address)": {
+					"details": "See {IIdentityRegistry-setIdentityRegistryStorage}."
+				},
+				"setTrustedIssuersRegistry(address)": {
+					"details": "See {IIdentityRegistry-setTrustedIssuersRegistry}."
+				},
+				"supportsInterface(bytes4)": {
+					"details": "See {IERC165-supportsInterface}."
+				},
+				"topicsRegistry()": {
+					"details": "See {IIdentityRegistry-topicsRegistry}."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
+				"updateCountry(address,uint16)": {
+					"details": "See {IIdentityRegistry-updateCountry}."
+				},
+				"updateIdentity(address,address)": {
+					"details": "See {IIdentityRegistry-updateIdentity}."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GemNFT/registry/implementation/IdentityRegistry.sol": "IdentityRegistry"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
+				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
+				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
+				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
+				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/access/AccessControlUpgradeable.sol": {
+			"keccak256": "0xc8710577334e8d0799ae2b2a731b1924a7bddd64319da9787ddd2dc69bdd1ce5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b83b7afa4d2372da3ba5402fb10860a105c35d79812c60dc61007be2afc17618",
+				"dweb:/ipfs/QmYX9xPmbNVSKXrepKiUZiG5oL3SdzFp9a4kqspxX1sEUx"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/access/IAccessControlUpgradeable.sol": {
+			"keccak256": "0xb8f5302f12138c5561362e88a78d061573e6298b7a1a5afe84a1e2c8d4d5aeaa",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://740cf4dc535e3082560cf5a031473029f322690fc8037fe9d5e3a8bef42e757c",
+				"dweb:/ipfs/QmTQxFdfxcaueQa23VX34wAPqzruZbkzyeN58tZK2yav2b"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/access/OwnableUpgradeable.sol": {
+			"keccak256": "0x359a1ab89b46b9aba7bcad3fb651924baf4893d15153049b9976b0fc9be1358e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e89863421b4014b96a4b62be76eb3b9f0a8afe9684664a6f389124c0964bfe5c",
+				"dweb:/ipfs/Qmbk7xr1irpDuU1WdxXgxELBXxs61rHhCgod7heVcvFx16"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/proxy/utils/Initializable.sol": {
+			"keccak256": "0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e",
+				"dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/AddressUpgradeable.sol": {
+			"keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+				"dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/ContextUpgradeable.sol": {
+			"keccak256": "0x75097e35253e7fb282ee4d7f27a80eaacfa759923185bf17302a89cbc059c5ef",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8b06267c5f80bad727af3e48b1382333d591dad51376399ef2f6b0ee6d58bf95",
+				"dweb:/ipfs/QmdU5La1agcQvghnfMpWZGDPz2TUDTCxUwTLKmuMRXBpAx"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/StringsUpgradeable.sol": {
+			"keccak256": "0xb96dc79b65b7c37937919dcdb356a969ce0aa2e8338322bf4dc027a3c9c9a7eb",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f8613145881436fc0480fff22da4868d611e2b0c0c3da083334eb4362ce1945a",
+				"dweb:/ipfs/QmPqpP3YeRbBdTJRe6Gv2eGsUaANf4J6RwTNRW36iYahfV"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/introspection/ERC165Upgradeable.sol": {
+			"keccak256": "0xd90d7723512df65ae417adaf0801042940f0dabd60039ceeaffe34aa5b238da1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1b13befeb3413749292f9fb229de1c7a509a5ce2c8047d9094fc004ca9d3af89",
+				"dweb:/ipfs/QmRzJ2hZSwRtMejHUZAYTPRKgZsnfb112Fno9Jf3EiDfwA"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/introspection/IERC165Upgradeable.sol": {
+			"keccak256": "0xc6cef87559d0aeffdf0a99803de655938a7779ec0a3cd5d4383483ad85565a09",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://92ad7e572cf44e6b4b37631b44b62f9eb9fb1cf14d9ce51c1504d5dc7ccaf758",
+				"dweb:/ipfs/QmcnbqX85tsWnUXPmtuPLE4SczME2sJaTfmqEFkuAJvWhy"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/math/MathUpgradeable.sol": {
+			"keccak256": "0x2bc0007987c229ae7624eb29be6a9b84f6a6a5872f76248b15208b131ea41c4e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2b2835c737d073ef8b82a4cc246495a9740f43e7ff2cf130906b2449ff9bfb91",
+				"dweb:/ipfs/QmSCWfNoSvvTN57ic7o1RW6NqSxxGAqbBTnLKc7QHe27qB"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@4.9.6/utils/math/SignedMathUpgradeable.sol": {
+			"keccak256": "0x88f6b7bba3ee33eeb741f9a0f5bc98b6e6e352d0fe4905377bb328590f84095a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://88ace2d60f265752f18903d839910be4e4e104340b2957678585b812447825d4",
+				"dweb:/ipfs/QmXFkNxMc3AAGzhs2wUEZyErWQjsvoTGyYjuU5oZkFki5Z"
+			]
+		},
+		"GemNFT/registry/implementation/IdentityRegistry.sol": {
+			"keccak256": "0x6f7b2d8e0698014c3fc023ba3f85754b9d722e6e385aa7e9e4893d9197ddc964",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://fa4763357cf9e43ed025bd58eda6d290690cdd398f298ee0fd7bdf66ce52369f",
+				"dweb:/ipfs/Qma7p8Sqkwfogf3TFcjMsM8bQuHFFYRDLoWzCrQF6NqZEw"
+			]
+		},
+		"GemNFT/registry/interface/IClaimTopicsRegistry.sol": {
+			"keccak256": "0x209963b4e545f78c8fbf76bd3779bedc134bd3f3419b4b8eb0af63249689f2ea",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b0633ef0e22df28c198104c5f076f927a3171b73b1e24ab28d8127c7ed191ce1",
+				"dweb:/ipfs/QmT7QJHzkoBvx4Xp58BhL2PRhHMdtJKPNgcpvhBfPjnNyf"
+			]
+		},
+		"GemNFT/registry/interface/IIdentityRegistry.sol": {
+			"keccak256": "0x0a78c51c1a0b9adf7f90741828b7c48d504340f5c5753a8f45f867233b6e03c2",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://42dea7e5cb01a71df62c32eacf53d521dafa3177c5153ea98b47d2842378f219",
+				"dweb:/ipfs/QmV4EjwueWYU8Dw2Erpps74esHUKbBr3Pmdx2zQUNXuMry"
+			]
+		},
+		"GemNFT/registry/interface/IIdentityRegistryStorage.sol": {
+			"keccak256": "0x1bceb5cfc0da1a742c663fe4425001ccbdb2112e7718173cfb3243088e5999bd",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b1f71e93952528462a65db44e568ac64a74ee01b44031f0c9e4ace353396827c",
+				"dweb:/ipfs/QmcF5uQzZpFZ7qC53afv4osebpAYAHupUyrQD6nmv17E9U"
+			]
+		},
+		"GemNFT/registry/interface/ITrustedIssuersRegistry.sol": {
+			"keccak256": "0x461f5ba0f4e76ee6106a484a2d010009aa540202cb5c917a6ee9f91ae42351c2",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://c6d8abd21d71763eade0cd28deb6f93e3fcbce49bfca2e2e2d8e983755534e34",
+				"dweb:/ipfs/QmcYoXQ5AujdqVnJDjBSygDTibum4WMubZKeUt98uiT6P9"
+			]
+		},
+		"GemNFT/registry/storage/IRStorage.sol": {
+			"keccak256": "0xb83471542f0cafba8b6c09658d66d842b967320ef062a4e00ae0a2e6b3a37fc5",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://6dff2050d92096df4c3ca1a9355d13eb51afba81b98ae1b03cab370227882cdb",
+				"dweb:/ipfs/QmYBEriBxY37moGDa9r8zaQkCzkLfaya5goKyMsg4r1TYn"
+			]
+		}
+	},
+	"version": 1
+}

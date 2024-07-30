@@ -1,0 +1,163 @@
+{
+	"compiler": {
+		"version": "0.8.20+commit.a1b79de6"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_contractOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_diamondCutFacet",
+						"type": "address"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_initializationContractAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_calldata",
+						"type": "bytes"
+					}
+				],
+				"name": "InitializationFunctionReverted",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "facetAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "enum IDiamondCut.FacetCutAction",
+								"name": "action",
+								"type": "uint8"
+							},
+							{
+								"internalType": "bytes4[]",
+								"name": "functionSelectors",
+								"type": "bytes4[]"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct IDiamondCut.FacetCut[]",
+						"name": "_diamondCut",
+						"type": "tuple[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_init",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "_calldata",
+						"type": "bytes"
+					}
+				],
+				"name": "DiamondCut",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"diamond/Diamond.sol": "Diamond"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"diamond/Diamond.sol": {
+			"keccak256": "0x67a461e00a275fc809f4acdca15faed81204d08e11b455df489c7087b5d1f59c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://18e9ae1ec7ed300fd9c4dc6d7de8086a0f0f435549adf808cd0da8df9a460fef",
+				"dweb:/ipfs/QmRdXCwZeU7Cw5srxJdTVKHUt7vrb6atyghJ11gBQLwYFv"
+			]
+		},
+		"diamond/interfaces/IDiamondCut.sol": {
+			"keccak256": "0xc00c16bfa30a3fa5f3dc684f7f8ba62c259962b25f647d9588739458989717fc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://119d9a5acd99b9462a8341c9b95ddd468648799eefa47038f81521431743c1ae",
+				"dweb:/ipfs/QmTF7WNyPWTUtUzNcpq5rf5v2uw5TwzqsSg9D53pfQufcu"
+			]
+		},
+		"diamond/libraries/LibDiamond.sol": {
+			"keccak256": "0x32804b629ea56692e6458dcaf1a4998c62ef289b071fe2690be171b25926f495",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f0e39294f81c203fbf433ad126c3fddaaedd98df9561cf3155057bd4d8519727",
+				"dweb:/ipfs/QmTh5bxtsnWEq3YshbU428zifKdWwiaWvJW19DRNmAnweb"
+			]
+		}
+	},
+	"version": 1
+}

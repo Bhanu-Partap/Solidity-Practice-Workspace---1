@@ -1,0 +1,146 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "count",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "increment",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "initalize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "initalized",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "proxiableUUID",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newCode",
+						"type": "address"
+					}
+				],
+				"name": "updateCode",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "x",
+				"outputs": [
+					{
+						"internalType": "bytes4",
+						"name": "",
+						"type": "bytes4"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Proxy Practice/MyContract.sol": "Owned"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Proxy Practice/MyContract.sol": {
+			"keccak256": "0x0fb212524e2539ffce220b70af3abfc43f94b6d5226f8318ce38b80b4009b1d3",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://90310aab9ad1d0b0cf40eaff31399cd788ec4caf3a09f5128cc09045d15286ab",
+				"dweb:/ipfs/QmRYwV6vpPu38wpyQxb372the2YUZife8gZkpekxYinbf6"
+			]
+		},
+		"Proxy Practice/Proxiable.sol": {
+			"keccak256": "0xff24fbac900176daa611e28f876a2480271f535487a01a610d24fa30441c60a1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7eb61656d222baf6fd4c0e90ae95d454acfb2bb27bce10738533ff790caff9e5",
+				"dweb:/ipfs/QmTqNP253iiGkQCCLuHyje5GhiY65571p4SVHPMtShPjQp"
+			]
+		}
+	},
+	"version": 1
+}

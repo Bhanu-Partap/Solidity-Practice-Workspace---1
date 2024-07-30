@@ -1,0 +1,101 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GemNFT/registry/storage/IRStorage.sol": "IRStorage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
+				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
+				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
+				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
+				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+			]
+		},
+		"GemNFT/registry/interface/IClaimTopicsRegistry.sol": {
+			"keccak256": "0x209963b4e545f78c8fbf76bd3779bedc134bd3f3419b4b8eb0af63249689f2ea",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b0633ef0e22df28c198104c5f076f927a3171b73b1e24ab28d8127c7ed191ce1",
+				"dweb:/ipfs/QmT7QJHzkoBvx4Xp58BhL2PRhHMdtJKPNgcpvhBfPjnNyf"
+			]
+		},
+		"GemNFT/registry/interface/IIdentityRegistryStorage.sol": {
+			"keccak256": "0x1bceb5cfc0da1a742c663fe4425001ccbdb2112e7718173cfb3243088e5999bd",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b1f71e93952528462a65db44e568ac64a74ee01b44031f0c9e4ace353396827c",
+				"dweb:/ipfs/QmcF5uQzZpFZ7qC53afv4osebpAYAHupUyrQD6nmv17E9U"
+			]
+		},
+		"GemNFT/registry/interface/ITrustedIssuersRegistry.sol": {
+			"keccak256": "0x461f5ba0f4e76ee6106a484a2d010009aa540202cb5c917a6ee9f91ae42351c2",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://c6d8abd21d71763eade0cd28deb6f93e3fcbce49bfca2e2e2d8e983755534e34",
+				"dweb:/ipfs/QmcYoXQ5AujdqVnJDjBSygDTibum4WMubZKeUt98uiT6P9"
+			]
+		},
+		"GemNFT/registry/storage/IRStorage.sol": {
+			"keccak256": "0xb83471542f0cafba8b6c09658d66d842b967320ef062a4e00ae0a2e6b3a37fc5",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://6dff2050d92096df4c3ca1a9355d13eb51afba81b98ae1b03cab370227882cdb",
+				"dweb:/ipfs/QmYBEriBxY37moGDa9r8zaQkCzkLfaya5goKyMsg4r1TYn"
+			]
+		}
+	},
+	"version": 1
+}

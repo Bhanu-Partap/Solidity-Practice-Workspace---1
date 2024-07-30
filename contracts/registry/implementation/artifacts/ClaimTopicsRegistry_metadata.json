@@ -1,0 +1,247 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "claimTopic",
+						"type": "uint256"
+					}
+				],
+				"name": "ClaimTopicAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "claimTopic",
+						"type": "uint256"
+					}
+				],
+				"name": "ClaimTopicRemoved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint8",
+						"name": "version",
+						"type": "uint8"
+					}
+				],
+				"name": "Initialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_claimTopic",
+						"type": "uint256"
+					}
+				],
+				"name": "addClaimTopic",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getClaimTopics",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "init",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_claimTopic",
+						"type": "uint256"
+					}
+				],
+				"name": "removeClaimTopic",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"getClaimTopics()": {
+					"details": "See {IClaimTopicsRegistry-getClaimTopics}."
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"removeClaimTopic(uint256)": {
+					"details": "See {IClaimTopicsRegistry-removeClaimTopic}."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"erc3643/erc3643/registry/implementation/ClaimTopicsRegistry.sol": "ClaimTopicsRegistry"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+			"keccak256": "0x4075622496acc77fd6d4de4cc30a8577a744d5c75afad33fdeacf1704d6eda98",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://99c8cb3cd19a44bbfb6612605affb7d8b06cee1f6aa9362a37a8672b4f7eeaf8",
+				"dweb:/ipfs/QmasyxFDBUp7k5KFgfDWEzM8PYSKEq7GVznzMJ1VxVRF4B"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+			"keccak256": "0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e",
+				"dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+			"keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+				"dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+			"keccak256": "0x963ea7f0b48b032eef72fe3a7582edf78408d6f834115b9feadd673a4d5bd149",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d6520943ea55fdf5f0bafb39ed909f64de17051bc954ff3e88c9e5621412c79c",
+				"dweb:/ipfs/QmWZ4rAKTQbNG2HxGs46AcTXShsVytKeLs7CUCdCSv5N7a"
+			]
+		},
+		"erc3643/erc3643/registry/implementation/ClaimTopicsRegistry.sol": {
+			"keccak256": "0xd1285fcb3e7dcd19eeac010ecd33f2f88539ba306065cb0b9211253a4fdfbe4b",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://9dd40cf9660067d972169b81c608cdf31d2f4ab74e721d6241590402b73b9088",
+				"dweb:/ipfs/QmZ5wwqdwMSEyyqiHYQBAi5Rs5oyrEcbwxc9zREK6rNdGo"
+			]
+		},
+		"erc3643/erc3643/registry/interface/IClaimTopicsRegistry.sol": {
+			"keccak256": "0x209963b4e545f78c8fbf76bd3779bedc134bd3f3419b4b8eb0af63249689f2ea",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b0633ef0e22df28c198104c5f076f927a3171b73b1e24ab28d8127c7ed191ce1",
+				"dweb:/ipfs/QmT7QJHzkoBvx4Xp58BhL2PRhHMdtJKPNgcpvhBfPjnNyf"
+			]
+		},
+		"erc3643/erc3643/registry/storage/CTRStorage.sol": {
+			"keccak256": "0xdf6acb1c9827e36cf73a909c1a929706b4c229c0ded14171b2bfdb0d463739eb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://112b37f5d7170a2db2b8e681f59a28c31c02b0d9c8346260262d1706e4a4c2cb",
+				"dweb:/ipfs/QmVFYkjDEzWUczKyiPa7Uue1isLVcZqip3PqUWDt4Nc5in"
+			]
+		}
+	},
+	"version": 1
+}

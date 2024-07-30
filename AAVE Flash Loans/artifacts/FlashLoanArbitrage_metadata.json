@@ -1,0 +1,300 @@
+{
+	"compiler": {
+		"version": "0.8.10+commit.fc410830"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressProvider",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "ADDRESSES_PROVIDER",
+				"outputs": [
+					{
+						"internalType": "contract IPoolAddressesProvider",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "POOL",
+				"outputs": [
+					{
+						"internalType": "contract IPool",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "allowanceDAI",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "allowanceUSDC",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "approveDAI",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "approveUSDC",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "asset",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "premium",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "initiator",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "params",
+						"type": "bytes"
+					}
+				],
+				"name": "executeOperation",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_tokenAddress",
+						"type": "address"
+					}
+				],
+				"name": "getBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "requestFlashLoan",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_tokenAddress",
+						"type": "address"
+					}
+				],
+				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"executeOperation(address,uint256,uint256,address,bytes)": {
+					"notice": "This function is called after your contract has received the flash loaned amount"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"AAVE Flash Loans/FlashLoanArbritage.sol": "FlashLoanArbitrage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20.sol": {
+			"keccak256": "0xf57d62241e553696a1324d225663ba2e1a51db0a51ca236d0c1b009d89b6284c",
+			"license": "AGPL-3.0",
+			"urls": [
+				"bzz-raw://d327db93b636790909aa137124f30a856ac1631cb79c476aa188f9627fda8d03",
+				"dweb:/ipfs/QmaxpmEoBFioeNYmpxJemyZ7aYF2nX1NKW1XDqREm7i6es"
+			]
+		},
+		"@aave/core-v3/contracts/flashloan/base/FlashLoanSimpleReceiverBase.sol": {
+			"keccak256": "0x295cc551c03e55a0b119fc671a12cf9afa07caad58ffbc62bcdb90ab2769e1a4",
+			"license": "AGPL-3.0",
+			"urls": [
+				"bzz-raw://a3334ff48b620e4eb2d8f7750b1928e74f5c70ac49e19f6a87c267caf63b3024",
+				"dweb:/ipfs/QmU74znMLDtzxJQkmCmf98qRekRECuT7P6FJL89QjwM4qc"
+			]
+		},
+		"@aave/core-v3/contracts/flashloan/interfaces/IFlashLoanSimpleReceiver.sol": {
+			"keccak256": "0xba50a7834ddfdca3e3cfac09043f72699be42ff88925641ac30950a434b2b2ff",
+			"license": "AGPL-3.0",
+			"urls": [
+				"bzz-raw://588513e813da8c9edf06bdd8912f33f5e304735e4b0145da9fb034eb46f205b5",
+				"dweb:/ipfs/Qmco68eeRnTUGyZaoZ9Vu4R7xzH9x1pUwP36nUvrxnxHxg"
+			]
+		},
+		"@aave/core-v3/contracts/interfaces/IPool.sol": {
+			"keccak256": "0xbfd2077251c8dc766a56d45f4b03eb07f3441323e79c0f794efea3657a99747f",
+			"license": "AGPL-3.0",
+			"urls": [
+				"bzz-raw://c6ff6221de0ea877932c73c0b99d3e4535f293053ae44f9f9d6b9d265e9af2f6",
+				"dweb:/ipfs/QmSTaEKrhz1xNVnx4oBzWw8DenYPShVzJoP1A9GTEWkAzX"
+			]
+		},
+		"@aave/core-v3/contracts/interfaces/IPoolAddressesProvider.sol": {
+			"keccak256": "0x33d4308d9407b4ee2297fc4ba5acce1a96a6c658189e2778a4f6b90e032fb3b5",
+			"license": "AGPL-3.0",
+			"urls": [
+				"bzz-raw://978336a2a40229ccc7749344be890862ea12e17e9fffe5bb977ba3841de07b5a",
+				"dweb:/ipfs/QmScNrQfDSPg1afJmkCty6fZkETUrWTmEXWeTmHoe7mSqa"
+			]
+		},
+		"@aave/core-v3/contracts/protocol/libraries/types/DataTypes.sol": {
+			"keccak256": "0xff95adc41b2bbda0c08208e66c1e2fd0d99fa6d8f937667c2b366ddf08f10eeb",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://734ac1a253d41ace0fe411359248a1534e530b85b3c0c9fe37931ee11580dbc6",
+				"dweb:/ipfs/QmNSm1bqFo2x8EghUyShK34bU1esDeLCw1ZWPoRZwcoVvM"
+			]
+		},
+		"AAVE Flash Loans/FlashLoanArbritage.sol": {
+			"keccak256": "0x18b125c63f05eff8fe8b1946d8b9e1b3361528e7f2b1be861072c7018d0d0c1d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0200d56dd5f74289e4b7526346d0ef93243961f29dd00d2d17ed747f67086bd8",
+				"dweb:/ipfs/QmPXhx82Ybp252z41faSL7Yqr2rpMHQD4U2vKbuB4b73v6"
+			]
+		},
+		"AAVE Flash Loans/IExchange.sol": {
+			"keccak256": "0xc56c1a0103563abe498dbdfeca71d5360d3e384ea70a1f8acc9b58eaa77312ac",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d0945a141481046eaf2286d5904d9a27fc8a4cfd0204bd9135cf91a1a0b03eb9",
+				"dweb:/ipfs/QmRmSB8jyvJVVeUmNupF997naMkYpmHDDvozihkS6Qi3v7"
+			]
+		}
+	},
+	"version": 1
+}

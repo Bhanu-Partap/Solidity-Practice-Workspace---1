@@ -1,0 +1,94 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_implementationAuthority",
+						"type": "address"
+					}
+				],
+				"name": "ImplementationAuthoritySet",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "getImplementationAuthority",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newImplementationAuthority",
+						"type": "address"
+					}
+				],
+				"name": "setImplementationAuthority",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"events": {
+				"ImplementationAuthoritySet(address)": {
+					"notice": "events"
+				}
+			},
+			"kind": "user",
+			"methods": {
+				"setImplementationAuthority(address)": {
+					"notice": "functions"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"erc3643/erc3643/proxy/IProxy.sol": "IProxy"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"erc3643/erc3643/proxy/IProxy.sol": {
+			"keccak256": "0x6493d0ec313502af3a02f83a3fbb5480d39db3a835019e6d63758ed092ce261e",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://3341cfa96e3672e9f7f831844731dcd93bc68526f0dd6c130f07547c7ca49538",
+				"dweb:/ipfs/QmV7FZqjcUvi4tmhuQrFG744jPqRP3SqqM7U6dWNEVHFJw"
+			]
+		}
+	},
+	"version": 1
+}
