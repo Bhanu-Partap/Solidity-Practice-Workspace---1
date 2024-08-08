@@ -33,8 +33,8 @@ contract Lottery {
     function pickWinner() public restricted{
         uint index = random() % participants.length;
         payable(participants[index]).transfer(address(this).balance);
-        lotteryCount++;
         lotterySlotWinner[lotteryCount] = participants[index];
+        lotteryCount++;
         delete participants;
     }
 
