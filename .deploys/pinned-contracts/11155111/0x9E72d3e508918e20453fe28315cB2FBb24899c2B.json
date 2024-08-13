@@ -1,6 +1,6 @@
 {
   "name": "erc20token",
-  "address": "0x020548039d049f457e436a94bf854bc27be95519",
+  "address": "0x9E72d3e508918e20453fe28315cB2FBb24899c2B",
   "abi": [
     {
       "inputs": [
@@ -346,5 +346,5 @@
     }
   ],
   "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Token.sol",
-  "pinnedAt": 1721126176056
+  "pinnedAt": 1723528590463
 }

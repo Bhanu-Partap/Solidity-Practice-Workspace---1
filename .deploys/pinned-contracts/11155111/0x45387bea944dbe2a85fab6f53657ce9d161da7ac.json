@@ -1,6 +1,6 @@
 {
   "name": "factory",
-  "address": "0x4c5e5a6546c94b4a429a3ccc1d012810d6fd127e",
+  "address": "0x45387bea944dbe2a85fab6f53657ce9d161da7ac",
   "abi": [
     {
       "inputs": [
@@ -480,5 +480,5 @@
     }
   ],
   "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Factory.sol",
-  "pinnedAt": 1721132887299
+  "pinnedAt": 1723539347637
 }

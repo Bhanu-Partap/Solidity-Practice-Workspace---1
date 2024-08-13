@@ -6,7 +6,26 @@ import "hardhat/console.sol";
 contract factory {
     uint256 private unlocked = 1;
     uint16 public fee = 30;
+
+    address[] public allPairsAddress;
+
     mapping(address => mapping(address => address)) public getPair;
+
+// // Limit order
+//     struct Order {
+//         address user;
+//         address tokenIn;
+//         address tokenOut;
+//         uint256 amountIn;
+//         uint256 amountOutMin;
+//         uint256 priceLimit;
+//         bool isBuyOrder;
+//         bool isActive;
+//     }
+
+//     mapping(uint256 => Order) public orders;
+//     uint256 public orderCount;
+
 
     event PairCreated(address token0, address token1, pool pair);
     event liquidityAdded(
@@ -41,6 +60,25 @@ contract factory {
         unlocked = 1;
     }
 
+
+    // function placeLimitOrder(address tokenIn, address tokenOut, uint256 amountIn, uint256 priceLimit, bool isBuyOrder) external {
+    //     uint256 amountOutMin = calculateMinAmountOut(amountIn, priceLimit, isBuyOrder);
+    
+    //     orders[orderCount] = Order({
+    //         user: msg.sender,
+    //         tokenIn: tokenIn,
+    //         tokenOut: tokenOut,
+    //         amountIn: amountIn,
+    //         amountOutMin: amountOutMin,
+    //         priceLimit: priceLimit,
+    //         isBuyOrder: isBuyOrder,
+    //         isActive: true
+    //     });
+    
+    //     orderCount++;
+    // }
+
+
     function concatenateStrings(string memory str1, string memory str2)
         internal
         pure
@@ -49,7 +87,6 @@ contract factory {
         return string(abi.encodePacked(str1, "-", str2));
     }
 
-    // qgpinfdpsfrnnrtmz27cked6slxn9yv6b4khrwzc88jq1ucngs
 
     function LptokenName(address tokenA, address tokenB)
         internal
@@ -97,12 +134,12 @@ contract factory {
             tokenA,
             tokenB
         );
-// 1gbrqkwglqewnzunww119fqxh3fkzbjdikmt3jnsqx6p1tfknv
         pool pair = new pool(token0, token1, address(this), Name, Symbol);
         getPair[token0][token1] = address(pair);
         getPair[token1][token0] = address(pair); // populate mapping in the reverse direction
-
+        address pairAddress = address(pair);
         emit PairCreated(token0, token1, pair);
+        allPairsAddress.push(pairAddress);
         return pair;
     }
 
@@ -278,8 +315,8 @@ contract factory {
 
     function AmountOut(
         address tokenIN,
-        uint256 amountIN,
-        address tokenOUT
+        address tokenOUT,
+        uint256 amountIN
     ) public view returns (uint256 amountOUT) {
         uint256 tokenINprecision = convertToTargetedPrecison(tokenIN);
         uint256 tokenOutprecision = convertToTargetedPrecison(tokenOUT);
@@ -326,7 +363,7 @@ contract factory {
             IERC20(tokenIN).balanceOf(caller) >= amountIN,
             "not enough balance"
         );
-        uint256 AmountOUT = AmountOut(tokenIN, amountIN, tokenOUT);
+        uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
 
         require(desiredOut >= AmountOUT, "slippage exist more");
         pool _pool = pool(getPair[tokenIN][tokenOUT]);
@@ -346,6 +383,7 @@ contract factory {
         return AmountOUT;
     }
 
+// function for getting the desired amount out for multi hop trade
     function swapOutIfNotpool(address[] memory token, uint256 _amountIn)
         public
         view
@@ -353,12 +391,13 @@ contract factory {
     {
         uint256 amount = _amountIn;
         for (uint256 i = 0; i < (token.length) - 1; i++) {
-            uint256 amountOut = AmountOut(token[i], amount, token[i + 1]);
+            uint256 amountOut = AmountOut(token[i], token[i + 1], amount);
             amount = amountOut;
         }
         return amount;
     }
 
+// function for multi-hop trade
     function swap_If_pool_not_exist(
         address[] memory token,
         uint256 _amount,
@@ -369,7 +408,7 @@ contract factory {
         IERC20(token[0]).transferFrom(_caller, address(this), amount);
         for (uint256 i = 0; i < (token.length) - 1; i++) {
             if (i < (token.length) - 2) {
-                uint256 AmountOUT = AmountOut(token[i], amount, token[i + 1]);
+                uint256 AmountOUT = AmountOut(token[i], token[i + 1], amount);
                 pool _pool = pool(getPair[token[i]][token[i + 1]]);
                 _pool.approveforswap(token[i + 1], AmountOUT);
                 IERC20(token[i]).transfer(address(_pool), amount);
@@ -389,7 +428,7 @@ contract factory {
                 );
                 amount = AmountOUT;
             } else {
-                uint256 AmountOUT = AmountOut(token[i], amount, token[i + 1]);
+                uint256 AmountOUT = AmountOut(token[i], token[i + 1], amount);
                 pool _pool = pool(getPair[token[i]][token[i + 1]]);
                 _pool.approveforswap(token[i + 1], AmountOUT);
                 IERC20(token[i]).transfer(address(_pool), amount);
@@ -414,4 +453,60 @@ contract factory {
 
         return amount;
     }
+
+function getBestPath(address[] memory tokens, uint256 amountIn) public view returns (address[] memory bestPath, uint256 bestAmountOut) {
+    uint256 numTokens = tokens.length;
+    bestAmountOut = 0;
+    address[] memory path;
+
+    for (uint i = 0; i < numTokens - 1; i++) {
+        for (uint j = i + 1; j < numTokens; j++) {
+            uint256 amountOut = getDirectSwapOutput(tokens[i], tokens[j], amountIn);
+            console.log(amountOut);
+
+            if (amountOut > bestAmountOut) {
+                bestAmountOut = amountOut;
+                path = createPath(tokens[i], tokens[j]);
+            }
+
+            for (uint k = 0; k < numTokens; k++) {
+                if (k != i && k != j) {
+                    uint256 finalAmountOut = getMultiHopSwapOutput(tokens[i], tokens[k], tokens[j], amountIn);
+                    console.log(finalAmountOut);
+
+                    if (finalAmountOut > bestAmountOut) {
+                        bestAmountOut = finalAmountOut;
+                        path = createPath2(tokens[i], tokens[k], tokens[j]);
+                    }
+                }
+            }
+        }
+    }
+
+    bestPath = path;
+    return (bestPath, bestAmountOut);
+}
+
+function getDirectSwapOutput(address tokenIn, address tokenOut, uint256 amountIn) internal view returns (uint256) {
+    return AmountOut(tokenIn, tokenOut, amountIn);
+}
+
+function getMultiHopSwapOutput(address tokenIn, address intermediateToken, address tokenOut, uint256 amountIn) internal view returns (uint256) {
+    uint256 amountOutIntermediate = AmountOut(tokenIn, intermediateToken, amountIn);
+    return AmountOut(intermediateToken, tokenOut, amountOutIntermediate);
+}
+
+function createPath(address tokenIn, address tokenOut) internal pure returns (address[] memory path) {
+    path = new address[](2) ;
+    path[0] = tokenIn;
+    path[1] = tokenOut;
+}
+
+function createPath2(address tokenIn, address intermediateToken, address tokenOut) internal pure returns (address[] memory path) {
+    path = new address[](3) ;
+    path[0] = tokenIn;
+    path[1] = intermediateToken;
+    path[2] = tokenOut;
+}
+
 }

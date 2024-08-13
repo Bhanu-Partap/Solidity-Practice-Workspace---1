@@ -9,7 +9,4 @@ contract erc20token is IERC20, ERC20 {
     function PublicMint() public payable {
         _mint(msg.sender, msg.value);
     }
-
-   
-
 }
