@@ -6,6 +6,7 @@ import "hardhat/console.sol";
 contract factory {
     uint256 private unlocked = 1;
     uint16 public fee = 30;
+    uint16 public maxSlippage=3;
 
     address[] public allPairsAddress;
 
@@ -365,7 +366,9 @@ contract factory {
         );
         uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
 
-        require(desiredOut >= AmountOUT, "slippage exist more");
+        // require(desiredOut >= AmountOUT, "slippage exist more");
+        require(desiredOut = AmountOUT, "slippage exist more");
+        require(desiredOut >maxSlippage,"Max Slippage reach");
         pool _pool = pool(getPair[tokenIN][tokenOUT]);
         IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
         _pool.approveforswap(tokenOUT, AmountOUT);
@@ -454,30 +457,62 @@ contract factory {
         return amount;
     }
 
-function getBestPath(address[] memory tokens, uint256 amountIn) public view returns (address[] memory bestPath, uint256 bestAmountOut) {
-    uint256 numTokens = tokens.length;
+    function getBestPath(
+    address[] memory pairAddresses, 
+    address tokenIn, 
+    address tokenOut, 
+    uint256 amountIn
+) 
+    public 
+    view 
+    returns (address[] memory bestPath, uint256 bestAmountOut) 
+{
+    uint256 numPairs = pairAddresses.length;
     bestAmountOut = 0;
     address[] memory path;
 
-    for (uint i = 0; i < numTokens - 1; i++) {
-        for (uint j = i + 1; j < numTokens; j++) {
-            uint256 amountOut = getDirectSwapOutput(tokens[i], tokens[j], amountIn);
-            console.log(amountOut);
+    for (uint i = 0; i < numPairs; i++) {
+        pool memory pair = allPairsAddress[pairAddresses[i]];//
 
+        // Check if the pair is directly tradable
+        if ((pair.token0 == tokenIn && pair.token1 == tokenOut) || 
+            (pair.token1 == tokenIn && pair.token0 == tokenOut)) {
+
+            uint256 amountOut = getAmountOutDirect(pair, tokenIn, amountIn);
+            
             if (amountOut > bestAmountOut) {
                 bestAmountOut = amountOut;
-                path = createPath(tokens[i], tokens[j]);
+                path = createPath(tokenIn, tokenOut);
             }
+        } else {
+            // Explore multi-hop routes
+            uint256 intermediateAmountOut = 0;
 
-            for (uint k = 0; k < numTokens; k++) {
-                if (k != i && k != j) {
-                    uint256 finalAmountOut = getMultiHopSwapOutput(tokens[i], tokens[k], tokens[j], amountIn);
-                    console.log(finalAmountOut);
+            if (pair.token0 == tokenIn) {
+                intermediateAmountOut = getAmountOutDirect(pair, tokenIn, amountIn);
+                (address[] memory newPath, uint256 finalAmountOut) = getBestPath(
+                    pairAddresses, 
+                    pair.token1, 
+                    tokenOut, 
+                    intermediateAmountOut
+                );
 
-                    if (finalAmountOut > bestAmountOut) {
-                        bestAmountOut = finalAmountOut;
-                        path = createPath2(tokens[i], tokens[k], tokens[j]);
-                    }
+                if (finalAmountOut > bestAmountOut) {
+                    bestAmountOut = finalAmountOut;
+                    path = mergePaths(tokenIn, newPath);
+                }
+            } else if (pair.token1 == tokenIn) {
+                intermediateAmountOut = getAmountOutDirect(pair, tokenIn, amountIn);
+                (address[] memory newPath, uint256 finalAmountOut) = getBestPath(
+                    pairAddresses, 
+                    pair.token0, 
+                    tokenOut, 
+                    intermediateAmountOut
+                );
+
+                if (finalAmountOut > bestAmountOut) {
+                    bestAmountOut = finalAmountOut;
+                    path = mergePaths(tokenIn, newPath);
                 }
             }
         }
@@ -487,26 +522,82 @@ function getBestPath(address[] memory tokens, uint256 amountIn) public view retu
     return (bestPath, bestAmountOut);
 }
 
-function getDirectSwapOutput(address tokenIn, address tokenOut, uint256 amountIn) internal view returns (uint256) {
-    return AmountOut(tokenIn, tokenOut, amountIn);
+
+function getAmountOutDirect(pool memory pair, address tokenIn, uint256 amountIn) internal pure returns (uint256) {
+    uint256 reserveIn;
+    uint256 reserveOut;
+
+    if (tokenIn == pair.token0) {
+        reserveIn = pair.reserve0;
+        reserveOut = pair.reserve1;
+    } else {
+        reserveIn = pair.reserve1;
+        reserveOut = pair.reserve0;
+    }
+
+    uint256 amountInWithFee = amountIn * 997; // Assuming a 0.3% fee
+    uint256 numerator = amountInWithFee * reserveOut;
+    uint256 denominator = (reserveIn * 1000) + amountInWithFee;
+
+    return numerator / denominator;
 }
 
-function getMultiHopSwapOutput(address tokenIn, address intermediateToken, address tokenOut, uint256 amountIn) internal view returns (uint256) {
-    uint256 amountOutIntermediate = AmountOut(tokenIn, intermediateToken, amountIn);
-    return AmountOut(intermediateToken, tokenOut, amountOutIntermediate);
-}
 
-function createPath(address tokenIn, address tokenOut) internal pure returns (address[] memory path) {
-    path = new address[](2) ;
-    path[0] = tokenIn;
-    path[1] = tokenOut;
-}
 
-function createPath2(address tokenIn, address intermediateToken, address tokenOut) internal pure returns (address[] memory path) {
-    path = new address[](3) ;
-    path[0] = tokenIn;
-    path[1] = intermediateToken;
-    path[2] = tokenOut;
-}
+
+
+//     function getBestPath(address[] memory tokens, uint256 amountIn) public view returns (address[] memory bestPath, uint256 bestAmountOut) {
+//         uint256 numTokens = tokens.length;
+//         bestAmountOut = 0;
+//         address[] memory path;
+//     for (uint i = 0; i < numTokens - 1; i++) {
+//         for (uint j = i + 1; j < numTokens; j++) {
+//             uint256 amountOut = getDirectSwapOutput(tokens[i], tokens[j], amountIn);
+//             console.log(amountOut);
+
+//             if (amountOut > bestAmountOut) {
+//                 bestAmountOut = amountOut;
+//                 path = createPath(tokens[i], tokens[j]);
+//             }
+
+//             for (uint k = 0; k < numTokens; k++) {
+//                 if (k != i && k != j) {
+//                     uint256 finalAmountOut = getMultiHopSwapOutput(tokens[i], tokens[k], tokens[j], amountIn);
+//                     console.log(finalAmountOut);
+
+//                     if (finalAmountOut > bestAmountOut) {
+//                         bestAmountOut = finalAmountOut;
+//                         path = createPath2(tokens[i], tokens[k], tokens[j]);
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     bestPath = path;
+//     return (bestPath, bestAmountOut);
+//     }   
+
+// function getDirectSwapOutput(address tokenIn, address tokenOut, uint256 amountIn) internal view returns (uint256) {
+//     return AmountOut(tokenIn, tokenOut, amountIn);
+// }
+
+// function getMultiHopSwapOutput(address tokenIn, address intermediateToken, address tokenOut, uint256 amountIn) internal view returns (uint256) {
+//     uint256 amountOutIntermediate = AmountOut(tokenIn, intermediateToken, amountIn);
+//     return AmountOut(intermediateToken, tokenOut, amountOutIntermediate);
+// }
+
+// function createPath(address tokenIn, address tokenOut) internal pure returns (address[] memory path) {
+//     path = new address[](2) ;
+//     path[0] = tokenIn;
+//     path[1] = tokenOut;
+// }
+
+// function createPath2(address tokenIn, address intermediateToken, address tokenOut) internal pure returns (address[] memory path) {
+//     path = new address[](3) ;
+//     path[0] = tokenIn;
+//     path[1] = intermediateToken;
+//     path[2] = tokenOut;
+// }
 
 }
