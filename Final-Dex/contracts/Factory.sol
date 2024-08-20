@@ -19,7 +19,7 @@ contract factory {
         address tokenOut;
         uint256 amountIn;
         uint256 amountOutMin;
-        uint256 priceLimit;
+        uint256 targetPrice;
         uint256 expiry;
         bool isBuyOrder;
         bool isActive;
@@ -66,7 +66,7 @@ contract factory {
     }
 
 
-    function placeLimitOrder(address tokenIn, address tokenOut, uint256 amountIn, uint256 priceLimit, bool isBuyOrder) public  {
+    function placeLimitOrder(address tokenIn, address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder) public  {
         require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
         require(amountIn > 0, "AmountIn must be greater than zero");
         uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
@@ -76,12 +76,12 @@ contract factory {
             tokenOut: tokenOut,
             amountIn: amountIn,
             amountOutMin: amountOutMin,
-            priceLimit: priceLimit,
+            targetPrice: targetPrice,
             isBuyOrder: isBuyOrder,
             expiry: block.timestamp + 1 hours, // 1 hour expiry time
             isActive: true
         });
-    emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, priceLimit, isBuyOrder);
+    emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
 
@@ -93,8 +93,14 @@ contract factory {
     //     else{}
     // }
 
-    function executeLimitOrder(uint256 _id) public {
-
+    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut) public {
+        require(orders[_id].isActive,"Order doesn't exist");
+        require(block.timestamp < orders[_id].expiry,"Order Expired");
+        uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
+        console.log(getCurrentPrice,"here's the ratio for a pair");
+        if (getCurrentPrice = orders[_id].targetPrice){
+            // swap(amountIN, tokenIN, tokenOUT, desiredOut);
+        }
     }
 
 
