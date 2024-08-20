@@ -12,20 +12,21 @@ contract factory {
 
     mapping(address => mapping(address => address)) public getPair;
 
-// // Limit order
-//     struct Order {
-//         address user;
-//         address tokenIn;
-//         address tokenOut;
-//         uint256 amountIn;
-//         uint256 amountOutMin;
-//         uint256 priceLimit;
-//         bool isBuyOrder;
-//         bool isActive;
-//     }
+// Limit order
+    struct Order {
+        address user;
+        address tokenIn;
+        address tokenOut;
+        uint256 amountIn;
+        uint256 amountOutMin;
+        uint256 priceLimit;
+        uint256 expiry;
+        bool isBuyOrder;
+        bool isActive;
+    }
 
-//     mapping(uint256 => Order) public orders;
-//     uint256 public orderCount;
+    mapping(uint256 => Order) public orders;
+    uint256 public orderCount;
 
 
     event PairCreated(address token0, address token1, pool pair);
@@ -54,6 +55,9 @@ contract factory {
         uint256 time
     );
 
+    event OrderPlaced(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOutMin, uint256 priceLimit, bool isBuyOrder);
+    event OrderExecuted(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut);
+
     modifier lock() {
         require(unlocked == 1, "DEX: LOCKED");
         unlocked = 0;
@@ -62,22 +66,36 @@ contract factory {
     }
 
 
-    // function placeLimitOrder(address tokenIn, address tokenOut, uint256 amountIn, uint256 priceLimit, bool isBuyOrder) external {
-    //     uint256 amountOutMin = calculateMinAmountOut(amountIn, priceLimit, isBuyOrder);
-    
-    //     orders[orderCount] = Order({
-    //         user: msg.sender,
-    //         tokenIn: tokenIn,
-    //         tokenOut: tokenOut,
-    //         amountIn: amountIn,
-    //         amountOutMin: amountOutMin,
-    //         priceLimit: priceLimit,
-    //         isBuyOrder: isBuyOrder,
-    //         isActive: true
-    //     });
-    
-    //     orderCount++;
+    function placeLimitOrder(address tokenIn, address tokenOut, uint256 amountIn, uint256 priceLimit, bool isBuyOrder) public  {
+        require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
+        require(amountIn > 0, "AmountIn must be greater than zero");
+        uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
+        orders[orderCount] = Order({
+            user: msg.sender,
+            tokenIn: tokenIn,
+            tokenOut: tokenOut,
+            amountIn: amountIn,
+            amountOutMin: amountOutMin,
+            priceLimit: priceLimit,
+            isBuyOrder: isBuyOrder,
+            expiry: block.timestamp + 1 hours, // 1 hour expiry time
+            isActive: true
+        });
+    emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, priceLimit, isBuyOrder);
+        orderCount++;
+    }
+
+    // function calculateMinAmountOut(uint256 amountIn, uint256 priceLimit, bool isBuyOrder) public returns(uint256) {
+    //     if (isBuyOrder){
+    //         uint256 _amountOut = AmountOut(tokenIN, tokenOUT, amountIN);
+    //         // if(priceLimit ==)
+    //     }
+    //     else{}
     // }
+
+    function executeLimitOrder(uint256 _id) public {
+
+    }
 
 
     function concatenateStrings(string memory str1, string memory str2)
