@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 contract factory {
     uint256 private unlocked = 1;
     uint16 public fee = 30;
-    uint16 public maxSlippage=3;
+    uint16 internal maxSlippage=3 ; // max slippage 3%
 
     address[] public allPairsAddress;
 
@@ -365,10 +365,7 @@ contract factory {
             "not enough balance"
         );
         uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
-
-        // require(desiredOut >= AmountOUT, "slippage exist more");
-        require(desiredOut = AmountOUT, "slippage exist more");
-        require(desiredOut >maxSlippage,"Max Slippage reach");
+        require(desiredOut >= AmountOUT, "slippage exist more");
         pool _pool = pool(getPair[tokenIN][tokenOUT]);
         IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
         _pool.approveforswap(tokenOUT, AmountOUT);
@@ -456,94 +453,6 @@ contract factory {
 
         return amount;
     }
-
-    function getBestPath(
-    address[] memory pairAddresses, 
-    address tokenIn, 
-    address tokenOut, 
-    uint256 amountIn
-) 
-    public 
-    view 
-    returns (address[] memory bestPath, uint256 bestAmountOut) 
-{
-    uint256 numPairs = pairAddresses.length;
-    bestAmountOut = 0;
-    address[] memory path;
-
-    for (uint i = 0; i < numPairs; i++) {
-        pool memory pair = allPairsAddress[pairAddresses[i]];//
-
-        // Check if the pair is directly tradable
-        if ((pair.token0 == tokenIn && pair.token1 == tokenOut) || 
-            (pair.token1 == tokenIn && pair.token0 == tokenOut)) {
-
-            uint256 amountOut = getAmountOutDirect(pair, tokenIn, amountIn);
-            
-            if (amountOut > bestAmountOut) {
-                bestAmountOut = amountOut;
-                path = createPath(tokenIn, tokenOut);
-            }
-        } else {
-            // Explore multi-hop routes
-            uint256 intermediateAmountOut = 0;
-
-            if (pair.token0 == tokenIn) {
-                intermediateAmountOut = getAmountOutDirect(pair, tokenIn, amountIn);
-                (address[] memory newPath, uint256 finalAmountOut) = getBestPath(
-                    pairAddresses, 
-                    pair.token1, 
-                    tokenOut, 
-                    intermediateAmountOut
-                );
-
-                if (finalAmountOut > bestAmountOut) {
-                    bestAmountOut = finalAmountOut;
-                    path = mergePaths(tokenIn, newPath);
-                }
-            } else if (pair.token1 == tokenIn) {
-                intermediateAmountOut = getAmountOutDirect(pair, tokenIn, amountIn);
-                (address[] memory newPath, uint256 finalAmountOut) = getBestPath(
-                    pairAddresses, 
-                    pair.token0, 
-                    tokenOut, 
-                    intermediateAmountOut
-                );
-
-                if (finalAmountOut > bestAmountOut) {
-                    bestAmountOut = finalAmountOut;
-                    path = mergePaths(tokenIn, newPath);
-                }
-            }
-        }
-    }
-
-    bestPath = path;
-    return (bestPath, bestAmountOut);
-}
-
-
-function getAmountOutDirect(pool memory pair, address tokenIn, uint256 amountIn) internal pure returns (uint256) {
-    uint256 reserveIn;
-    uint256 reserveOut;
-
-    if (tokenIn == pair.token0) {
-        reserveIn = pair.reserve0;
-        reserveOut = pair.reserve1;
-    } else {
-        reserveIn = pair.reserve1;
-        reserveOut = pair.reserve0;
-    }
-
-    uint256 amountInWithFee = amountIn * 997; // Assuming a 0.3% fee
-    uint256 numerator = amountInWithFee * reserveOut;
-    uint256 denominator = (reserveIn * 1000) + amountInWithFee;
-
-    return numerator / denominator;
-}
-
-
-
 
 
 //     function getBestPath(address[] memory tokens, uint256 amountIn) public view returns (address[] memory bestPath, uint256 bestAmountOut) {
