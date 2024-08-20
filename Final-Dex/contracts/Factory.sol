@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 contract factory {
     uint256 private unlocked = 1;
     uint16 public fee = 30;
-    uint16 internal maxSlippage=3 ; // max slippage 3%
+    // uint16 internal maxSlippage=3 ; // max slippage 3%
 
     address[] public allPairsAddress;
 
@@ -93,13 +93,17 @@ contract factory {
     //     else{}
     // }
 
-    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut) public {
+    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory) {
         require(orders[_id].isActive,"Order doesn't exist");
         require(block.timestamp < orders[_id].expiry,"Order Expired");
         uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
         console.log(getCurrentPrice,"here's the ratio for a pair");
-        if (getCurrentPrice = orders[_id].targetPrice){
-            // swap(amountIN, tokenIN, tokenOUT, desiredOut);
+        if (getCurrentPrice == orders[_id].targetPrice){
+            uint256 swappedAmount = swap(amountIn, tokenIn, tokenOut, desiredOut);
+            console.log(swappedAmount);
+        }
+        else{
+            return "price not reachead";
         }
     }
 
