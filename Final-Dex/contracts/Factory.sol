@@ -13,7 +13,7 @@ contract factory {
     mapping(address => mapping(address => address)) public getPair;
 
 // Limit order
-    struct Order {
+    struct limitOrder {
         address user;
         address tokenIn;
         address tokenOut;
@@ -25,7 +25,7 @@ contract factory {
         bool isActive;
     }
 
-    mapping(uint256 => Order) public orders;
+    mapping(uint256 => limitOrder) public orders;
     uint256 public orderCount;
 
 
@@ -70,7 +70,7 @@ contract factory {
         require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
         require(amountIn > 0, "AmountIn must be greater than zero");
         uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
-        orders[orderCount] = Order({
+        orders[orderCount] = limitOrder({
             user: msg.sender,
             tokenIn: tokenIn,
             tokenOut: tokenOut,
@@ -85,20 +85,44 @@ contract factory {
         orderCount++;
     }
 
-    // function calculateMinAmountOut(uint256 amountIn, uint256 priceLimit, bool isBuyOrder) public returns(uint256) {
-    //     if (isBuyOrder){
-    //         uint256 _amountOut = AmountOut(tokenIN, tokenOUT, amountIN);
-    //         // if(priceLimit ==)
-    //     }
-    //     else{}
+
+    function tokenPrice(address tokenIn, address tokenOut)  public view returns(uint256){
+        require(ISpairExist(tokenIn, tokenOut),"PAIR_NOT_EXIST");
+        pool pair=pool(getPair[tokenIn][tokenOut]);
+        uint256 _reserveTokenIn = pair.reserveToken0();
+        uint256 _reserveTokenOut = pair.reserveToken1();
+        console.log(_reserveTokenIn,"tooken 0");
+        console.log(_reserveTokenOut,"tooken 1");
+        if(tokenIn== pair.token0())
+            return ((_reserveTokenIn*10**4)/_reserveTokenOut);
+        else{
+            return ((_reserveTokenOut*10**4)/_reserveTokenIn);
+        }
+    }
+
+
+    // function token1Price(address tokenIn, address tokenOut)  public view returns(uint256){
+
+    //     require(ISpairExist(tokenIn, tokenOut),"PAIR_NOT_EXIST");
+    //     pool pair=pool(getPair[tokenIn][tokenOut]);
+    //     uint256 _reserveTokenIn = pair.reserveToken0();
+    //     uint256 _reserveTokenOut = pair.reserveToken1();
+    //     console.log(_reserveTokenIn,"tooken 0 ");
+    //     console.log(_reserveTokenOut,"tooken 1 ");
+    //     return ((_reserveTokenIn*10**4)/_reserveTokenOut);
     // }
+    // 10000000000000
+    // 4992488733099
+
 
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory) {
-        require(orders[_id].isActive,"Order doesn't exist");
-        require(block.timestamp < orders[_id].expiry,"Order Expired");
-        uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
-        console.log(getCurrentPrice,"here's the ratio for a pair");
-        if (getCurrentPrice == orders[_id].targetPrice){
+        limitOrder storage order = orders[_id];
+        require(order.isActive,"Order doesn't exist");
+        require(block.timestamp < order.expiry,"Order Expired");
+        // uint256 getCurrentPrice = (getReserveratio(tokenIn, tokenOut)) / 10**18;
+        uint256 getCurrentPrice = (tokenPrice(tokenIn, tokenOut)) / 10**4;
+        console.log(getCurrentPrice,"here's the current price tof Token A");
+        if (getCurrentPrice == order.targetPrice){
             uint256 swappedAmount = swap(amountIn, tokenIn, tokenOut, desiredOut);
             console.log(swappedAmount);
         }
