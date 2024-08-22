@@ -106,9 +106,10 @@ contract factory {
         require(block.timestamp < order.expiry,"Order Expired");
         // uint256 getCurrentPrice = (getReserveratio(tokenIn, tokenOut)) / 10**18;
         uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
-        console.log(getCurrentPrice,"here's the current price tof Token A");
-        // uint256 currentPricePrecision = getCurrentPrice;
         uint256 targetPrice = order.targetPrice * 10**9;
+        console.log(getCurrentPrice,"here's the current price tof Token A");
+        console.log(targetPrice,"Target Price of the order");
+
         if (getCurrentPrice == targetPrice){
             console.log("Entered Comparision loop");
             swap(amountIn, tokenIn, tokenOut, desiredOut);
