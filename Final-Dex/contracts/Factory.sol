@@ -86,28 +86,29 @@ contract factory {
     }
 
 
-    // function tokenPrice(address tokenIn, address tokenOut)  public view returns(uint256){
-    //     require(ISpairExist(tokenIn, tokenOut),"PAIR_NOT_EXIST");
-    //     pool pair=pool(getPair[tokenIn][tokenOut]);
-    //     uint256 _reserveTokenIn = pair.reserveToken0();
-    //     uint256 _reserveTokenOut = pair.reserveToken1();
-    //     console.log(_reserveTokenIn,"tooken 0");
-    //     console.log(_reserveTokenOut,"tooken 1");
-    //     if(tokenIn== pair.token0())
-    //         return ((_reserveTokenIn*10**4)/_reserveTokenOut);
-    //     else{
-    //         return ((_reserveTokenOut*10**4)/_reserveTokenIn);
-    //     }
-    // }
+    function tokenPrice(address tokenIn, address tokenOut)  public view returns(uint256){
+        require(ISpairExist(tokenIn, tokenOut),"PAIR_NOT_EXIST");
+        pool pair=pool(getPair[tokenIn][tokenOut]);
+        uint256 _reserveTokenIn = pair.reserveToken0();
+        uint256 _reserveTokenOut = pair.reserveToken1();
+        console.log(_reserveTokenIn,"tooken 0");
+        console.log(_reserveTokenOut,"tooken 1");
+        if(tokenIn== pair.token0())
+            return ((_reserveTokenIn*10**4)/_reserveTokenOut);
+        else{
+            return ((_reserveTokenOut*10**4)/_reserveTokenIn);
+        }
+    }
 
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory text) {
         limitOrder storage order = orders[_id];
         require(order.isActive,"Order doesn't exist");
         require(block.timestamp < order.expiry,"Order Expired");
         // uint256 getCurrentPrice = (getReserveratio(tokenIn, tokenOut)) / 10**18;
-        uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
-        uint256 targetPrice = order.targetPrice * 10**9;
-        console.log(getCurrentPrice,"here's the current price tof Token A");
+        uint256 getCurrentPrice = tokenPrice(tokenIn, tokenOut);
+        //12096
+        console.log(getCurrentPrice,"here's the current price of Token A");
+        uint256 targetPrice = order.targetPrice/10**9 ;
         console.log(targetPrice,"Target Price of the order");
 
         if (getCurrentPrice == targetPrice){
@@ -117,6 +118,7 @@ contract factory {
             order.isActive=false;
             return "Order Executed";
         }
+
         else{
             return "price not reached";
         }
@@ -395,6 +397,10 @@ contract factory {
             return out / convertToTargetedPrecison(tokenOUT);
         }
     }
+
+    // 100000000000000
+    // 49924887330996
+
 
     function swap(
         uint256 amountIN,
