@@ -57,6 +57,7 @@ contract factory {
 
     event OrderPlaced(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOutMin, uint256 priceLimit, bool isBuyOrder);
     event OrderExecuted(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut);
+    event LimitOrderCancelled(uint256 indexed orderId, address indexed user);
 
     modifier lock() {
         require(unlocked == 1, "DEX: LOCKED");
@@ -64,7 +65,6 @@ contract factory {
         _;
         unlocked = 1;
     }
-
 
     function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder) public  {
         require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
@@ -86,29 +86,13 @@ contract factory {
     }
 
 
-    function tokenPrice(address tokenIn, address tokenOut)  public view returns(uint256){
-        require(ISpairExist(tokenIn, tokenOut),"PAIR_NOT_EXIST");
-        pool pair=pool(getPair[tokenIn][tokenOut]);
-        uint256 _reserveTokenIn = pair.reserveToken0();
-        uint256 _reserveTokenOut = pair.reserveToken1();
-        console.log(_reserveTokenIn,"tooken 0");
-        console.log(_reserveTokenOut,"tooken 1");
-        if(tokenIn== pair.token0())
-            return ((_reserveTokenIn*10**4)/_reserveTokenOut);
-        else{
-            return ((_reserveTokenOut*10**4)/_reserveTokenIn);
-        }
-    }
-
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory text) {
         limitOrder storage order = orders[_id];
         require(order.isActive,"Order doesn't exist");
         require(block.timestamp < order.expiry,"Order Expired");
-        // uint256 getCurrentPrice = (getReserveratio(tokenIn, tokenOut)) / 10**18;
-        uint256 getCurrentPrice = tokenPrice(tokenIn, tokenOut);
-        //12096
+        uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
         console.log(getCurrentPrice,"here's the current price of Token A");
-        uint256 targetPrice = order.targetPrice/10**9 ;
+        uint256 targetPrice = order.targetPrice ;
         console.log(targetPrice,"Target Price of the order");
 
         if (getCurrentPrice == targetPrice){
@@ -118,11 +102,20 @@ contract factory {
             order.isActive=false;
             return "Order Executed";
         }
-
         else{
             return "price not reached";
         }
     }
+
+    function cancelLimitOrder(uint256 _id )public returns(string memory){
+        limitOrder storage order = orders[_id];
+        require(order.isActive == true,"Order doesn't exist or is already inactive");
+        require(order.user == msg.sender, "Only the order initiator can cancel the order");
+        delete orders[_id];
+        emit LimitOrderCancelled(_id,msg.sender);
+        return "Order cancelled successfully";
+    }
+
 
 
     function concatenateStrings(string memory str1, string memory str2)
