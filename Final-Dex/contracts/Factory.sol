@@ -90,7 +90,7 @@ contract factory  {
 
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory text) {
         limitOrder storage order = orders[_id];
-        require(order.isActive,"Order doesn't exist");
+        require(order.isActive,"Order doesn't exist or is already executed");
         require(block.timestamp < order.expiry,"Order Expired");
         uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
         console.log(getCurrentPrice,"here's the current price of Token A");
@@ -113,7 +113,7 @@ contract factory  {
 
     function cancelLimitOrder(uint256 _id )public returns(string memory){
         limitOrder storage order = orders[_id];
-        require(order.isActive == true,"Order doesn't exist or is already inactive");
+        require(order.isActive == true,"Order doesn't exist or is already executed");
         require(order.user == msg.sender, "Only the order initiator can cancel the order");
         if(block.timestamp >order.expiry){
             delete orders[_id];
