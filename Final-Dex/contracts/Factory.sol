@@ -2,14 +2,15 @@
 pragma solidity ^0.8.20;
 import "./Pool.sol";
 import "hardhat/console.sol";
+import {erc20token} from "./Token.sol";
 
-contract factory {
+
+contract factory  {
     uint256 private unlocked = 1;
     uint16 public fee = 30;
     // uint16 internal maxSlippage=3 ; // max slippage 3%
 
     address[] public allPairsAddress;
-
     mapping(address => mapping(address => address)) public getPair;
 
 // Limit order
@@ -79,12 +80,13 @@ contract factory {
             targetPrice: targetPrice,
             isBuyOrder: isBuyOrder,
             expiry: block.timestamp + 1 hours, // 1 hour expiry time
+            // expiry: block.timestamp +_deadline,
             isActive: true
         });
-    emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
+        // erc20token(tokenIn).approve(address(this),amountIn); //done from frontend
+        emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
-
 
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory text) {
         limitOrder storage order = orders[_id];
@@ -95,11 +97,13 @@ contract factory {
         uint256 targetPrice = order.targetPrice ;
         console.log(targetPrice,"Target Price of the order");
 
-        if (getCurrentPrice == targetPrice){
-            console.log("Entered Comparision loop");
+        if (getCurrentPrice <= targetPrice){
+            console.log("Entered price Comparision loop");
+            erc20token(tokenIn).allowance(msg.sender,address(this));
             swap(amountIn, tokenIn, tokenOut, desiredOut);
             emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
             order.isActive=false;
+            delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
             return "Order Executed";
         }
         else{
@@ -111,11 +115,16 @@ contract factory {
         limitOrder storage order = orders[_id];
         require(order.isActive == true,"Order doesn't exist or is already inactive");
         require(order.user == msg.sender, "Only the order initiator can cancel the order");
+        if(block.timestamp >order.expiry){
+            delete orders[_id];
+            emit LimitOrderCancelled(_id,msg.sender);
+            return "Order cancelled successfully";
+        }
+        // if not expired then let user delete their order
         delete orders[_id];
         emit LimitOrderCancelled(_id,msg.sender);
         return "Order cancelled successfully";
     }
-
 
 
     function concatenateStrings(string memory str1, string memory str2)
@@ -390,9 +399,6 @@ contract factory {
             return out / convertToTargetedPrecison(tokenOUT);
         }
     }
-
-    // 100000000000000
-    // 49924887330996
 
 
     function swap(

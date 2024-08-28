@@ -1,6 +1,6 @@
 {
   "name": "factory",
-  "address": "0x3c23703aa2f984524f6a2df45f70939f3d269607",
+  "address": "0x66E401739C38789640b04465145E20Bd3B6BD614",
   "abi": [
     {
       "inputs": [
@@ -26,6 +26,25 @@
         }
       ],
       "name": "addLiquidity",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelLimitOrder",
       "outputs": [
         {
           "internalType": "string",
@@ -74,6 +93,25 @@
       ],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "orderId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "LimitOrderCancelled",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -197,40 +235,6 @@
       ],
       "name": "PairCreated",
       "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amountIN",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "tokenIN",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "tokenOUT",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "desiredOut",
-          "type": "uint256"
-        }
-      ],
-      "name": "swap",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
     },
     {
       "anonymous": false,
@@ -418,6 +422,40 @@
           "internalType": "string",
           "name": "",
           "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amountIN",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenIN",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "tokenOUT",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "desiredOut",
+          "type": "uint256"
+        }
+      ],
+      "name": "swap",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -741,5 +779,5 @@
     }
   ],
   "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Factory.sol",
-  "pinnedAt": 1724758668166
+  "pinnedAt": 1724828274171
 }

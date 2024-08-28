@@ -2,7 +2,6 @@
 pragma solidity >=0.8.0;
 
 import "hardhat/console.sol";
-
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./Factory.sol";
 import "./libraries/Math.sol";
@@ -142,7 +141,6 @@ contract pool is ERC20 {
         emit syncReserve(address(this), reserveToken0, reserveToken1);
     }
 
-// 9066108938801
     function updateAfterRemoveLiquidity(
         address tokenA,
         uint256 amount0,
