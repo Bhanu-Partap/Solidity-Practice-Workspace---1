@@ -97,17 +97,33 @@ contract factory  {
         uint256 targetPrice = order.targetPrice ;
         console.log(targetPrice,"Target Price of the order");
 
-        if (getCurrentPrice <= targetPrice){
-            console.log("Entered price Comparision loop");
-            erc20token(tokenIn).allowance(msg.sender,address(this));
-            swap(amountIn, tokenIn, tokenOut, desiredOut);
-            emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
-            order.isActive=false;
-            delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
-            return "Order Executed";
+        if(order.isBuyOrder){
+             if (getCurrentPrice <= targetPrice){
+                console.log("Buy Order Execution");
+                // require(erc20token(tokenIn).allowance(msg.sender,address(this)),"");
+                swap(amountIn, tokenIn, tokenOut, desiredOut);
+                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
+                order.isActive=false;
+                delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
+                return "Buy Order Executed";
+        }
+            else{
+                return "price not reached for buy order";
+                }
         }
         else{
-            return "price not reached";
+            if(getCurrentPrice >= targetPrice){
+                console.log("Sell Order Execution");
+                swap(amountIn, tokenIn, tokenOut, desiredOut);
+                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
+                order.isActive=false;
+                delete orders[_id]; 
+                return "Sell Order Executed";
+
+            }
+            else{
+                return "price not reached for sell order";
+            }
         }
     }
 
