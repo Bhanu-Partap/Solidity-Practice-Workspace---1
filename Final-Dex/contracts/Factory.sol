@@ -100,7 +100,6 @@ contract factory  {
         if(order.isBuyOrder){
              if (getCurrentPrice <= targetPrice){
                 console.log("Buy Order Execution");
-                // require(erc20token(tokenIn).allowance(msg.sender,address(this)),"");
                 swap(amountIn, tokenIn, tokenOut, desiredOut);
                 emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
                 order.isActive=false;
@@ -119,7 +118,6 @@ contract factory  {
                 order.isActive=false;
                 delete orders[_id]; 
                 return "Sell Order Executed";
-
             }
             else{
                 return "price not reached for sell order";
@@ -131,12 +129,13 @@ contract factory  {
         limitOrder storage order = orders[_id];
         require(order.isActive == true,"Order doesn't exist or is already executed");
         require(order.user == msg.sender, "Only the order initiator can cancel the order");
+        //if expired order gets deleted
         if(block.timestamp >order.expiry){
             delete orders[_id];
             emit LimitOrderCancelled(_id,msg.sender);
             return "Order cancelled successfully";
         }
-        // if not expired then let user delete their order
+        // if not expired then let user delete their order,if they want to
         delete orders[_id];
         emit LimitOrderCancelled(_id,msg.sender);
         return "Order cancelled successfully";
