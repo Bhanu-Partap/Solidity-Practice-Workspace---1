@@ -130,12 +130,10 @@ contract pool is ERC20 {
             reserveToken0 += amount0;
             reserveToken1 += amount1;
             emit syncReserve(address(this), reserveToken0, reserveToken1);
-            console.log("correct isss working check this");
 
         } else {
             reserveToken0 += amount1;
             reserveToken1 += amount0;
-            console.log("opposite isss working check this");
         }
         blockTimestampLast = block.timestamp;
         emit syncReserve(address(this), reserveToken0, reserveToken1);

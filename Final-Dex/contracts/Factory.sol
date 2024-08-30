@@ -83,7 +83,6 @@ contract factory  {
             // expiry: block.timestamp +_deadline,
             isActive: true
         });
-        // erc20token(tokenIn).approve(address(this),amountIn); //done from frontend
         emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
@@ -99,7 +98,7 @@ contract factory  {
 
         if(order.isBuyOrder){
              if (getCurrentPrice <= targetPrice){
-                console.log("Buy Order Execution");
+                // console.log("Buy Order Execution");
                 swap(amountIn, tokenIn, tokenOut, desiredOut);
                 emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
                 order.isActive=false;
@@ -112,7 +111,7 @@ contract factory  {
         }
         else{
             if(getCurrentPrice >= targetPrice){
-                console.log("Sell Order Execution");
+                // console.log("Sell Order Execution");
                 swap(amountIn, tokenIn, tokenOut, desiredOut);
                 emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
                 order.isActive=false;
