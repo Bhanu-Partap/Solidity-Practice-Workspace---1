@@ -67,7 +67,7 @@ contract factory  {
         unlocked = 1;
     }
 
-    function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder) public  {
+    function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder, uint32 _deadline) public lock  {
         require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
         require(amountIn > 0, "AmountIn must be greater than zero");
         uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
@@ -79,15 +79,15 @@ contract factory  {
             amountOutMin: amountOutMin,
             targetPrice: targetPrice,
             isBuyOrder: isBuyOrder,
-            expiry: block.timestamp + 1 hours, // 1 hour expiry time
-            // expiry: block.timestamp +_deadline,
+            // expiry: block.timestamp + 1 hours, // 1 hour expiry time
+            expiry: block.timestamp +_deadline,
             isActive: true
         });
         emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
 
-    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory text) {
+    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public lock returns(string memory text) {
         limitOrder storage order = orders[_id];
         require(order.isActive,"Order doesn't exist or is already executed");
         require(block.timestamp < order.expiry,"Order Expired");
@@ -124,7 +124,7 @@ contract factory  {
         }
     }
 
-    function cancelLimitOrder(uint256 _id )public returns(string memory){
+    function cancelLimitOrder(uint256 _id )public lock returns(string memory){
         limitOrder storage order = orders[_id];
         require(order.isActive == true,"Order doesn't exist or is already executed");
         require(order.user == msg.sender, "Only the order initiator can cancel the order");
