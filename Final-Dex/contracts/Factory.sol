@@ -87,7 +87,7 @@ contract factory  {
         orderCount++;
     }
 
-    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public lock returns(string memory text) {
+    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public lock returns(string memory) {
         limitOrder storage order = orders[_id];
         require(order.isActive,"Order doesn't exist or is already executed");
         require(block.timestamp < order.expiry,"Order Expired");
@@ -101,12 +101,11 @@ contract factory  {
                 // console.log("Buy Order Execution");
                 swap(amountIn, tokenIn, tokenOut, desiredOut);
                 emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
-                order.isActive=false;
                 delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
                 return "Buy Order Executed";
         }
             else{
-                return "price not reached for buy order";
+                return "Price Not Reached";
                 }
         }
         else{
@@ -114,12 +113,11 @@ contract factory  {
                 // console.log("Sell Order Execution");
                 swap(amountIn, tokenIn, tokenOut, desiredOut);
                 emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
-                order.isActive=false;
                 delete orders[_id]; 
                 return "Sell Order Executed";
             }
             else{
-                return "price not reached for sell order";
+                return "Price Not Reached";
             }
         }
     }
@@ -446,6 +444,44 @@ contract factory  {
         return AmountOUT;
     }
 
+
+    function swapForLimit(
+        uint256 amountIN,
+        address tokenIN,
+        address tokenOUT,
+        uint256 desiredOut
+    ) public lock returns (uint256) {
+        address caller = address(this);
+        require(
+            IERC20(tokenIN).balanceOf(caller) >= amountIN,
+            "not enough balance"
+        );
+        uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
+        require(desiredOut >= AmountOUT, "slippage exist more");
+        pool _pool = pool(getPair[tokenIN][tokenOUT]);
+        IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
+        _pool.approveforswap(tokenOUT, AmountOUT);
+        IERC20(tokenOUT).transferFrom(address(_pool), caller, AmountOUT);
+        _pool.updateAfterSwap(tokenIN, amountIN, AmountOUT);
+
+        emit Swap(
+            _pool,
+            tokenIN,
+            tokenOUT,
+            amountIN,
+            AmountOUT,
+            block.timestamp
+        );
+        return AmountOUT;
+    }
+
+
+
+
+
+
+
+
 // function for getting the desired amount out for multi hop trade
     function swapOutIfNotpool(address[] memory token, uint256 _amountIn)
         public
@@ -573,3 +609,5 @@ contract factory  {
 // }
 
 }
+
+
