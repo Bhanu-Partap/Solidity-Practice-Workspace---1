@@ -71,6 +71,7 @@ contract factory  {
         require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
         require(amountIn > 0, "AmountIn must be greater than zero");
         uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
+        // IERC20Permit(tokenIn).permit();
         orders[orderCount] = limitOrder({
             user: msg.sender,
             tokenIn: tokenIn,
@@ -86,6 +87,8 @@ contract factory  {
         emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
+    // 10**14
+    // 10**15s
 
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public lock returns(string memory) {
         limitOrder storage order = orders[_id];
