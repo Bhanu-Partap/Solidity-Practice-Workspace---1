@@ -27,6 +27,7 @@ contract factory  {
     }
 
     mapping(uint256 => limitOrder) public orders;
+    mapping(address => uint256) public balances;
     uint256 public orderCount;
 
 
@@ -85,12 +86,11 @@ contract factory  {
             expiry: _deadline,
             isActive: true
         });
-        
+
         emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
-    // 10**14
-    // 10**15s
+
 
     function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory) {
         limitOrder storage order = orders[_id];
@@ -450,35 +450,53 @@ contract factory  {
     }
 
 
-    function swapForLimit(
-        uint256 amountIN,
-        address tokenIN,
-        address tokenOUT,
-        uint256 desiredOut
-    ) public lock returns (uint256) {
-        address caller = address(this);
-        require(
-            IERC20(tokenIN).balanceOf(caller) >= amountIN,
-            "not enough balance"
-        );
-        uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
-        require(desiredOut >= AmountOUT, "slippage exist more");
-        pool _pool = pool(getPair[tokenIN][tokenOUT]);
-        IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
-        _pool.approveforswap(tokenOUT, AmountOUT);
-        IERC20(tokenOUT).transferFrom(address(_pool), caller, AmountOUT);
-        _pool.updateAfterSwap(tokenIN, amountIN, AmountOUT);
-
-        emit Swap(
-            _pool,
-            tokenIN,
-            tokenOUT,
-            amountIN,
-            AmountOUT,
-            block.timestamp
-        );
-        return AmountOUT;
+    // Function to deposit ETH
+    function deposit() external payable {
+        balances[msg.sender] += msg.value;
     }
+
+    // Function to withdraw ETH securely
+    function withdraw(uint256 _amount) external  {
+        require(balances[msg.sender] >= _amount, "Insufficient balance");
+
+        // Effects
+        balances[msg.sender] -= _amount;
+
+        // Interaction
+        (bool success, ) = payable(msg.sender).call{value: _amount}("");
+        require(success, "Transfer failed.");
+    }
+
+
+    // function swapForLimit(
+    //     uint256 amountIN,
+    //     address tokenIN,
+    //     address tokenOUT,
+    //     uint256 desiredOut
+    // ) public lock returns (uint256) {
+    //     address caller = address(this);
+    //     require(
+    //         IERC20(tokenIN).balanceOf(caller) >= amountIN,
+    //         "not enough balance"
+    //     );
+    //     uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
+    //     require(desiredOut >= AmountOUT, "slippage exist more");
+    //     pool _pool = pool(getPair[tokenIN][tokenOUT]);
+    //     IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
+    //     _pool.approveforswap(tokenOUT, AmountOUT);
+    //     IERC20(tokenOUT).transferFrom(address(_pool), caller, AmountOUT);
+    //     _pool.updateAfterSwap(tokenIN, amountIN, AmountOUT);
+
+    //     emit Swap(
+    //         _pool,
+    //         tokenIN,
+    //         tokenOUT,
+    //         amountIN,
+    //         AmountOUT,
+    //         block.timestamp
+    //     );
+    //     return AmountOUT;
+    // }
 
 
 
