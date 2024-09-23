@@ -34,23 +34,22 @@ import {IERC5267} from "../../interfaces/IERC5267.sol";
 abstract contract EIP712 is IERC5267 {
     using ShortStrings for *;
 
-    bytes32 public constant TYPE_HASH =
+    bytes32 private constant TYPE_HASH =
         keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
     // Cache the domain separator as an immutable value, but also store the chain id that it corresponds to, in order to
     // invalidate the cached domain separator if the chain id changes.
-    bytes32 public immutable _cachedDomainSeparator;
-    uint256 public immutable _cachedChainId;
-    address public immutable _cachedThis;
+    bytes32 private immutable _cachedDomainSeparator;
+    uint256 private immutable _cachedChainId;
+    address private immutable _cachedThis;
 
-    bytes32 public immutable _hashedName;
-    bytes32 public immutable _hashedVersion;
+    bytes32 private immutable _hashedName;
+    bytes32 private immutable _hashedVersion;
 
     ShortString private immutable _name;
     ShortString private immutable _version;
     string private _nameFallback;
     string private _versionFallback;
-    uint256 public chainid = block.chainid;
 
     /**
      * @dev Initializes the domain separator and parameter caches.
@@ -86,7 +85,7 @@ abstract contract EIP712 is IERC5267 {
         }
     }
 
-    function _buildDomainSeparator() public view returns (bytes32) {
+    function _buildDomainSeparator() private view returns (bytes32) {
         return keccak256(abi.encode(TYPE_HASH, _hashedName, _hashedVersion, block.chainid, address(this)));
     }
 

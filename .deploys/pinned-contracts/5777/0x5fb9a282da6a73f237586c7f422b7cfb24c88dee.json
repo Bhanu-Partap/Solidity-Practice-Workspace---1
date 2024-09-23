@@ -1,6 +1,6 @@
 {
   "name": "factory",
-  "address": "0xF1bA21faCce831D6420Bb3Af2568C974AcA32D59",
+  "address": "0x5fb9a282da6a73f237586c7f422b7cfb24c88dee",
   "abi": [
     {
       "inputs": [
@@ -469,35 +469,6 @@
     {
       "inputs": [
         {
-          "internalType": "address[]",
-          "name": "token",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "desiredAmount",
-          "type": "uint256"
-        }
-      ],
-      "name": "swap_If_pool_not_exist",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "amountIN",
           "type": "uint256"
@@ -791,32 +762,8 @@
       ],
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address[]",
-          "name": "token",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amountIn",
-          "type": "uint256"
-        }
-      ],
-      "name": "swapOutIfNotpool",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
     }
   ],
   "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Factory.sol",
-  "pinnedAt": 1726735392904
+  "pinnedAt": 1727068399614
 }

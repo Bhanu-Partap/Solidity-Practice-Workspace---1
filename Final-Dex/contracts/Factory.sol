@@ -68,6 +68,7 @@ contract factory  {
     }
 
     function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder, uint32 _deadline) public lock  {
+        require(msg.sender != address(0),"User address can't be null");
         require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
         require(amountIn > 0, "AmountIn must be greater than zero");
         uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
@@ -81,16 +82,17 @@ contract factory  {
             targetPrice: targetPrice,
             isBuyOrder: isBuyOrder,
             // expiry: block.timestamp + 1 hours, // 1 hour expiry time
-            expiry: block.timestamp +_deadline,
+            expiry: _deadline,
             isActive: true
         });
+        
         emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
         orderCount++;
     }
     // 10**14
     // 10**15s
 
-    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public lock returns(string memory) {
+    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory) {
         limitOrder storage order = orders[_id];
         require(order.isActive,"Order doesn't exist or is already executed");
         require(block.timestamp < order.expiry,"Order Expired");
@@ -485,76 +487,76 @@ contract factory  {
 
 
 
-// function for getting the desired amount out for multi hop trade
-    function swapOutIfNotpool(address[] memory token, uint256 _amountIn)
-        public
-        view
-        returns (uint256)
-    {
-        uint256 amount = _amountIn;
-        for (uint256 i = 0; i < (token.length) - 1; i++) {
-            uint256 amountOut = AmountOut(token[i], token[i + 1], amount);
-            amount = amountOut;
-        }
-        return amount;
-    }
+// // function for getting the desired amount out for multi hop trade
+//     function swapOutIfNotpool(address[] memory token, uint256 _amountIn)
+//         public
+//         view
+//         returns (uint256)
+//     {
+//         uint256 amount = _amountIn;
+//         for (uint256 i = 0; i < (token.length) - 1; i++) {
+//             uint256 amountOut = AmountOut(token[i], token[i + 1], amount);
+//             amount = amountOut;
+//         }
+//         return amount;
+//     }
 
-// function for multi-hop trade
-    function swap_If_pool_not_exist(
-        address[] memory token,
-        uint256 _amount,
-        uint256 desiredAmount
-    ) public lock returns (uint256) {
-        address _caller = msg.sender;
-        uint256 amount = _amount;
-        IERC20(token[0]).transferFrom(_caller, address(this), amount);
-        for (uint256 i = 0; i < (token.length) - 1; i++) {
-            if (i < (token.length) - 2) {
-                uint256 AmountOUT = AmountOut(token[i], token[i + 1], amount);
-                pool _pool = pool(getPair[token[i]][token[i + 1]]);
-                _pool.approveforswap(token[i + 1], AmountOUT);
-                IERC20(token[i]).transfer(address(_pool), amount);
-                IERC20(token[i + 1]).transferFrom(
-                    address(_pool),
-                    address(this),
-                    AmountOUT
-                );
-                _pool.updateAfterSwap(token[i], amount, AmountOUT);
-                emit Swap(
-                    _pool,
-                    token[i],
-                    token[i + 1],
-                    amount,
-                    AmountOUT,
-                    block.timestamp
-                );
-                amount = AmountOUT;
-            } else {
-                uint256 AmountOUT = AmountOut(token[i], token[i + 1], amount);
-                pool _pool = pool(getPair[token[i]][token[i + 1]]);
-                _pool.approveforswap(token[i + 1], AmountOUT);
-                IERC20(token[i]).transfer(address(_pool), amount);
-                IERC20(token[i + 1]).transferFrom(
-                    address(_pool),
-                    _caller,
-                    AmountOUT
-                );
-                _pool.updateAfterSwap(token[i], amount, AmountOUT);
-                emit Swap(
-                    _pool,
-                    token[i],
-                    token[i + 1],
-                    amount,
-                    AmountOUT,
-                    block.timestamp
-                );
-                amount = AmountOUT;
-            }
-        }
-        require(desiredAmount >= amount, "slippage exceed");
+// // function for multi-hop trade
+//     function swap_If_pool_not_exist(
+//         address[] memory token,
+//         uint256 _amount,
+//         uint256 desiredAmount
+//     ) public lock returns (uint256) {
+//         address _caller = msg.sender;
+//         uint256 amount = _amount;
+//         IERC20(token[0]).transferFrom(_caller, address(this), amount);
+//         for (uint256 i = 0; i < (token.length) - 1; i++) {
+//             if (i < (token.length) - 2) {
+//                 uint256 AmountOUT = AmountOut(token[i], token[i + 1], amount);
+//                 pool _pool = pool(getPair[token[i]][token[i + 1]]);
+//                 _pool.approveforswap(token[i + 1], AmountOUT);
+//                 IERC20(token[i]).transfer(address(_pool), amount);
+//                 IERC20(token[i + 1]).transferFrom(
+//                     address(_pool),
+//                     address(this),
+//                     AmountOUT
+//                 );
+//                 _pool.updateAfterSwap(token[i], amount, AmountOUT);
+//                 emit Swap(
+//                     _pool,
+//                     token[i],
+//                     token[i + 1],
+//                     amount,
+//                     AmountOUT,
+//                     block.timestamp
+//                 );
+//                 amount = AmountOUT;
+//             } else {
+//                 uint256 AmountOUT = AmountOut(token[i], token[i + 1], amount);
+//                 pool _pool = pool(getPair[token[i]][token[i + 1]]);
+//                 _pool.approveforswap(token[i + 1], AmountOUT);
+//                 IERC20(token[i]).transfer(address(_pool), amount);
+//                 IERC20(token[i + 1]).transferFrom(
+//                     address(_pool),
+//                     _caller,
+//                     AmountOUT
+//                 );
+//                 _pool.updateAfterSwap(token[i], amount, AmountOUT);
+//                 emit Swap(
+//                     _pool,
+//                     token[i],
+//                     token[i + 1],
+//                     amount,
+//                     AmountOUT,
+//                     block.timestamp
+//                 );
+//                 amount = AmountOUT;
+//             }
+//         }
+//         require(desiredAmount >= amount, "slippage exceed");
 
-        return amount;
-    }
+//         return amount;
+//     }
 
 
 //     function getBestPath(address[] memory tokens, uint256 amountIn) public view returns (address[] memory bestPath, uint256 bestAmountOut) {
