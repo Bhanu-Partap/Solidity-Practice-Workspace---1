@@ -102,11 +102,9 @@ contract factory  {
 
         if(order.isBuyOrder){
              if (getCurrentPrice <= targetPrice){
-                // console.log("Balance of the factory contract",IERC20(tokenIn).balanceOf(address(this)));
                 // console.log("Buy Order Execution");
                 swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
-                IERC20(tokenOut).transferFrom(address(this), order.user, desiredOut);
-                emit OrderExecuted(_id, order.user, tokenIn, tokenOut, amountIn, desiredOut);
+                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
                 delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
                 return "Buy Order Executed";
         }
@@ -116,11 +114,9 @@ contract factory  {
         }
         else{
             if(getCurrentPrice >= targetPrice){
-                // console.log("Balance of the factory contract",IERC20(tokenIn).balanceOf(address(this)));
                 // console.log("Sell Order Execution");
                 swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
-                IERC20(tokenOut).transferFrom(address(this), order.user, desiredOut);
-                emit OrderExecuted(_id, order.user, tokenIn, tokenOut, amountIn, desiredOut);
+                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
                 delete orders[_id]; 
                 return "Sell Order Executed";
             }
@@ -129,6 +125,7 @@ contract factory  {
             }
         }
     }
+
 
     function cancelLimitOrder(uint256 _id )public lock returns(string memory){
         limitOrder storage order = orders[_id];
