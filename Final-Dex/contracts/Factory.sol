@@ -6,12 +6,15 @@ import {erc20token} from "./Token.sol";
 
 
 contract factory  {
-    uint256 private unlocked = 1;
     uint16 public fee = 30;
     // uint16 internal maxSlippage=3 ; // max slippage 3%
-
-    address[] public allPairsAddress;
+    uint256 private unlocked = 1;
+    uint256 public gasFeePercentage = 50; // 0.5% gas fee
+    uint256 public orderCount;
+    mapping(uint256 => limitOrder) public orders;
+    mapping(address => uint256) public balances;
     mapping(address => mapping(address => address)) public getPair;
+    address[] public allPairsAddress;
 
 // Limit order
     struct limitOrder {
@@ -25,11 +28,6 @@ contract factory  {
         bool isBuyOrder;
         bool isActive;
     }
-
-    mapping(uint256 => limitOrder) public orders;
-    mapping(address => uint256) public balances;
-    uint256 public orderCount;
-
 
     event PairCreated(address token0, address token1, pool pair);
     event liquidityAdded(
@@ -100,12 +98,15 @@ contract factory  {
         console.log(getCurrentPrice,"here's the current price of Token A");
         uint256 targetPrice = order.targetPrice ;
         console.log(targetPrice,"Target Price of the order");
+        // IERC20(tokenIn).transferFrom(order.user, address(this), amountIn);
 
         if(order.isBuyOrder){
              if (getCurrentPrice <= targetPrice){
+                // console.log("Balance of the factory contract",IERC20(tokenIn).balanceOf(address(this)));
                 // console.log("Buy Order Execution");
-                swap(amountIn, tokenIn, tokenOut, desiredOut);
-                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
+                swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
+                IERC20(tokenOut).transferFrom(address(this), order.user, desiredOut);
+                emit OrderExecuted(_id, order.user, tokenIn, tokenOut, amountIn, desiredOut);
                 delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
                 return "Buy Order Executed";
         }
@@ -115,9 +116,11 @@ contract factory  {
         }
         else{
             if(getCurrentPrice >= targetPrice){
+                // console.log("Balance of the factory contract",IERC20(tokenIn).balanceOf(address(this)));
                 // console.log("Sell Order Execution");
-                swap(amountIn, tokenIn, tokenOut, desiredOut);
-                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
+                swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
+                IERC20(tokenOut).transferFrom(address(this), order.user, desiredOut);
+                emit OrderExecuted(_id, order.user, tokenIn, tokenOut, amountIn, desiredOut);
                 delete orders[_id]; 
                 return "Sell Order Executed";
             }
@@ -468,6 +471,57 @@ contract factory  {
     }
 
 
+    function swapForLimit(
+        uint256 amountIN,
+        address tokenIN,
+        address tokenOUT,
+        uint256 desiredOut
+    ) public lock returns (uint256) {
+        address caller = msg.sender;
+        require(
+            IERC20(tokenIN).balanceOf(caller) >= amountIN,
+            "not enough balance"
+        );
+        uint256 amountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
+        require(desiredOut >= amountOUT, "slippage exist more");
+        pool _pool = pool(getPair[tokenIN][tokenOUT]);
+        IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
+        _pool.approveforswap(tokenOUT, amountOUT);
+        IERC20(tokenOUT).transferFrom(address(_pool), address(this),amountOUT);
+
+        // Calculate gas fee in the output token
+        uint256 gasFee = (amountOUT * gasFeePercentage) / 10000; // Deduct 0.5%
+
+        // Final output amount after deducting gas fee
+        uint256 finalAmountOUT = amountOUT - gasFee;
+
+        IERC20(tokenOUT).transfer(caller,finalAmountOUT);
+        _pool.updateAfterSwap(tokenIN, amountIN, finalAmountOUT);
+        // IERC20(tokenOUT).transferFrom(address(this), order.user, AmountOUT);
+
+
+        emit Swap(
+            _pool,
+            tokenIN,
+            tokenOUT,
+            amountIN,
+            finalAmountOUT,
+            block.timestamp
+        );
+        return finalAmountOUT;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     // function swapForLimit(
     //     uint256 amountIN,
     //     address tokenIN,
@@ -486,6 +540,7 @@ contract factory  {
     //     _pool.approveforswap(tokenOUT, AmountOUT);
     //     IERC20(tokenOUT).transferFrom(address(_pool), caller, AmountOUT);
     //     _pool.updateAfterSwap(tokenIN, amountIN, AmountOUT);
+    //     // IERC20(tokenOUT).transferFrom(address(this), order.user, AmountOUT);
 
     //     emit Swap(
     //         _pool,
@@ -497,12 +552,6 @@ contract factory  {
     //     );
     //     return AmountOUT;
     // }
-
-
-
-
-
-
 
 
 // // function for getting the desired amount out for multi hop trade
@@ -575,61 +624,6 @@ contract factory  {
 
 //         return amount;
 //     }
-
-
-//     function getBestPath(address[] memory tokens, uint256 amountIn) public view returns (address[] memory bestPath, uint256 bestAmountOut) {
-//         uint256 numTokens = tokens.length;
-//         bestAmountOut = 0;
-//         address[] memory path;
-//     for (uint i = 0; i < numTokens - 1; i++) {
-//         for (uint j = i + 1; j < numTokens; j++) {
-//             uint256 amountOut = getDirectSwapOutput(tokens[i], tokens[j], amountIn);
-//             console.log(amountOut);
-
-//             if (amountOut > bestAmountOut) {
-//                 bestAmountOut = amountOut;
-//                 path = createPath(tokens[i], tokens[j]);
-//             }
-
-//             for (uint k = 0; k < numTokens; k++) {
-//                 if (k != i && k != j) {
-//                     uint256 finalAmountOut = getMultiHopSwapOutput(tokens[i], tokens[k], tokens[j], amountIn);
-//                     console.log(finalAmountOut);
-
-//                     if (finalAmountOut > bestAmountOut) {
-//                         bestAmountOut = finalAmountOut;
-//                         path = createPath2(tokens[i], tokens[k], tokens[j]);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     bestPath = path;
-//     return (bestPath, bestAmountOut);
-//     }   
-
-// function getDirectSwapOutput(address tokenIn, address tokenOut, uint256 amountIn) internal view returns (uint256) {
-//     return AmountOut(tokenIn, tokenOut, amountIn);
-// }
-
-// function getMultiHopSwapOutput(address tokenIn, address intermediateToken, address tokenOut, uint256 amountIn) internal view returns (uint256) {
-//     uint256 amountOutIntermediate = AmountOut(tokenIn, intermediateToken, amountIn);
-//     return AmountOut(intermediateToken, tokenOut, amountOutIntermediate);
-// }
-
-// function createPath(address tokenIn, address tokenOut) internal pure returns (address[] memory path) {
-//     path = new address[](2) ;
-//     path[0] = tokenIn;
-//     path[1] = tokenOut;
-// }
-
-// function createPath2(address tokenIn, address intermediateToken, address tokenOut) internal pure returns (address[] memory path) {
-//     path = new address[](3) ;
-//     path[0] = tokenIn;
-//     path[1] = intermediateToken;
-//     path[2] = tokenOut;
-// }
 
 }
 
