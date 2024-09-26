@@ -10,24 +10,24 @@ contract factory  {
     // uint16 internal maxSlippage=3 ; // max slippage 3%
     uint256 private unlocked = 1;
     uint256 public gasFeePercentage = 50; // 0.5% gas fee
-    uint256 public orderCount;
-    mapping(uint256 => limitOrder) public orders;
+    // uint256 public orderCount;
+    // mapping(uint256 => limitOrder) public orders;
     mapping(address => uint256) public balances;
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairsAddress;
 
 // Limit order
-    struct limitOrder {
-        address user;
-        address tokenIn;
-        address tokenOut;
-        uint256 amountIn;
-        uint256 amountOutMin;
-        uint256 targetPrice;
-        uint256 expiry;
-        bool isBuyOrder;
-        bool isActive;
-    }
+    // struct limitOrder {
+    //     address user;
+    //     address tokenIn;
+    //     address tokenOut;
+    //     uint256 amountIn;
+    //     uint256 amountOutMin;
+    //     uint256 targetPrice;
+    //     uint256 expiry;
+    //     bool isBuyOrder;
+    //     bool isActive;
+    // }
 
     event PairCreated(address token0, address token1, pool pair);
     event liquidityAdded(
@@ -55,9 +55,9 @@ contract factory  {
         uint256 time
     );
 
-    event OrderPlaced(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOutMin, uint256 priceLimit, bool isBuyOrder);
-    event OrderExecuted(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut);
-    event LimitOrderCancelled(uint256 indexed orderId, address indexed user);
+    // event OrderPlaced(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOutMin, uint256 priceLimit, bool isBuyOrder);
+    // event OrderExecuted(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut);
+    // event LimitOrderCancelled(uint256 indexed orderId, address indexed user);
 
     modifier lock() {
         require(unlocked == 1, "DEX: LOCKED");
@@ -66,82 +66,82 @@ contract factory  {
         unlocked = 1;
     }
 
-    function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder, uint32 _deadline) public lock  {
-        require(msg.sender != address(0),"User address can't be null");
-        require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
-        require(amountIn > 0, "AmountIn must be greater than zero");
-        uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
-        // IERC20Permit(tokenIn).permit();
-        orders[orderCount] = limitOrder({
-            user: msg.sender,
-            tokenIn: tokenIn,
-            tokenOut: tokenOut,
-            amountIn: amountIn,
-            amountOutMin: amountOutMin,
-            targetPrice: targetPrice,
-            isBuyOrder: isBuyOrder,
-            // expiry: block.timestamp + 1 hours, // 1 hour expiry time
-            expiry: _deadline,
-            isActive: true
-        });
+    // function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder, uint32 _deadline) public lock  {
+    //     require(msg.sender != address(0),"User address can't be null");
+    //     require(tokenIn != address(0) && tokenOut != address(0),"Token Addresses can't be zero");
+    //     require(amountIn > 0, "AmountIn must be greater than zero");
+    //     uint256 amountOutMin = AmountOut(tokenIn, tokenOut, amountIn);
+    //     orders[orderCount] = limitOrder({
+    //         user: msg.sender,
+    //         tokenIn: tokenIn,
+    //         tokenOut: tokenOut,
+    //         amountIn: amountIn,
+    //         amountOutMin: amountOutMin,
+    //         targetPrice: targetPrice,
+    //         isBuyOrder: isBuyOrder,
+    //         // expiry: block.timestamp + 1 hours, // 1 hour expiry time
+    //         expiry: _deadline,
+    //         isActive: true
+    //     });
 
-        emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
-        orderCount++;
-    }
-
-
-    function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory) {
-        limitOrder storage order = orders[_id];
-        require(order.isActive,"Order doesn't exist or is already executed");
-        require(block.timestamp < order.expiry,"Order Expired");
-        uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
-        console.log(getCurrentPrice,"here's the current price of Token A");
-        uint256 targetPrice = order.targetPrice ;
-        console.log(targetPrice,"Target Price of the order");
-        // IERC20(tokenIn).transferFrom(order.user, address(this), amountIn);
-
-        if(order.isBuyOrder){
-             if (getCurrentPrice <= targetPrice){
-                // console.log("Buy Order Execution");
-                swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
-                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
-                delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
-                return "Buy Order Executed";
-        }
-            else{
-                return "Price Not Reached";
-                }
-        }
-        else{
-            if(getCurrentPrice >= targetPrice){
-                // console.log("Sell Order Execution");
-                swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
-                emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
-                delete orders[_id]; 
-                return "Sell Order Executed";
-            }
-            else{
-                return "Price Not Reached";
-            }
-        }
-    }
+    //     emit OrderPlaced(orderCount, msg.sender, tokenIn, tokenOut, amountIn, amountOutMin, targetPrice, isBuyOrder);
+    //     orderCount++;
+    // }
 
 
-    function cancelLimitOrder(uint256 _id )public lock returns(string memory){
-        limitOrder storage order = orders[_id];
-        require(order.isActive == true,"Order doesn't exist or is already executed");
-        require(order.user == msg.sender, "Only the order initiator can cancel the order");
-        //if expired order gets deleted
-        if(block.timestamp >order.expiry){
-            delete orders[_id];
-            emit LimitOrderCancelled(_id,msg.sender);
-            return "Order cancelled successfully";
-        }
-        // if not expired then let user delete their order,if they want to
-        delete orders[_id];
-        emit LimitOrderCancelled(_id,msg.sender);
-        return "Order cancelled successfully";
-    }
+    // function executeLimitOrder(uint256 _id,address tokenIn, address tokenOut,uint256 amountIn, uint256 desiredOut) public returns(string memory) {
+    //     limitOrder storage order = orders[_id];
+    //     require(order.isActive,"Order doesn't exist or is already executed");
+    //     require(block.timestamp < order.expiry,"Order Expired");
+    //     uint256 getCurrentPrice = getReserveratio(tokenIn, tokenOut);
+    //     console.log(getCurrentPrice,"here's the current price of Token A");
+    //     uint256 targetPrice = order.targetPrice ;
+    //     console.log(targetPrice,"Target Price of the order");
+    //     // IERC20(tokenIn).transferFrom(order.user, address(this), amountIn);
+    //     if(order.isBuyOrder){
+    //          if (getCurrentPrice <= targetPrice){
+    //             console.log("Buy Order Execution");
+    //             swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
+    //             console.log("Swapp done buy order");
+    //             emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
+    //             delete orders[_id]; // reduce the storage from the contract, and the executed orders are still stored on the db.
+    //             return "Buy Order Executed";
+    //     }
+    //         else{
+    //             return "Price Not Reached";
+    //             }
+    //     }
+    //     else{
+    //         if(getCurrentPrice >= targetPrice){
+    //             console.log("Sell Order Execution");
+    //             swapForLimit(amountIn, tokenIn, tokenOut, desiredOut);
+    //             console.log("Swapp done sell order");
+    //             emit OrderExecuted(_id, msg.sender, tokenIn, tokenOut, amountIn, desiredOut);
+    //             delete orders[_id]; 
+    //             return "Sell Order Executed";
+    //         }
+    //         else{
+    //             return "Price Not Reached";
+    //         }
+    //     }
+    // }
+
+
+    // function cancelLimitOrder(uint256 _id )public lock returns(string memory){
+    //     limitOrder storage order = orders[_id];
+    //     require(order.isActive == true,"Order doesn't exist or is already executed");
+    //     require(order.user == msg.sender, "Only the order initiator can cancel the order");
+    //     //if expired order gets deleted
+    //     if(block.timestamp >order.expiry){
+    //         delete orders[_id];
+    //         emit LimitOrderCancelled(_id,msg.sender);
+    //         return "Order cancelled successfully";
+    //     }
+    //     // if not expired then let user delete their order,if they want to
+    //     delete orders[_id];
+    //     emit LimitOrderCancelled(_id,msg.sender);
+    //     return "Order cancelled successfully";
+    // }
 
 
     function concatenateStrings(string memory str1, string memory str2)
@@ -480,22 +480,40 @@ contract factory  {
             "not enough balance"
         );
         uint256 amountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
+        console.log("AmountOut : ", amountOUT);
         require(desiredOut >= amountOUT, "slippage exist more");
         pool _pool = pool(getPair[tokenIN][tokenOUT]);
         IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
         _pool.approveforswap(tokenOUT, amountOUT);
         IERC20(tokenOUT).transferFrom(address(_pool), address(this),amountOUT);
 
+        // before tx
+        // 790000000000000 user token a 
+        // 809020778394107 user token b
+        // 9066108938801 amount out
+
+
+        // after tx 
+        // 780000000000000 user token a 
+        // 818041556788214 user token b
+        // 7540920499133 amount out after limit swap
+
+        // 9.020778394×10¹² final amount out of token b 
+        // 45330544694 gas used
+        // 45330544694 factory contract recieved token b amount as gas cost
+
+
+
         // Calculate gas fee in the output token
         uint256 gasFee = (amountOUT * gasFeePercentage) / 10000; // Deduct 0.5%
-
+        console.log("gasFee : ", gasFee);
         // Final output amount after deducting gas fee
         uint256 finalAmountOUT = amountOUT - gasFee;
+        console.log("finalAmountOUT : ", finalAmountOUT);
 
         IERC20(tokenOUT).transfer(caller,finalAmountOUT);
         _pool.updateAfterSwap(tokenIN, amountIN, finalAmountOUT);
         // IERC20(tokenOUT).transferFrom(address(this), order.user, AmountOUT);
-
 
         emit Swap(
             _pool,

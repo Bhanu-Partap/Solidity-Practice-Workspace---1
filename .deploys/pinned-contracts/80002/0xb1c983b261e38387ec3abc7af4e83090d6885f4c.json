@@ -1,6 +1,6 @@
 {
   "name": "factory",
-  "address": "0x2c82f033b421aa8e385edb9e4723f52e68e6de8d",
+  "address": "0xb1c983b261e38387ec3abc7af4e83090d6885f4c",
   "abi": [
     {
       "inputs": [
@@ -56,6 +56,13 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -86,9 +93,9 @@
       "name": "executeLimitOrder",
       "outputs": [
         {
-          "internalType": "bool",
+          "internalType": "string",
           "name": "",
-          "type": "bool"
+          "type": "string"
         }
       ],
       "stateMutability": "nonpayable",
@@ -469,35 +476,6 @@
     {
       "inputs": [
         {
-          "internalType": "address[]",
-          "name": "token",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "desiredAmount",
-          "type": "uint256"
-        }
-      ],
-      "name": "swap_If_pool_not_exist",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "amountIN",
           "type": "uint256"
@@ -526,6 +504,19 @@
           "type": "uint256"
         }
       ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -607,6 +598,25 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "balances",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "fee",
       "outputs": [
@@ -614,6 +624,19 @@
           "internalType": "uint16",
           "name": "",
           "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "gasFeePercentage",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -791,32 +814,8 @@
       ],
       "stateMutability": "view",
       "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address[]",
-          "name": "token",
-          "type": "address[]"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_amountIn",
-          "type": "uint256"
-        }
-      ],
-      "name": "swapOutIfNotpool",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
     }
   ],
   "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Factory.sol",
-  "pinnedAt": 1725536433525
+  "pinnedAt": 1727243579227
 }

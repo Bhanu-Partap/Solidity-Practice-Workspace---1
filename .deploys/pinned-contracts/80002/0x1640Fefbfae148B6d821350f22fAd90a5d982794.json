@@ -1,6 +1,6 @@
 {
-  "name": "erc20token",
-  "address": "0x77d23804377817a99966188cb6113e3d6ee0502d",
+  "name": "pool",
+  "address": "0x1640Fefbfae148B6d821350f22fAd90a5d982794",
   "abi": [
     {
       "inputs": [
@@ -29,6 +29,80 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
+      "name": "approveforliquidity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenOUT",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "approveforswap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_token0",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_token1",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_fac",
+          "type": "address"
+        },
+        {
           "internalType": "string",
           "name": "name",
           "type": "string"
@@ -41,33 +115,6 @@
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "inputs": [],
-      "name": "ECDSAInvalidSignature",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "length",
-          "type": "uint256"
-        }
-      ],
-      "name": "ECDSAInvalidSignatureLength",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "s",
-          "type": "bytes32"
-        }
-      ],
-      "name": "ECDSAInvalidSignatureS",
-      "type": "error"
     },
     {
       "inputs": [
@@ -156,83 +203,6 @@
       "type": "error"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "deadline",
-          "type": "uint256"
-        }
-      ],
-      "name": "ERC2612ExpiredSignature",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "signer",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
-        }
-      ],
-      "name": "ERC2612InvalidSigner",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "account",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "currentNonce",
-          "type": "uint256"
-        }
-      ],
-      "name": "InvalidAccountNonce",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "InvalidShortString",
-      "type": "error"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "Amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "PublicMint",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "str",
-          "type": "string"
-        }
-      ],
-      "name": "StringTooLong",
-      "type": "error"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
@@ -259,52 +229,53 @@
     },
     {
       "anonymous": false,
-      "inputs": [],
-      "name": "EIP712DomainChanged",
-      "type": "event"
-    },
-    {
       "inputs": [
         {
+          "indexed": true,
           "internalType": "address",
-          "name": "owner",
+          "name": "from",
           "type": "address"
         },
         {
+          "indexed": true,
           "internalType": "address",
-          "name": "spender",
+          "name": "to",
           "type": "address"
         },
         {
+          "indexed": false,
           "internalType": "uint256",
           "name": "value",
           "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
         },
         {
+          "indexed": false,
           "internalType": "uint256",
-          "name": "deadline",
+          "name": "reserve0",
           "type": "uint256"
         },
         {
-          "internalType": "uint8",
-          "name": "v",
-          "type": "uint8"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "r",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "s",
-          "type": "bytes32"
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "reserve1",
+          "type": "uint256"
         }
       ],
-      "name": "permit",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
+      "name": "syncReserve",
+      "type": "event"
     },
     {
       "inputs": [
@@ -329,31 +300,6 @@
       ],
       "stateMutability": "nonpayable",
       "type": "function"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "from",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "value",
-          "type": "uint256"
-        }
-      ],
-      "name": "Transfer",
-      "type": "event"
     },
     {
       "inputs": [
@@ -382,6 +328,117 @@
         }
       ],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenA",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateAfterLiquidity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenA",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateAfterRemoveLiquidity",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenIn",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountIN",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amountOUT",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateAfterSwap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_factory",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -437,60 +494,27 @@
           "type": "uint8"
         }
       ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "DOMAIN_SEPARATOR",
-      "outputs": [
-        {
-          "internalType": "bytes32",
-          "name": "",
-          "type": "bytes32"
-        }
-      ],
       "stateMutability": "view",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "eip712Domain",
+      "name": "getReserves",
       "outputs": [
         {
-          "internalType": "bytes1",
-          "name": "fields",
-          "type": "bytes1"
-        },
-        {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "version",
-          "type": "string"
-        },
-        {
           "internalType": "uint256",
-          "name": "chainId",
+          "name": "_reserve0",
           "type": "uint256"
         },
         {
-          "internalType": "address",
-          "name": "verifyingContract",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "_reserve1",
+          "type": "uint256"
         },
         {
-          "internalType": "bytes32",
-          "name": "salt",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256[]",
-          "name": "extensions",
-          "type": "uint256[]"
+          "internalType": "uint256",
+          "name": "_blockTimestampLast",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -510,14 +534,21 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "reserveToken0",
+      "outputs": [
         {
-          "internalType": "address",
-          "name": "owner",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
-      "name": "nonces",
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "reserveToken1",
       "outputs": [
         {
           "internalType": "uint256",
@@ -543,6 +574,32 @@
     },
     {
       "inputs": [],
+      "name": "token0",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "token1",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "totalSupply",
       "outputs": [
         {
@@ -555,6 +612,6 @@
       "type": "function"
     }
   ],
-  "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Token.sol",
-  "pinnedAt": 1726822947251
+  "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Pool.sol",
+  "pinnedAt": 1727243579811
 }

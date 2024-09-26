@@ -1,6 +1,6 @@
 {
   "name": "erc20token",
-  "address": "0xac39a68fdf566fdd2f437c9ea769af75922af865",
+  "address": "0x37f348601fc753682c706da3ec35d785fd128f85",
   "abi": [
     {
       "inputs": [
@@ -41,6 +41,33 @@
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "ECDSAInvalidSignature",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "name": "ECDSAInvalidSignatureLength",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
+        }
+      ],
+      "name": "ECDSAInvalidSignatureS",
+      "type": "error"
     },
     {
       "inputs": [
@@ -129,6 +156,83 @@
       "type": "error"
     },
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC2612ExpiredSignature",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "signer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "ERC2612InvalidSigner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "currentNonce",
+          "type": "uint256"
+        }
+      ],
+      "name": "InvalidAccountNonce",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidShortString",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "Amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PublicMint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "str",
+          "type": "string"
+        }
+      ],
+      "name": "StringTooLong",
+      "type": "error"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -154,19 +258,50 @@
       "type": "event"
     },
     {
+      "anonymous": false,
+      "inputs": [],
+      "name": "EIP712DomainChanged",
+      "type": "event"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
-          "name": "recipient",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "spender",
           "type": "address"
         },
         {
           "internalType": "uint256",
-          "name": "Amount",
+          "name": "value",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint8",
+          "name": "v",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "r",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "s",
+          "type": "bytes32"
         }
       ],
-      "name": "PublicMint",
+      "name": "permit",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -307,12 +442,87 @@
     },
     {
       "inputs": [],
+      "name": "DOMAIN_SEPARATOR",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "eip712Domain",
+      "outputs": [
+        {
+          "internalType": "bytes1",
+          "name": "fields",
+          "type": "bytes1"
+        },
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "version",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "chainId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "verifyingContract",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "salt",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "extensions",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "name",
       "outputs": [
         {
           "internalType": "string",
           "name": "",
           "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "nonces",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -346,5 +556,5 @@
     }
   ],
   "filePath": "Solidity-Practice-1704185993285/Final-Dex/contracts/Token.sol",
-  "pinnedAt": 1724920376995
+  "pinnedAt": 1727243578131
 }
