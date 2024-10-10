@@ -8,6 +8,7 @@ contract factory {
     uint16 public fee = 30;
     mapping(address => mapping(address => address)) public getPair;
 
+// avbj1ztmxfyriicmrkqzbksenybiftc4r3da4uj9nwedehumx5
     event PairCreated(address token0, address token1, pool pair);
     event liquidityAdded(
         pool pair,
