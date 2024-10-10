@@ -15,6 +15,7 @@ contract factory  {
     mapping(address => uint256) public balances;
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairsAddress;
+    address public constant withdrawGasAddress = 0x1234567890AbcdEF1234567890aBcdef12345678;
 
 // Limit order
     // struct limitOrder {
@@ -64,6 +65,11 @@ contract factory  {
         unlocked = 0;
         _;
         unlocked = 1;
+    }
+
+    modifier onlyWithdrawAddress() {
+        require(msg.sender == withdrawGasAddress, "Caller is not authorized");
+        _;
     }
 
     // function placeLimitOrder(address tokenIn ,address tokenOut, uint256 amountIn, uint256 targetPrice, bool isBuyOrder, uint32 _deadline) public lock  {
@@ -450,20 +456,12 @@ contract factory  {
     }
 
 
-    // Function to deposit ETH
-    function deposit() external payable {
-        balances[msg.sender] += msg.value;
-    }
-
-    // Function to withdraw ETH securely
+    // Function to withdraw gas fee securely
     function withdraw(uint256 _amount) external  {
-        require(balances[msg.sender] >= _amount, "Insufficient balance");
-
-        // Effects
-        balances[msg.sender] -= _amount;
+         require(address(this).balance >= _amount, "Insufficient contract balance");
 
         // Interaction
-        (bool success, ) = payable(msg.sender).call{value: _amount}("");
+        (bool success, ) = payable(withdrawGasAddress).call{value: _amount}("");
         require(success, "Transfer failed.");
     }
 
