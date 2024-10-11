@@ -15,7 +15,7 @@ contract factory  {
     mapping(address => uint256) public balances;
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairsAddress;
-    address public constant withdrawGasAddress = 0x1234567890AbcdEF1234567890aBcdef12345678;
+    address public constant withdrawGasAddress = 0x6a6a02f0F6CaBCE3D202d3f7cfAA3a15e7914943;
 
 // Limit order
     // struct limitOrder {
@@ -457,12 +457,12 @@ contract factory  {
 
 
     // Function to withdraw gas fee securely
-    function withdraw(uint256 _amount) external  {
-         require(address(this).balance >= _amount, "Insufficient contract balance");
+    function withdraw(uint256 _amount,address tokenB) external  {
+        uint256 contractTokenBalance = IERC20(tokenB).balanceOf(address(this));
+        require(contractTokenBalance >= _amount, "Insufficient contract token balance");
 
-        // Interaction
-        (bool success, ) = payable(withdrawGasAddress).call{value: _amount}("");
-        require(success, "Transfer failed.");
+        bool success = IERC20(tokenB).transfer(withdrawGasAddress, _amount);
+        require(success, "Token transfer failed.");
     }
 
 
