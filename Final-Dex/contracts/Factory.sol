@@ -55,6 +55,14 @@ contract factory  {
         uint256 quantOUT,
         uint256 time
     );
+    event SwapForLimit(
+        pool pair,
+        address tokenIN,
+        address tokenOUT,
+        uint256 quantIN,
+        uint256 quantOUT,
+        uint256 time
+    );
 
     // event OrderPlaced(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOutMin, uint256 priceLimit, bool isBuyOrder);
     // event OrderExecuted(uint256 indexed orderId, address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut);
@@ -513,7 +521,7 @@ contract factory  {
         _pool.updateAfterSwap(tokenIN, amountIN, finalAmountOUT);
         // IERC20(tokenOUT).transferFrom(address(this), order.user, AmountOUT);
 
-        emit Swap(
+        emit SwapForLimit(
             _pool,
             tokenIN,
             tokenOUT,
