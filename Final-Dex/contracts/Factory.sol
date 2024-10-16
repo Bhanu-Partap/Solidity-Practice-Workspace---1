@@ -458,6 +458,7 @@ contract factory  {
 
     // Function to withdraw gas fee securely
     function withdraw(uint256 _amount,address tokenB) external  {
+        require(msg.sender==withdrawGasAddress,"Authorization Denied ::");
         uint256 contractTokenBalance = IERC20(tokenB).balanceOf(address(this));
         require(contractTokenBalance >= _amount, "Insufficient contract token balance");
 
@@ -523,49 +524,6 @@ contract factory  {
         );
         return finalAmountOUT;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    // function swapForLimit(
-    //     uint256 amountIN,
-    //     address tokenIN,
-    //     address tokenOUT,
-    //     uint256 desiredOut
-    // ) public lock returns (uint256) {
-    //     address caller = address(this);
-    //     require(
-    //         IERC20(tokenIN).balanceOf(caller) >= amountIN,
-    //         "not enough balance"
-    //     );
-    //     uint256 AmountOUT = AmountOut(tokenIN, tokenOUT, amountIN);
-    //     require(desiredOut >= AmountOUT, "slippage exist more");
-    //     pool _pool = pool(getPair[tokenIN][tokenOUT]);
-    //     IERC20(tokenIN).transferFrom(caller, address(_pool), amountIN);
-    //     _pool.approveforswap(tokenOUT, AmountOUT);
-    //     IERC20(tokenOUT).transferFrom(address(_pool), caller, AmountOUT);
-    //     _pool.updateAfterSwap(tokenIN, amountIN, AmountOUT);
-    //     // IERC20(tokenOUT).transferFrom(address(this), order.user, AmountOUT);
-
-    //     emit Swap(
-    //         _pool,
-    //         tokenIN,
-    //         tokenOUT,
-    //         amountIN,
-    //         AmountOUT,
-    //         block.timestamp
-    //     );
-    //     return AmountOUT;
-    // }
-
 
 // // function for getting the desired amount out for multi hop trade
 //     function swapOutIfNotpool(address[] memory token, uint256 _amountIn)
