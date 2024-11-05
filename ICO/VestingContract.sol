@@ -6,6 +6,8 @@ pragma solidity ^0.8.26;
 import "./Erc20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "hardhat/console.sol";
+
 
 contract TokenVesting is Ownable {
     using SafeMath for uint256;
@@ -29,14 +31,17 @@ contract TokenVesting is Ownable {
     }
 
     // Allocate vesting to a user
-    function allocateVesting(address beneficiary, uint256 tokenAmount, uint256 duration) external onlyOwner {
+    function allocateVesting(address beneficiary, uint256 tokenAmount, uint256 duration) external {
+        console.log("Entered in allocating vesting function");
         require(vestingSchedules[beneficiary].totalAmount == 0, "Vesting already exists for this address");
+        console.log("condition checked in allocating vesting function");
         vestingSchedules[beneficiary] = VestingSchedule({
             totalAmount: tokenAmount,
             amountClaimed: 0,
             startTime: block.timestamp,
             duration: duration
         });
+        console.log("vesting allocated");
         emit VestingAllocated(beneficiary, tokenAmount, block.timestamp, duration);
     }
 

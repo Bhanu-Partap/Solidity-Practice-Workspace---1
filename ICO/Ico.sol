@@ -99,6 +99,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./VestingContract.sol"; // Import the vesting contract
 import "./Erc20.sol";
+import "hardhat/console.sol";
 
 contract ICO is Ownable {
     using SafeMath for uint256;
@@ -106,11 +107,11 @@ contract ICO is Ownable {
     IERC20 public token;                 // ERC20 token for sale
     TokenVesting public vestingContract; // Reference to the vesting contract
 
-    uint256 public phaseOneRate;         // Token price in Phase 1
-    uint256 public phaseTwoRate;         // Token price in Phase 2
-    uint256 public phaseThreeRate;       // Token price in Phase 3
-    uint256 public phaseOneEnd;
-    uint256 public phaseTwoEnd;
+    uint256 public tierOneRate;         // Token price in tier 1
+    uint256 public tierTwoRate;         // Token price in tier 2
+    uint256 public tierThreeRate;       // Token price in tier 3
+    uint256 public tierOneEnd;
+    uint256 public tierTwoEnd;
     uint256 public softCap;
     uint256 public hardCap;
     uint256 public totalRaised;
@@ -119,56 +120,60 @@ contract ICO is Ownable {
     event TokensPurchased(address indexed buyer, uint256 amount);
 
     modifier onlyDuringICO() {
-        require(block.timestamp <= phaseTwoEnd, "ICO has ended");
+        require(block.timestamp <= tierTwoEnd, "ICO has ended");
         _;
     }
 
     modifier hasEnded() {
-        require(block.timestamp > phaseTwoEnd, "ICO has not ended yet");
+        require(block.timestamp > tierTwoEnd, "ICO has not ended yet");
         _;
     }
 
     constructor(
         address _tokenAddress,
         address _vestingContractAddress,
-        uint256 _phaseOneRate,
-        uint256 _phaseTwoRate,
-        uint256 _phaseThreeRate,
-        uint256 _phaseOneDuration,
-        uint256 _phaseTwoDuration,
+        uint256 _tierOneRate,
+        uint256 _tierTwoRate,
+        uint256 _tierThreeRate,
+        uint256 _tierOneDuration,
+        uint256 _tierTwoDuration,
         uint256 _softCap,
         uint256 _hardCap
     ) Ownable(msg.sender) {
         token = IERC20(_tokenAddress);
         vestingContract = TokenVesting(_vestingContractAddress);
-        phaseOneRate = _phaseOneRate;
-        phaseTwoRate = _phaseTwoRate;
-        phaseThreeRate = _phaseThreeRate;
-        phaseOneEnd = block.timestamp + _phaseOneDuration;
-        phaseTwoEnd = phaseOneEnd + _phaseTwoDuration;
+        tierOneRate = _tierOneRate;
+        tierTwoRate = _tierTwoRate;
+        tierThreeRate = _tierThreeRate;
+        tierOneEnd = block.timestamp + _tierOneDuration;
+        tierTwoEnd = tierOneEnd + _tierTwoDuration;
         softCap = _softCap;
         hardCap = _hardCap;
     }
 
     function getCurrentRate() public view returns (uint256) {
-        if (block.timestamp <= phaseOneEnd) {
-            return phaseOneRate;
-        } else if (block.timestamp <= phaseTwoEnd) {
-            return phaseTwoRate;
+        if (block.timestamp <= tierOneEnd) {
+            return tierOneRate;
+        } else if (block.timestamp <= tierTwoEnd) {
+            return tierTwoRate;
         } else {
-            return phaseThreeRate;
+            return tierThreeRate;
         }
     }
 
     function buyTokens() external payable onlyDuringICO {
         uint256 rate = getCurrentRate();
+        console.log("rate",rate);
         uint256 tokenAmount = msg.value.mul(rate);
+        console.log("tokenAmount",tokenAmount);
         require(totalRaised.add(msg.value) <= hardCap, "Exceeds hard cap");
         // Update total raised funds
         totalRaised = totalRaised.add(msg.value);
-        // Allocate vesting if the user is a first-time buyer
-        vestingContract.allocateVesting(msg.sender, tokenAmount, 365 days); // 1 year vesting
+        console.log("totalRaised",totalRaised);
 
+        // Allocate vesting if the user is a first-time buyer
+        vestingContract.allocateVesting(msg.sender, tokenAmount, 183 days); // 1 year vesting
+        
         emit TokensPurchased(msg.sender, tokenAmount);
     }
 
