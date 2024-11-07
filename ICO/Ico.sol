@@ -248,6 +248,7 @@ contract DynamicICO is Ownable {
         uint256 _tokenPrice
     ) external onlyOwner icoNotFinalized {
         require(_endTime > _startTime, "End time must be after start time");
+        require(_startTime > getLatestSaleEndTime(), "New sale must start after the last sale ends");
 
         saleCount++;
         sales[saleCount] = Sale({
