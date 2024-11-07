@@ -291,11 +291,11 @@ contract DynamicICO is Ownable {
 
 
     function getSoftCapReached() public view onlyOwner returns(bool){
-        return (address(this).balance >= softCap);
+        return (totalTokensSold >= softCap);
     }
 
     function getHardCapReached() public view onlyOwner returns(bool){
-        return (address(this).balance  == hardCap);
+        return (totalTokensSold  == hardCap);
     }
 
     // function finalizeICO() public onlyOwner icoNotFinalized {
@@ -314,14 +314,17 @@ function finalizeICO() public onlyOwner icoNotFinalized {
         "Cannot finalize: Soft cap not reached and sale is ongoing"
     );
 
+    // if owner wants to finalize the ico just after reching the soft cap
     if (allowImmediateFinalization && totalTokensSold >= softCap) {
         isICOFinalized = true;
-        token.transfer(owner(), address(this).balance);
+        payable(owner()).transfer(address(this).balance);
         emit ICOFinalized(totalTokensSold);
-    } else {
+    }
+    // owner wants to finalize the ico after the sales end and soft cap already reached 
+     else {
         require(block.timestamp >= getLatestSaleEndTime() || totalTokensSold == hardCap, "Cannot finalize: Sale not ended or hard cap not reached");
         isICOFinalized = true;
-        token.transfer(owner(), address(this).balance);
+        payable(owner()).transfer(address(this).balance);
         emit ICOFinalized(totalTokensSold);
     }
     }
