@@ -219,6 +219,7 @@ contract DynamicICO is Ownable {
     uint256 public saleCount;
     uint256 public totalTokensSold;
     address[] public investors;
+    bool public allowImmediateFinalization = false; 
 
     //mapping
     mapping(uint256 => Sale) public sales;
@@ -267,7 +268,7 @@ contract DynamicICO is Ownable {
         require(currentSaleId != 0, "No active sale");
 
         Sale storage sale = sales[currentSaleId];
-        uint256 tokensToBuy = (msg.value * 1 ether) / sale.tokenPrice;
+        uint256 tokensToBuy = (msg.value ) / sale.tokenPrice;
         require(totalTokensSold + tokensToBuy <= hardCap, "Purchase exceeds hard cap");
 
         contributions[msg.sender] += msg.value;
@@ -283,14 +284,48 @@ contract DynamicICO is Ownable {
         emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy);
     }
 
-    function finalizeICO() public onlyOwner icoNotFinalized {
-        require(totalTokensSold >= softCap || block.timestamp >= getLatestSaleEndTime(), "ICO not finalizable");
+    // Owner decides whether immediate finalization is allowed
+    function setAllowImmediateFinalization(bool _allow) external onlyOwner {
+    allowImmediateFinalization = _allow; 
+    }
 
+
+    function getSoftCapReached() public view onlyOwner returns(bool){
+        return (address(this).balance >= softCap);
+    }
+
+    function getHardCapReached() public view onlyOwner returns(bool){
+        return (address(this).balance  == hardCap);
+    }
+
+    // function finalizeICO() public onlyOwner icoNotFinalized {
+    //     require(totalTokensSold >= softCap || block.timestamp >= getLatestSaleEndTime(), "ICO not finalizable");
+
+    //     isICOFinalized = true;
+    //     token.transfer(owner(), address(this).balance);
+
+    //     emit ICOFinalized(totalTokensSold);
+    // }
+
+
+function finalizeICO() public onlyOwner icoNotFinalized {
+    require(
+        totalTokensSold >= softCap || block.timestamp >= getLatestSaleEndTime(),
+        "Cannot finalize: Soft cap not reached and sale is ongoing"
+    );
+
+    if (allowImmediateFinalization && totalTokensSold >= softCap) {
         isICOFinalized = true;
         token.transfer(owner(), address(this).balance);
-
+        emit ICOFinalized(totalTokensSold);
+    } else {
+        require(block.timestamp >= getLatestSaleEndTime() || totalTokensSold == hardCap, "Cannot finalize: Sale not ended or hard cap not reached");
+        isICOFinalized = true;
+        token.transfer(owner(), address(this).balance);
         emit ICOFinalized(totalTokensSold);
     }
+    }
+
 
     function initiateRefund() external onlyOwner icoNotFinalized {
         require(block.timestamp > getLatestSaleEndTime(), "ICO ongoing");
