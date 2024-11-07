@@ -92,101 +92,246 @@
 // }
 
 
+
+//=================VESTING PERIOD ONE=======================//
+
+// pragma solidity ^0.8.26;
+
+// // import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+// import "@openzeppelin/contracts/access/Ownable.sol";
+// import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+// import "./VestingContract.sol"; // Import the vesting contract
+// import "./Erc20.sol";
+// import "hardhat/console.sol";
+
+// contract ICO is Ownable {
+//     using SafeMath for uint256;
+
+//     IERC20 public token;                 // ERC20 token for sale
+//     TokenVesting public vestingContract; // Reference to the vesting contract
+
+//     uint256 public tierOneRate;         // Token price in tier 1
+//     uint256 public tierTwoRate;         // Token price in tier 2
+//     uint256 public tierThreeRate;       // Token price in tier 3
+//     uint256 public tierOneEnd;
+//     uint256 public tierTwoEnd;
+//     uint256 public softCap;
+//     uint256 public hardCap;
+//     uint256 public totalRaised;
+//     bool public isFinalized;
+
+//     event TokensPurchased(address indexed buyer, uint256 amount);
+
+//     modifier onlyDuringICO() {
+//         require(block.timestamp <= tierTwoEnd, "ICO has ended");
+//         _;
+//     }
+
+//     modifier hasEnded() {
+//         require(block.timestamp > tierTwoEnd, "ICO has not ended yet");
+//         _;
+//     }
+
+//     constructor(
+//         address _tokenAddress,
+//         address _vestingContractAddress,
+//         uint256 _tierOneRate,
+//         uint256 _tierTwoRate,
+//         uint256 _tierThreeRate,
+//         uint256 _tierOneDuration,
+//         uint256 _tierTwoDuration,
+//         uint256 _softCap,
+//         uint256 _hardCap
+//     ) Ownable(msg.sender) {
+//         token = IERC20(_tokenAddress);
+//         vestingContract = TokenVesting(_vestingContractAddress);
+//         tierOneRate = _tierOneRate;
+//         tierTwoRate = _tierTwoRate;
+//         tierThreeRate = _tierThreeRate;
+//         tierOneEnd = block.timestamp + _tierOneDuration;
+//         tierTwoEnd = tierOneEnd + _tierTwoDuration;
+//         softCap = _softCap;
+//         hardCap = _hardCap;
+//     }
+
+//     function getCurrentRate() public view returns (uint256) {
+//         if (block.timestamp <= tierOneEnd) {
+//             return tierOneRate;
+//         } else if (block.timestamp <= tierTwoEnd) {
+//             return tierTwoRate;
+//         } else {
+//             return tierThreeRate;
+//         }
+//     }
+
+//     function buyTokens() external payable onlyDuringICO {
+//         uint256 rate = getCurrentRate();
+//         console.log("rate",rate);
+//         uint256 tokenAmount = msg.value.mul(rate);
+//         console.log("tokenAmount",tokenAmount);
+//         require(totalRaised.add(msg.value) <= hardCap, "Exceeds hard cap");
+//         // Update total raised funds
+//         totalRaised = totalRaised.add(msg.value);
+//         console.log("totalRaised",totalRaised);
+
+//         // Allocate vesting if the user is a first-time buyer
+//         vestingContract.allocateVesting(msg.sender, tokenAmount, 183 days); // 1 year vesting
+        
+//         emit TokensPurchased(msg.sender, tokenAmount);
+//     }
+
+//     function finalizeICO() external onlyOwner hasEnded {
+//         require(!isFinalized, "ICO already finalized");
+        
+//         if (totalRaised >= softCap) {
+//             payable(owner()).transfer(address(this).balance); // Transfer funds to owner
+//         } else {
+//             // Handle refund logic if needed
+//             isFinalized = true;
+//         }
+//     }
+
+// }
+
+//======================ONLY PUBLIC SALE======================//
+
 pragma solidity ^0.8.26;
 
-// import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "./VestingContract.sol"; // Import the vesting contract
-import "./Erc20.sol";
-import "hardhat/console.sol";
 
-contract ICO is Ownable {
-    using SafeMath for uint256;
+contract DynamicICO is Ownable {
 
-    IERC20 public token;                 // ERC20 token for sale
-    TokenVesting public vestingContract; // Reference to the vesting contract
+    //struct
+    struct Sale {
+        uint256 startTime;
+        uint256 endTime;
+        uint256 tokenPrice;
+        uint256 tokensSold;
+        bool isFinalized;
+    }
 
-    uint256 public tierOneRate;         // Token price in tier 1
-    uint256 public tierTwoRate;         // Token price in tier 2
-    uint256 public tierThreeRate;       // Token price in tier 3
-    uint256 public tierOneEnd;
-    uint256 public tierTwoEnd;
+    //state variable
+    IERC20 public token;
+    bool public isICOFinalized = false;
     uint256 public softCap;
     uint256 public hardCap;
-    uint256 public totalRaised;
-    bool public isFinalized;
+    uint256 public saleCount;
+    uint256 public totalTokensSold;
+    address[] public investors;
 
-    event TokensPurchased(address indexed buyer, uint256 amount);
+    //mapping
+    mapping(uint256 => Sale) public sales;
+    mapping(address => uint256) public contributions;
+    mapping(address => uint256) public tokensBoughtByInvestor;
 
-    modifier onlyDuringICO() {
-        require(block.timestamp <= tierTwoEnd, "ICO has ended");
-        _;
-    }
+    // events
+    event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
+    event TokensPurchased(address indexed buyer, uint256 saleId, uint256 amount);
+    event ICOFinalized(uint256 totalTokensSold);
+    event RefundInitiated(address indexed investor, uint256 amount);
 
-    modifier hasEnded() {
-        require(block.timestamp > tierTwoEnd, "ICO has not ended yet");
-        _;
-    }
-
-    constructor(
-        address _tokenAddress,
-        address _vestingContractAddress,
-        uint256 _tierOneRate,
-        uint256 _tierTwoRate,
-        uint256 _tierThreeRate,
-        uint256 _tierOneDuration,
-        uint256 _tierTwoDuration,
-        uint256 _softCap,
-        uint256 _hardCap
-    ) Ownable(msg.sender) {
-        token = IERC20(_tokenAddress);
-        vestingContract = TokenVesting(_vestingContractAddress);
-        tierOneRate = _tierOneRate;
-        tierTwoRate = _tierTwoRate;
-        tierThreeRate = _tierThreeRate;
-        tierOneEnd = block.timestamp + _tierOneDuration;
-        tierTwoEnd = tierOneEnd + _tierTwoDuration;
+    constructor(IERC20 _token, uint256 _softCap, uint256 _hardCap) Ownable(msg.sender) {
+        token = _token;
         softCap = _softCap;
         hardCap = _hardCap;
     }
 
-    function getCurrentRate() public view returns (uint256) {
-        if (block.timestamp <= tierOneEnd) {
-            return tierOneRate;
-        } else if (block.timestamp <= tierTwoEnd) {
-            return tierTwoRate;
-        } else {
-            return tierThreeRate;
+    modifier icoNotFinalized() {
+        require(!isICOFinalized, "ICO already finalized");
+        _;
+    }
+
+    function createSale(
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _tokenPrice
+    ) external onlyOwner icoNotFinalized {
+        require(_endTime > _startTime, "End time must be after start time");
+
+        saleCount++;
+        sales[saleCount] = Sale({
+            startTime: _startTime,
+            endTime: _endTime,
+            tokenPrice: _tokenPrice,
+            tokensSold: 0,
+            isFinalized: false
+        });
+
+        emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPrice);
+    }
+
+    function buyTokens() external payable icoNotFinalized {
+        uint256 currentSaleId = getCurrentSaleId();
+        require(currentSaleId != 0, "No active sale");
+
+        Sale storage sale = sales[currentSaleId];
+        uint256 tokensToBuy = (msg.value * 1 ether) / sale.tokenPrice;
+        require(totalTokensSold + tokensToBuy <= hardCap, "Purchase exceeds hard cap");
+
+        contributions[msg.sender] += msg.value;
+        sale.tokensSold += tokensToBuy;
+        totalTokensSold += tokensToBuy;
+
+        // Track investors and their purchases
+        if (tokensBoughtByInvestor[msg.sender] == 0) {
+            investors.push(msg.sender);
+        }
+        tokensBoughtByInvestor[msg.sender] += tokensToBuy;
+
+        emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy);
+    }
+
+    function finalizeICO() public onlyOwner icoNotFinalized {
+        require(totalTokensSold >= softCap || block.timestamp >= getLatestSaleEndTime(), "ICO not finalizable");
+
+        isICOFinalized = true;
+        token.transfer(owner(), address(this).balance);
+
+        emit ICOFinalized(totalTokensSold);
+    }
+
+    function initiateRefund() external onlyOwner icoNotFinalized {
+        require(block.timestamp > getLatestSaleEndTime(), "ICO ongoing");
+        require(totalTokensSold < softCap, "Soft cap reached");
+
+        uint256 amount = contributions[msg.sender];
+        require(amount > 0, "No contributions");
+
+        contributions[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+
+        emit RefundInitiated(msg.sender, amount);
+    }
+
+    function airdropTokens() external onlyOwner {
+        require(isICOFinalized, "ICO not finalized");
+
+        for (uint256 i = 0; i < investors.length; i++) {
+            address investor = investors[i];
+            uint256 amount = tokensBoughtByInvestor[investor];
+            if (amount > 0) {
+                token.transfer(investor, amount);
+            }
         }
     }
 
-    function buyTokens() external payable onlyDuringICO {
-        uint256 rate = getCurrentRate();
-        console.log("rate",rate);
-        uint256 tokenAmount = msg.value.mul(rate);
-        console.log("tokenAmount",tokenAmount);
-        require(totalRaised.add(msg.value) <= hardCap, "Exceeds hard cap");
-        // Update total raised funds
-        totalRaised = totalRaised.add(msg.value);
-        console.log("totalRaised",totalRaised);
-
-        // Allocate vesting if the user is a first-time buyer
-        vestingContract.allocateVesting(msg.sender, tokenAmount, 183 days); // 1 year vesting
-        
-        emit TokensPurchased(msg.sender, tokenAmount);
-    }
-
-    function finalizeICO() external onlyOwner hasEnded {
-        require(!isFinalized, "ICO already finalized");
-        
-        if (totalRaised >= softCap) {
-            payable(owner()).transfer(address(this).balance); // Transfer funds to owner
-        } else {
-            // Handle refund logic if needed
-            isFinalized = true;
+    function getCurrentSaleId() public view returns (uint256) {
+        for (uint256 i = 1; i <= saleCount; i++) {
+            if (block.timestamp >= sales[i].startTime && block.timestamp <= sales[i].endTime && !sales[i].isFinalized) {
+                return i;
+            }
         }
+        return 0; // No active sale
     }
 
+    function getLatestSaleEndTime() internal view returns (uint256) {
+        uint256 latestEndTime;
+        for (uint256 i = 1; i <= saleCount; i++) {
+            if (sales[i].endTime > latestEndTime) {
+                latestEndTime = sales[i].endTime;
+            }
+        }
+        return latestEndTime;
+    }
 }
-
