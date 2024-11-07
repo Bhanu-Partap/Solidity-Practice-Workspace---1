@@ -289,7 +289,6 @@ contract DynamicICO is Ownable {
     allowImmediateFinalization = _allow; 
     }
 
-
     function getSoftCapReached() public view onlyOwner returns(bool){
         return (totalTokensSold >= softCap);
     }
