@@ -263,11 +263,15 @@ contract ICO is Ownable {
     }
 
     function buyTokens() external payable icoNotFinalized {
+        require(msg.sender== owner(),"Its only for Investors - You can't buy your own token");
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
         require(msg.value >0,"Enter the valid amount");
 
+        finalizeSaleIfEnded(currentSaleId);
         Sale storage sale = sales[currentSaleId];
+        require(!sale.isFinalized, "Sale already finalized");
+
         uint256 tokenPrice = sale.tokenPrice;
         require(msg.value % tokenPrice == 0, "Amount must be equal to the token price or a multiple of it");
 
@@ -284,6 +288,14 @@ contract ICO is Ownable {
         }
         tokensBoughtByInvestor[msg.sender] += tokensToBuy;
         emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy);
+    }
+
+    function finalizeSaleIfEnded(uint256 saleId) internal {
+    Sale storage sale = sales[saleId];
+
+    if (block.timestamp >= sale.endTime && !sale.isFinalized) {
+        sale.isFinalized = true;
+    }
     }
 
     // Owner decides whether immediate finalization is allowed
@@ -335,7 +347,8 @@ contract ICO is Ownable {
             address investor = investors[i];
             uint256 tokensBought = tokensBoughtByInvestor[investor];
             if (tokensBought > 0) {
-                token.transfer(investor, tokensBought);
+                bool success = token.transferFrom(owner(), investor, tokensBought);
+                require(success, "Token transfer failed");
             }
         }
     }
