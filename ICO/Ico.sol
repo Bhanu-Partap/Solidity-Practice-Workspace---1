@@ -263,7 +263,7 @@ contract ICO is Ownable {
     }
 
     function buyTokens() external payable icoNotFinalized {
-        require(msg.sender== owner(),"Its only for Investors - You can't buy your own token");
+        require(msg.sender!= owner(),"Its only for Investors - You can't buy your own token");
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
         require(msg.value >0,"Enter the valid amount");
@@ -337,6 +337,7 @@ contract ICO is Ownable {
             payable(investor).transfer(amount); 
             emit RefundInitiated(investor, amount);
         }
+        isICOFinalized = true;
     }
 }
 
