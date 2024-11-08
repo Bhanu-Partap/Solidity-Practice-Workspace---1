@@ -265,8 +265,12 @@ contract ICO is Ownable {
     function buyTokens() external payable icoNotFinalized {
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
+        require(msg.value >0,"Enter the valid amount");
 
         Sale storage sale = sales[currentSaleId];
+        uint256 tokenPrice = sale.tokenPrice;
+        require(msg.value % tokenPrice == 0, "Amount must be equal to the token price or a multiple of it");
+
         uint256 tokensToBuy = (msg.value ) / sale.tokenPrice;
         require(totalTokensSold + tokensToBuy <= hardCap, "Purchase exceeds hard cap");
 
