@@ -63,7 +63,6 @@ contract DynamicNFT is ERC721URIStorageUpgradeable {
         ID_FactoryAddress = IDfactory(IDFactoryAddress);
         admin = _Admin;
         owner = _Owner;
-
         nftfactoryaddress = _nftfactoryaddress;
     }
 
