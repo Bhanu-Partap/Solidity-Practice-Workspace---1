@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./IdentityFactory.sol";
+// import "./IdentityFactory.sol";
 
 contract ICO is Ownable {
 
@@ -17,32 +17,34 @@ contract ICO is Ownable {
     }
 
     //state variable
+    // IDfactory public ID_FactoryAddress;
     IERC20 public token;
-    IDfactory public ID_FactoryAddress;
-    bool public isICOFinalized = false;
     uint256 public softCap;
     uint256 public hardCap;
     uint256 public saleCount;
     uint256 public totalTokensSold;
     address[] public investors;
+    bool public isICOFinalized = false;
+    bool public isTokensAirdropped=false;
     bool public allowImmediateFinalization = false; 
 
     //mapping
     mapping(uint256 => Sale) public sales;
+    // mapping(address => bool) public whitelisted;
     mapping(address => uint256) public contributions;            //  tracks the amount of ETH paid by investor
     mapping(address => uint256) public tokensBoughtByInvestor;  //  tracks the amount of tokens bought by investors 
 
     // events
-    event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
-    event TokensPurchased(address indexed buyer, uint256 saleId, uint256 amount);
+    // event Whitelisted(address indexed account);
     event ICOFinalized(uint256 totalTokensSold);
     event RefundInitiated(address indexed investor, uint256 amount);
+    event TokensPurchased(address indexed buyer, uint256 saleId, uint256 amount);
+    event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
 
-    constructor(IERC20 _token, uint256 _softCap, uint256 _hardCap,address _IDFactoryAddress) Ownable(msg.sender) {
+    constructor(IERC20 _token, uint256 _softCap, uint256 _hardCap) Ownable(msg.sender) {
         token = _token;
         softCap = _softCap;
         hardCap = _hardCap;
-        ID_FactoryAddress = IDfactory(_IDFactoryAddress);
     }
 
     modifier icoNotFinalized() {
@@ -50,17 +52,24 @@ contract ICO is Ownable {
         _;
     }
 
-    function isVerifiedUser(address userWallet) public view returns (bool) {
-        address verifiedUser = ID_FactoryAddress.getidentity(userWallet);
-        return verifiedUser != address(0);
-    }
+    // modifier isWhitelisted() {
+    //     require(whitelisted[msg.sender], "Not a whitelisted user");
+    //     _;
+    // }
+
+    // function whitelistUser(address _user) external onlyOwner {
+    //     require(_user != address(0), "Invalid address");
+    //     whitelisted[_user] = true;
+    //     emit Whitelisted(_user);
+    // }
 
     function createSale(
         uint256 _startTime,
         uint256 _endTime,
         uint256 _tokenPrice
     ) external onlyOwner icoNotFinalized {
-        require(_endTime > _startTime, "End time must be after start time");
+        require(_startTime>block.timestamp,"Start time must be greater than current time");
+        require(_endTime > _startTime, "End time must be greater than start time");
         require(_startTime > getLatestSaleEndTime(), "New sale must start after the last sale ends");
 
         saleCount++;
@@ -73,21 +82,26 @@ contract ICO is Ownable {
         });
         emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPrice);
     }
-// 10000000000000000
-    function buyTokens() external payable icoNotFinalized {
+    
+    // if using whitelisting mechanism then add isWhitelisted modifier in buy token duntion
+    function buyTokens() external payable icoNotFinalized  {
         require(msg.sender!= owner(),"Its only for Investors - You can't buy your own token");
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
         require(msg.value >0,"Enter the valid amount");
+        
+        // finalizing previous sales
+        for(uint256 i =1;i<=saleCount;i++){
+        finalizeSaleIfEnded(i);
+        }
 
-        finalizeSaleIfEnded(currentSaleId);
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale already finalized");
 
         uint256 tokenPrice = sale.tokenPrice;
-        require(msg.value % tokenPrice == 0, "Amount must be equal to the token price ");
+        require(msg.value % tokenPrice == 0, "Amount must be equal or multiple of the token price");
 
-        uint256 tokensToBuy = (msg.value ) / sale.tokenPrice;
+        uint256 tokensToBuy = (msg.value) / sale.tokenPrice;
         require(totalTokensSold + tokensToBuy <= hardCap, "Purchase exceeds hard cap");
 
         contributions[msg.sender] += msg.value;
@@ -115,26 +129,63 @@ contract ICO is Ownable {
         allowImmediateFinalization = _allow; 
     }
 
+    // function finalizeICO() public onlyOwner icoNotFinalized {
+    //     require(
+    //     totalTokensSold >= softCap && totalTokensSold <=hardCap || block.timestamp >= getLatestSaleEndTime(),
+    //     "Cannot finalize: Soft cap not reached or sale is ongoing"
+    // );
+
+    // // if owner wants to finalize the ico just after reching the soft cap
+    // if (allowImmediateFinalization && totalTokensSold >= softCap) {
+    //     isICOFinalized = true;
+
+    //     payable(owner()).transfer(address(this).balance);
+    //     emit ICOFinalized(totalTokensSold);
+    // }
+    // // owner wants to finalize the ico after the sales end and soft cap already reached 
+    //  else {
+    //     require(block.timestamp >= getLatestSaleEndTime() || totalTokensSold == hardCap, "Cannot finalize: Sale not ended or hard cap not reached");
+    //     isICOFinalized = true;
+    //     payable(owner()).transfer(address(this).balance);
+    //     emit ICOFinalized(totalTokensSold);
+    // }
+    // }
+
     function finalizeICO() public onlyOwner icoNotFinalized {
-        require(
-        totalTokensSold >= softCap && block.timestamp >= getLatestSaleEndTime(),
-        "Cannot finalize: Soft cap not reached and sale is ongoing"
+    //Check if the hard cap has been reached or the soft cap is reached and sale is ongoing.
+    require(
+        totalTokensSold >= softCap || totalTokensSold >= hardCap || block.timestamp >= getLatestSaleEndTime(),
+        "Cannot finalize: Soft cap not reached or sale is ongoing"
     );
 
-    // if owner wants to finalize the ico just after reching the soft cap
-    if (allowImmediateFinalization && totalTokensSold >= softCap) {
+    for (uint256 i = 1; i <= saleCount; i++) {
+        Sale storage sale = sales[i];
+        if (block.timestamp >= sale.endTime && !sale.isFinalized) {
+            sale.isFinalized = true;
+        }
+    }
+// 10000000000000000
+// 930000000000000000
+    //If the hard cap has been reached, finalize immediately.
+    if (totalTokensSold >= hardCap) {
         isICOFinalized = true;
         payable(owner()).transfer(address(this).balance);
         emit ICOFinalized(totalTokensSold);
     }
-    // owner wants to finalize the ico after the sales end and soft cap already reached 
-     else {
-        require(block.timestamp >= getLatestSaleEndTime() || totalTokensSold == hardCap, "Cannot finalize: Sale not ended or hard cap not reached");
+    //If the soft cap is reached but sale is not ended, the owner can finalize immediately if allowed.
+    else if (totalTokensSold >= softCap && allowImmediateFinalization) {
         isICOFinalized = true;
         payable(owner()).transfer(address(this).balance);
         emit ICOFinalized(totalTokensSold);
     }
+    //If the soft cap is reached and all sales are completed (sale ended), finalize the ICO.
+    else {
+        require(block.timestamp >= getLatestSaleEndTime(), "Sale is still ongoing");
+        isICOFinalized = true;
+        payable(owner()).transfer(address(this).balance);
+        emit ICOFinalized(totalTokensSold);
     }
+}
 
     function initiateRefund() external onlyOwner icoNotFinalized {
         require(block.timestamp > getLatestSaleEndTime(), "ICO ongoing");
@@ -154,6 +205,7 @@ contract ICO is Ownable {
 }
 
     function airdropTokens() external onlyOwner {
+        require(!isTokensAirdropped, "Airdrop already completed");
         require(isICOFinalized, "ICO not finalized");
 
         for (uint256 i = 0; i < investors.length; i++) {
@@ -164,6 +216,7 @@ contract ICO is Ownable {
                 require(success, "Token transfer failed");
             }
         }
+        isTokensAirdropped=true;
     }
 
     // Getter Functions
