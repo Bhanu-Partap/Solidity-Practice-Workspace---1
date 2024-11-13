@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -164,8 +164,7 @@ contract ICO is Ownable {
             sale.isFinalized = true;
         }
     }
-// 10000000000000000
-// 930000000000000000
+
     //If the hard cap has been reached, finalize immediately.
     if (totalTokensSold >= hardCap) {
         isICOFinalized = true;
@@ -185,7 +184,7 @@ contract ICO is Ownable {
         payable(owner()).transfer(address(this).balance);
         emit ICOFinalized(totalTokensSold);
     }
-}
+    }
 
     function initiateRefund() external onlyOwner icoNotFinalized {
         require(block.timestamp > getLatestSaleEndTime(), "ICO ongoing");
@@ -251,5 +250,4 @@ contract ICO is Ownable {
     function getHardCapReached() public view onlyOwner returns(bool){
         return (totalTokensSold  == hardCap);
     }
-
 }
