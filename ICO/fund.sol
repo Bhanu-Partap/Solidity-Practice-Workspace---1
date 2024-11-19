@@ -97,9 +97,12 @@ contract ICO is Ownable {
 
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale already finalized");
+        uint256 tokenDecimals = 10 ** erc20token(token).decimals();
 
-        uint256 tokenPrice = sale.tokenPrice;
-        uint256 tokensToBuy = msg.value / tokenPrice;
+        uint256 tokenPrice = sale.tokenPrice;                                                                                                           
+        require(msg.value % tokenPrice == 0, "Amount must be equal or multiple of the token price");
+
+        uint256 tokensToBuy = (msg.value/ tokenPrice) * uint256(tokenDecimals);
         require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
 
         contributions[msg.sender] += msg.value;
@@ -165,7 +168,7 @@ contract ICO is Ownable {
     }
 
     function initiateRefund() external onlyOwner icoNotFinalized {
-        require(block.timestamp > getLatestSaleEndTime(), "ICO ongoing");
+        require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
         require(totalFundsRaised < softCapInFunds, "Soft cap reached");
 
         for (uint256 i = 0; i < investors.length; i++) {
@@ -184,15 +187,13 @@ contract ICO is Ownable {
     function airdropTokens() external onlyOwner {
         require(!isTokensAirdropped, "Airdrop already completed");
         require(isICOFinalized, "ICO not finalized");
-        uint256 tokenDecimals = 10 ** erc20token(token).decimals();
         for (uint256 i = 0; i < investors.length; i++) {
             address investor = investors[i];
             uint256 tokensBought = tokensBoughtByInvestor[investor] ;
             if (tokensBought > 0) {
-                uint256 airdropAmount = tokensBought * tokenDecimals; 
-                bool success = token.transferFrom(owner(), investor, airdropAmount);
+                bool success = token.transferFrom(owner(), investor, tokensBought);
                 require(success, "Token transfer failed");
-                emit tokenAirdropped(investor, airdropAmount);
+                emit tokenAirdropped(investor, tokensBought);
             }
         }
         isTokensAirdropped = true;
@@ -223,11 +224,11 @@ contract ICO is Ownable {
         return (sale.startTime, sale.endTime);
     }
 
-    function getSoftCapReached() public view onlyOwner returns(bool) {
+    function getSoftCapReached() public view returns(bool) {
         return (totalFundsRaised >= softCapInFunds);
     }
 
-    function getHardCapReached() public view onlyOwner returns(bool) {
+    function getHardCapReached() public view returns(bool) {
         return (totalFundsRaised >= hardCapInFunds);
     }
 }

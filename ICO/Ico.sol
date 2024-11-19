@@ -1,59 +1,53 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./Erc20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-// import "./IdentityFactory.sol";
 
 contract ICO is Ownable {
 
-    //struct
+    // Struct
     struct Sale {
         uint256 startTime;
         uint256 endTime;
-        uint256 tokenPrice;
+        uint256 tokenPrice; 
         uint256 tokensSold;
-        bool isFinalized;
+        bool isFinalized; 
     }
 
-    //state variable
-    IERC20 public token;
-    uint256 public softCap;
-    uint256 public hardCap;
+    // State variables
+    erc20token public token;
+    uint256 public softCapInFunds;
+    uint256 public hardCapInFunds; 
     uint256 public saleCount;
+    uint256 public totalFundsRaised; 
     uint256 public totalTokensSold;
     address[] public investors;
     bool public isICOFinalized = false;
-    bool public isTokensAirdropped=false;
+    bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false; 
 
-    //mapping
+    // Mappings
     mapping(uint256 => Sale) public sales;
     // mapping(address => bool) public whitelisted;
-    mapping(address => uint256) public contributions;            //  tracks the amount of ETH paid by investor
-    mapping(address => uint256) public tokensBoughtByInvestor;  //  tracks the amount of tokens bought by investors 
+    mapping(address => uint256) public contributions;  
+    mapping(address => uint256) public tokensBoughtByInvestor; 
 
-    // events
+    //events
     // event Whitelisted(address indexed account);
     event ICOFinalized(uint256 totalTokensSold);
     event tokenAirdropped(address investor, uint256 airdroppedAmount);
     event RefundInitiated(address investor, uint256 amount);
-    event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPrice,uint256 amountPaid);
+    event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPrice, uint256 amountPaid);
     event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
 
-// 10000000000000000
-    constructor(IERC20 _token, uint256 _softCap, uint256 _hardCap) Ownable(msg.sender) {
+    constructor(erc20token _token, uint256 _softCapInFunds, uint256 _hardCapInFunds) Ownable(msg.sender) {
         token = _token;
-        softCap = _softCap;
-        hardCap = _hardCap;
+        softCapInFunds = _softCapInFunds;
+        hardCapInFunds = _hardCapInFunds;
     }
 
-    modifier icoNotFinalized() {
-        require(!isICOFinalized, "ICO already finalized");
-        _;
-    }
-
-    // modifier isWhitelisted() {
+        // modifier isWhitelisted() {
     //     require(whitelisted[msg.sender], "Not a whitelisted user");
     //     _;
     // }
@@ -64,12 +58,17 @@ contract ICO is Ownable {
     //     emit Whitelisted(_user);
     // }
 
+    modifier icoNotFinalized() {
+        require(!isICOFinalized, "ICO already finalized");
+        _;
+    }
+
     function createSale(
         uint256 _startTime,
         uint256 _endTime,
         uint256 _tokenPrice
     ) external onlyOwner icoNotFinalized {
-        require(_startTime>block.timestamp,"Start time must be greater than current time");
+        require(_startTime > block.timestamp, "Start time must be greater than current time");
         require(_endTime > _startTime, "End time must be greater than start time");
         require(_startTime > getLatestSaleEndTime(), "New sale must start after the last sale ends");
 
@@ -83,29 +82,31 @@ contract ICO is Ownable {
         });
         emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPrice);
     }
-    
+
     // if using whitelisting mechanism then add isWhitelisted modifier in buy token funtion
-    function buyTokens() external payable icoNotFinalized  {
-        require(msg.sender!= owner(),"Its only for Investors - You can't buy your own token");
+    function buyTokens() external payable icoNotFinalized {
+        require(msg.sender != owner(), "Owner cannot buy tokens");
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
-        require(msg.value >0,"Enter the valid amount");
-        
-        // finalizing previous sales
-        for(uint256 i =1;i<=saleCount;i++){
-        finalizeSaleIfEnded(i);
+        require(msg.value > 0, "Enter a valid amount");
+
+        // Finalize previous sales
+        for (uint256 i = 1; i <= saleCount; i++) {
+            finalizeSaleIfEnded(i);
         }
 
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale already finalized");
+        uint256 tokenDecimals = 10 ** erc20token(token).decimals();
 
-        uint256 tokenPrice = sale.tokenPrice;
+        uint256 tokenPrice = sale.tokenPrice;                                                                                                           
         require(msg.value % tokenPrice == 0, "Amount must be equal or multiple of the token price");
 
-        uint256 tokensToBuy = (msg.value) / sale.tokenPrice;
-        require(totalTokensSold + tokensToBuy <= hardCap, "Purchase exceeds hard cap");
+        uint256 tokensToBuy = (msg.value/ tokenPrice) * uint256(tokenDecimals);
+        require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
 
         contributions[msg.sender] += msg.value;
+        totalFundsRaised += msg.value;
         sale.tokensSold += tokensToBuy;
         totalTokensSold += tokensToBuy;
 
@@ -114,92 +115,90 @@ contract ICO is Ownable {
             investors.push(msg.sender);
         }
         tokensBoughtByInvestor[msg.sender] += tokensToBuy;
-        emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy,tokenPrice,msg.value);
+
+        emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPrice, msg.value);
     }
 
     function finalizeSaleIfEnded(uint256 saleId) internal {
-    Sale storage sale = sales[saleId];
+        Sale storage sale = sales[saleId];
 
-    if (block.timestamp >= sale.endTime && !sale.isFinalized) {
-        sale.isFinalized = true;
-    }
-    }
-
-    // Owner decides whether immediate finalization is allowed
-    function setAllowImmediateFinalization(bool _allow) external onlyOwner {
-        allowImmediateFinalization = _allow; 
-    }
-
-    function finalizeICO() public onlyOwner icoNotFinalized {
-    //Check if the hard cap has been reached or the soft cap is reached and sale is ongoing.
-    require(
-        totalTokensSold >= softCap || totalTokensSold >= hardCap || block.timestamp >= getLatestSaleEndTime(),
-        "Cannot finalize: Soft cap not reached or sale is ongoing"
-    );
-
-    for (uint256 i = 1; i <= saleCount; i++) {
-        Sale storage sale = sales[i];
         if (block.timestamp >= sale.endTime && !sale.isFinalized) {
             sale.isFinalized = true;
         }
     }
 
-    //If the hard cap has been reached, finalize immediately.
-    if (totalTokensSold >= hardCap) {
-        isICOFinalized = true;
-        payable(owner()).transfer(address(this).balance);
-        emit ICOFinalized(totalTokensSold);
+    // Owner decides whether immediate finalization is allowed
+    function setAllowImmediateFinalization(uint256 saleId, bool _allow) public onlyOwner {
+        allowImmediateFinalization = _allow; 
+        finalizeSaleIfEnded(saleId);
     }
 
-    //If the soft cap is reached but sale is not ended, the owner can finalize immediately if allowed.
-    else if (totalTokensSold >= softCap && allowImmediateFinalization) {
-        isICOFinalized = true;
-        payable(owner()).transfer(address(this).balance);
-        emit ICOFinalized(totalTokensSold);
-    }
+    function finalizeICO() public onlyOwner icoNotFinalized {
+        require(
+            totalFundsRaised >= softCapInFunds || totalFundsRaised >= hardCapInFunds || block.timestamp >= getLatestSaleEndTime(),
+            "Cannot finalize: Soft cap not reached or sale is ongoing"
+        );
 
-    //If the soft cap is reached and all sales are completed (sale ended), finalize the ICO.
-    else {
-        require(block.timestamp >= getLatestSaleEndTime(), "Sale is still ongoing");
-        isICOFinalized = true;
-        payable(owner()).transfer(address(this).balance);
-        emit ICOFinalized(totalTokensSold);
-    }
+        for (uint256 i = 1; i <= saleCount; i++) {
+            Sale storage sale = sales[i];
+            if (block.timestamp >= sale.endTime && !sale.isFinalized) {
+                sale.isFinalized = true;
+            }
+        }
+
+        // If the hard cap has been reached, finalize immediately.
+        if (totalFundsRaised >= hardCapInFunds) {
+            isICOFinalized = true;
+            payable(owner()).transfer(address(this).balance);
+            emit ICOFinalized(totalTokensSold);
+        }
+        // If the soft cap is reached but sale is not ended, the owner can finalize immediately if allowed.
+        else if (totalFundsRaised >= softCapInFunds && allowImmediateFinalization) {
+            isICOFinalized = true;
+            payable(owner()).transfer(address(this).balance);
+            emit ICOFinalized(totalTokensSold);
+        }
+        // If the soft cap is reached and all sales are completed, finalize the ICO.
+        else {
+            require(block.timestamp >= getLatestSaleEndTime(), "Sale is still ongoing");
+            isICOFinalized = true;
+            payable(owner()).transfer(address(this).balance);
+            emit ICOFinalized(totalTokensSold);
+        }
     }
 
     function initiateRefund() external onlyOwner icoNotFinalized {
-        require(block.timestamp > getLatestSaleEndTime(), "ICO ongoing");
-        require(totalTokensSold < softCap, "Soft cap reached");
+        require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
+        require(totalFundsRaised < softCapInFunds, "Soft cap reached");
 
-        for(uint256 i = 0; i < investors.length; i++) {
-        address investor = investors[i];
-        uint256 amount = contributions[investor];
+        for (uint256 i = 0; i < investors.length; i++) {
+            address investor = investors[i];
+            uint256 amount = contributions[investor];
 
-        if (amount > 0) {
-            contributions[investor] = 0; // resetting the mapping before the transfer (reentrancy)
-            payable(investor).transfer(amount); 
-            emit RefundInitiated(investor, amount);
+            if (amount > 0) {
+                contributions[investor] = 0; // resetting the mapping before the transfer (reentrancy)
+                payable(investor).transfer(amount); 
+                emit RefundInitiated(investor, amount);
+            }
         }
         isICOFinalized = true;
     }
-}
 
     function airdropTokens() external onlyOwner {
         require(!isTokensAirdropped, "Airdrop already completed");
         require(isICOFinalized, "ICO not finalized");
-
         for (uint256 i = 0; i < investors.length; i++) {
             address investor = investors[i];
-            uint256 tokensBought = tokensBoughtByInvestor[investor];
+            uint256 tokensBought = tokensBoughtByInvestor[investor] ;
             if (tokensBought > 0) {
                 bool success = token.transferFrom(owner(), investor, tokensBought);
                 require(success, "Token transfer failed");
                 emit tokenAirdropped(investor, tokensBought);
             }
         }
-        isTokensAirdropped=true;
+        isTokensAirdropped = true;
     }
-// 10000000000000000
+
     // Getter Functions
     function getCurrentSaleId() public view returns (uint256) {
         for (uint256 i = 1; i <= saleCount; i++) {
@@ -207,7 +206,7 @@ contract ICO is Ownable {
                 return i;
             }
         }
-        return 0; // No active sale
+        return 0;
     }
 
     function getLatestSaleEndTime() internal view returns (uint256) {
@@ -220,16 +219,21 @@ contract ICO is Ownable {
         return latestEndTime;
     }
 
-    function getSaleStartEndTime(uint256 _saleId) public view returns(uint256 _startTime, uint256 _endTime){
+    function getSaleStartEndTime(uint256 _saleId) public view returns(uint256 _startTime, uint256 _endTime) {
         Sale memory sale = sales[_saleId];
-        return ( sale.startTime, sale.endTime);
+        return (sale.startTime, sale.endTime);
     }
 
-    function getSoftCapReached() public view onlyOwner returns(bool){
-        return (totalTokensSold >= softCap);
+    function getSoftCapReached() public view returns(bool) {
+        return (totalFundsRaised >= softCapInFunds);
     }
 
-    function getHardCapReached() public view onlyOwner returns(bool){
-        return (totalTokensSold  == hardCap);
+    function getHardCapReached() public view returns(bool) {
+        return (totalFundsRaised >= hardCapInFunds);
+    }
+
+    function getInvestorCount() public view returns(uint256 investorCount){
+        investorCount = investors.length;
+        return investorCount ;
     }
 }
