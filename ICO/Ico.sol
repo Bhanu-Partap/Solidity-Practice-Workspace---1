@@ -3,8 +3,11 @@ pragma solidity ^0.8.26;
 
 import "./Erc20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract ICO is Ownable {
+contract ICO is Ownable,ReentrancyGuard {
+    using SafeMath for uint256;
 
     // Struct
     struct Sale {
@@ -22,10 +25,10 @@ contract ICO is Ownable {
     uint256 public saleCount;
     uint256 public totalFundsRaised; 
     uint256 public totalTokensSold;
-    address[] public investors;
     bool public isICOFinalized = false;
     bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false; 
+    address[] public investors;
 
     // Mappings
     mapping(uint256 => Sale) public sales;
@@ -36,8 +39,9 @@ contract ICO is Ownable {
     //events
     // event Whitelisted(address indexed account);
     event ICOFinalized(uint256 totalTokensSold);
-    event tokenAirdropped(address investor, uint256 airdroppedAmount);
+    event ImmediateFinalization(uint256 saleId);
     event RefundInitiated(address investor, uint256 amount);
+    event tokenAirdropped(address investor, uint256 airdroppedAmount);
     event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPrice, uint256 amountPaid);
     event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
 
@@ -47,7 +51,7 @@ contract ICO is Ownable {
         hardCapInFunds = _hardCapInFunds;
     }
 
-        // modifier isWhitelisted() {
+    // modifier isWhitelisted() {
     //     require(whitelisted[msg.sender], "Not a whitelisted user");
     //     _;
     // }
@@ -119,6 +123,12 @@ contract ICO is Ownable {
         emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPrice, msg.value);
     }
 
+
+    receive() external payable {
+        revert("Direct ETH transfers not allowed");
+    }
+
+
     function finalizeSaleIfEnded(uint256 saleId) internal {
         Sale storage sale = sales[saleId];
 
@@ -131,9 +141,10 @@ contract ICO is Ownable {
     function setAllowImmediateFinalization(uint256 saleId, bool _allow) public onlyOwner {
         allowImmediateFinalization = _allow; 
         finalizeSaleIfEnded(saleId);
+        emit ImmediateFinalization(saleId);
     }
 
-    function finalizeICO() public onlyOwner icoNotFinalized {
+    function finalizeICO() public onlyOwner icoNotFinalized nonReentrant {
         require(
             totalFundsRaised >= softCapInFunds || totalFundsRaised >= hardCapInFunds || block.timestamp >= getLatestSaleEndTime(),
             "Cannot finalize: Soft cap not reached or sale is ongoing"
@@ -167,7 +178,7 @@ contract ICO is Ownable {
         }
     }
 
-    function initiateRefund() external onlyOwner icoNotFinalized {
+    function initiateRefund() external onlyOwner icoNotFinalized nonReentrant{
         require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
         require(totalFundsRaised < softCapInFunds, "Soft cap reached");
 
@@ -184,7 +195,7 @@ contract ICO is Ownable {
         isICOFinalized = true;
     }
 
-    function airdropTokens() external onlyOwner {
+    function airdropTokens() external onlyOwner nonReentrant{
         require(!isTokensAirdropped, "Airdrop already completed");
         require(isICOFinalized, "ICO not finalized");
         for (uint256 i = 0; i < investors.length; i++) {
