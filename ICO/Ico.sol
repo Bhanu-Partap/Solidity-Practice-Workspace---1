@@ -3,11 +3,9 @@ pragma solidity ^0.8.26;
 
 import "./Erc20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract ICO is Ownable,ReentrancyGuard {
-    using SafeMath for uint256;
 
     // Struct
     struct Sale {
@@ -47,6 +45,7 @@ contract ICO is Ownable,ReentrancyGuard {
 
     constructor(erc20token _token, uint256 _softCapInFunds, uint256 _hardCapInFunds) Ownable(msg.sender) {
         token = _token;
+        
         softCapInFunds = _softCapInFunds;
         hardCapInFunds = _hardCapInFunds;
     }
@@ -181,8 +180,8 @@ contract ICO is Ownable,ReentrancyGuard {
     function initiateRefund() external onlyOwner icoNotFinalized nonReentrant{
         require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
         require(totalFundsRaised < softCapInFunds, "Soft cap reached");
-
-        for (uint256 i = 0; i < investors.length; i++) {
+        uint256 investorLength=investors.length;
+        for (uint256 i = 0; i < investorLength; i++) {
             address investor = investors[i];
             uint256 amount = contributions[investor];
 
@@ -198,7 +197,8 @@ contract ICO is Ownable,ReentrancyGuard {
     function airdropTokens() external onlyOwner nonReentrant{
         require(!isTokensAirdropped, "Airdrop already completed");
         require(isICOFinalized, "ICO not finalized");
-        for (uint256 i = 0; i < investors.length; i++) {
+        uint256 investorLength=investors.length;
+        for (uint256 i = 0; i < investorLength; i++) {
             address investor = investors[i];
             uint256 tokensBought = tokensBoughtByInvestor[investor] ;
             if (tokensBought > 0) {

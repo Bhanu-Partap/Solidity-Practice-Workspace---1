@@ -2,9 +2,13 @@
 pragma solidity ^0.8.26;
 
 import "./Erc20.sol";
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract ICO is Ownable {
+contract ICO is Ownable,ReentrancyGuard {
+    AggregatorV3Interface internal bnbUsdPriceFeed;
 
     // Struct
     struct Sale {
@@ -17,37 +21,59 @@ contract ICO is Ownable {
 
     // State variables
     erc20token public token;
+    // IERC20 public stablecoin;
     uint256 public softCapInFunds;
     uint256 public hardCapInFunds; 
     uint256 public saleCount;
-    uint256 public totalFundsRaised; // Total funds raised in ETH
-    uint256 public totalTokensSold; // Total tokens sold in the ICO
-    address[] public investors;
+    uint256 public totalFundsRaised; 
+    uint256 public totalTokensSold;
+    // uint256 public tokenPriceInUSD;
     bool public isICOFinalized = false;
     bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false; 
+    address[] public investors;
+
 
     // Mappings
     mapping(uint256 => Sale) public sales;
     // mapping(address => bool) public whitelisted;
     mapping(address => uint256) public contributions;  
+    mapping(address => bool) public acceptedStablecoins;
     mapping(address => uint256) public tokensBoughtByInvestor; 
+    mapping(address => uint256) public stablecoinContributions;
 
     //events
     // event Whitelisted(address indexed account);
     event ICOFinalized(uint256 totalTokensSold);
-    event tokenAirdropped(address investor, uint256 airdroppedAmount);
+    event ImmediateFinalization(uint256 saleId);
     event RefundInitiated(address investor, uint256 amount);
+    event tokenAirdropped(address investor, uint256 airdroppedAmount);
     event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPrice, uint256 amountPaid);
     event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
 
-    constructor(erc20token _token, uint256 _softCapInFunds, uint256 _hardCapInFunds) Ownable(msg.sender) {
+    constructor(address _bnbUsdPriceFeed, erc20token _token,uint256 _softCapInFunds, uint256 _hardCapInFunds) Ownable(msg.sender) {
         token = _token;
+        bnbUsdPriceFeed = AggregatorV3Interface(address(_bnbUsdPriceFeed));
         softCapInFunds = _softCapInFunds;
         hardCapInFunds = _hardCapInFunds;
     }
 
-        // modifier isWhitelisted() {
+    function getBnbUsdPrice() public view returns (uint256) {
+        (, int256 price, , , ) = bnbUsdPriceFeed.latestRoundData();
+        require(price > 0, "Invalid price");
+        return uint256(price); // BNB price in USD with 8 decimals
+    }
+// 5000000000000000
+
+    function addStablecoin(address _stablecoin) external onlyOwner {
+        acceptedStablecoins[_stablecoin] = true;
+    }
+
+    function removeStablecoin(address _stablecoin) external onlyOwner {
+        acceptedStablecoins[_stablecoin] = false;
+    }
+
+    // modifier isWhitelisted() {
     //     require(whitelisted[msg.sender], "Not a whitelisted user");
     //     _;
     // }
@@ -95,6 +121,9 @@ contract ICO is Ownable {
             finalizeSaleIfEnded(i);
         }
 
+        // 61268230870 ** 10^18/ usd decimal
+
+
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale already finalized");
         uint256 tokenDecimals = 10 ** erc20token(token).decimals();
@@ -119,6 +148,70 @@ contract ICO is Ownable {
         emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPrice, msg.value);
     }
 
+
+
+    function buyTokenStablecoin(address _stablecoin, uint256 amount) external payable icoNotFinalized{
+        require(acceptedStablecoins[_stablecoin], "Stablecoin not accepted");
+        require(msg.sender != owner(), "Owner cannot buy tokens");
+        require(_stablecoin !=address(0),"Invalid token address");
+        uint256 currentSaleId = getCurrentSaleId();
+        require(currentSaleId != 0, "No active sale");
+        require(amount > 0, "Enter a valid amount");
+
+        for (uint256 i = 1; i <= saleCount; i++) {
+            finalizeSaleIfEnded(i);
+        }
+
+        Sale storage sale = sales[currentSaleId];
+        require(!sale.isFinalized, "Sale already finalized");
+        uint256 tokenPriceInBnb = sale.tokenPrice; 
+
+        uint256 bnbUsdPrice = getBnbUsdPrice(); // Get BNB/USD price
+        uint256 tokenPriceInUsd = (tokenPriceInBnb * bnbUsdPrice) / 1e8; // Token price in USD
+
+        uint256 tokensToBuy = (amount * 1e18) / tokenPriceInUsd;
+        require(tokensToBuy > 0, "Insufficient stablecoin for tokens");
+
+        bool success = IERC20(_stablecoin).transferFrom(msg.sender, address(this), amount);
+        require(success, "Stablecoin transfer failed");
+
+        require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
+
+        stablecoinContributions[msg.sender] += amount;
+        totalFundsRaised += amount;
+        sale.tokensSold += tokensToBuy;
+        totalTokensSold += tokensToBuy;
+
+    if (tokensBoughtByInvestor[msg.sender] == 0) {
+        investors.push(msg.sender); // Track new investor
+    }
+
+    emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPriceInUsd, amount);
+    }
+
+
+    // uint256 tokenAmount;
+    // if (tokenAddress == usdcAddress || tokenAddress == usdtAddress) {
+    //     // Normalize stablecoin (6 decimals) to 18 decimals
+    //     uint256 normalizedAmount = amount * 10**12;
+    //     tokenAmount = normalizedAmount / tokenPriceInUSD; // Calculate tokens
+    // } else if (tokenAddress == daiAddress) {
+    //     // DAI already has 18 decimals
+    //     tokenAmount = stablecoinAmount / tokenPriceInUSD;
+    // } else {
+    //     revert("Unsupported stablecoin");
+    // }
+
+    
+
+
+
+
+    receive() external payable {
+        revert("Direct ETH transfers not allowed");
+    }
+
+
     function finalizeSaleIfEnded(uint256 saleId) internal {
         Sale storage sale = sales[saleId];
 
@@ -128,12 +221,13 @@ contract ICO is Ownable {
     }
 
     // Owner decides whether immediate finalization is allowed
-    function setAllowImmediateFinalization(uint256 saleId, bool _allow) external onlyOwner {
+    function setAllowImmediateFinalization(uint256 saleId, bool _allow) public onlyOwner {
         allowImmediateFinalization = _allow; 
         finalizeSaleIfEnded(saleId);
+        emit ImmediateFinalization(saleId);
     }
 
-    function finalizeICO() public onlyOwner icoNotFinalized {
+    function finalizeICO() public onlyOwner icoNotFinalized nonReentrant {
         require(
             totalFundsRaised >= softCapInFunds || totalFundsRaised >= hardCapInFunds || block.timestamp >= getLatestSaleEndTime(),
             "Cannot finalize: Soft cap not reached or sale is ongoing"
@@ -167,11 +261,11 @@ contract ICO is Ownable {
         }
     }
 
-    function initiateRefund() external onlyOwner icoNotFinalized {
+    function initiateRefund() external onlyOwner icoNotFinalized nonReentrant{
         require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
         require(totalFundsRaised < softCapInFunds, "Soft cap reached");
-
-        for (uint256 i = 0; i < investors.length; i++) {
+        uint256 investorLength=investors.length;
+        for (uint256 i = 0; i < investorLength; i++) {
             address investor = investors[i];
             uint256 amount = contributions[investor];
 
@@ -184,10 +278,11 @@ contract ICO is Ownable {
         isICOFinalized = true;
     }
 
-    function airdropTokens() external onlyOwner {
+    function airdropTokens() external onlyOwner nonReentrant{
         require(!isTokensAirdropped, "Airdrop already completed");
         require(isICOFinalized, "ICO not finalized");
-        for (uint256 i = 0; i < investors.length; i++) {
+        uint256 investorLength=investors.length;
+        for (uint256 i = 0; i < investorLength; i++) {
             address investor = investors[i];
             uint256 tokensBought = tokensBoughtByInvestor[investor] ;
             if (tokensBought > 0) {
@@ -230,5 +325,10 @@ contract ICO is Ownable {
 
     function getHardCapReached() public view returns(bool) {
         return (totalFundsRaised >= hardCapInFunds);
+    }
+
+    function getInvestorCount() public view returns(uint256 investorCount){
+        investorCount = investors.length;
+        return investorCount ;
     }
 }
