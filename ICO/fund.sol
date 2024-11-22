@@ -21,7 +21,6 @@ contract ICO is Ownable,ReentrancyGuard {
 
     // State variables
     erc20token public token;
-    // IERC20 public stablecoin;
     uint256 public softCapInFunds;
     uint256 public hardCapInFunds; 
     uint256 public saleCount;
@@ -51,7 +50,8 @@ contract ICO is Ownable,ReentrancyGuard {
     event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPrice, uint256 amountPaid);
     event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPrice);
 
-    constructor(address _bnbUsdPriceFeed, erc20token _token,uint256 _softCapInFunds, uint256 _hardCapInFunds) Ownable(msg.sender) {
+
+    constructor( address _bnbUsdPriceFeed, erc20token _token,uint256 _softCapInFunds, uint256 _hardCapInFunds) Ownable(msg.sender) {
         token = _token;
         bnbUsdPriceFeed = AggregatorV3Interface(address(_bnbUsdPriceFeed));
         softCapInFunds = _softCapInFunds;
@@ -109,97 +109,132 @@ contract ICO is Ownable,ReentrancyGuard {
         emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPrice);
     }
 
-    // if using whitelisting mechanism then add isWhitelisted modifier in buy token funtion
-    function buyTokens() external payable icoNotFinalized {
-        require(msg.sender != owner(), "Owner cannot buy tokens");
+    function buyTokensWithBNB() external payable nonReentrant {
         uint256 currentSaleId = getCurrentSaleId();
-        require(currentSaleId != 0, "No active sale");
-        require(msg.value > 0, "Enter a valid amount");
-
-        // Finalize previous sales
-        for (uint256 i = 1; i <= saleCount; i++) {
-            finalizeSaleIfEnded(i);
-        }
-
-        // 61268230870 ** 10^18/ usd decimal
-
-
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale already finalized");
-        uint256 tokenDecimals = 10 ** erc20token(token).decimals();
+    // require(
+    //     block.timestamp >= currentSale.startTime && block.timestamp <= currentSale.endTime,
+    //     "Sale not active"
+    // );
+    require(msg.value > 0, "Send BNB to buy tokens");
 
-        uint256 tokenPrice = sale.tokenPrice;                                                                                                           
-        require(msg.value % tokenPrice == 0, "Amount must be equal or multiple of the token price");
+    uint256 bnbUsdPrice = getBnbUsdPrice(); // Get BNB/USD price
+    uint256 tokenPriceInUsd = (sale.tokenPrice * bnbUsdPrice) / 10**18; // Token price in USD
 
-        uint256 tokensToBuy = (msg.value/ tokenPrice) * uint256(tokenDecimals);
-        require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
+    uint256 tokensToBuy = (msg.value * bnbUsdPrice * 1e18) / (tokenPriceInUsd * 1e18);
+    require(tokensToBuy > 0, "Insufficient BNB for tokens");
 
-        contributions[msg.sender] += msg.value;
-        totalFundsRaised += msg.value;
-        sale.tokensSold += tokensToBuy;
-        totalTokensSold += tokensToBuy;
-
-        // Track investors and their purchases
-        if (tokensBoughtByInvestor[msg.sender] == 0) {
-            investors.push(msg.sender);
-        }
-        tokensBoughtByInvestor[msg.sender] += tokensToBuy;
-
-        emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPrice, msg.value);
-    }
-
-
-
-    function buyTokenStablecoin(address _stablecoin, uint256 amount) external payable icoNotFinalized{
-        require(acceptedStablecoins[_stablecoin], "Stablecoin not accepted");
-        require(msg.sender != owner(), "Owner cannot buy tokens");
-        require(_stablecoin !=address(0),"Invalid token address");
-        uint256 currentSaleId = getCurrentSaleId();
-        require(currentSaleId != 0, "No active sale");
-        require(amount > 0, "Enter a valid amount");
-
-        for (uint256 i = 1; i <= saleCount; i++) {
-            finalizeSaleIfEnded(i);
-        }
-
-        Sale storage sale = sales[currentSaleId];
-        require(!sale.isFinalized, "Sale already finalized");
-        uint256 tokenPriceInBnb = sale.tokenPrice; 
-
-        uint256 bnbUsdPrice = getBnbUsdPrice(); // Get BNB/USD price
-        uint256 tokenPriceInUsd = (tokenPriceInBnb * bnbUsdPrice) / 1e8; // Token price in USD
-
-        uint256 tokensToBuy = (amount * 1e18) / tokenPriceInUsd;
-        require(tokensToBuy > 0, "Insufficient stablecoin for tokens");
-
-        bool success = IERC20(_stablecoin).transferFrom(msg.sender, address(this), amount);
-        require(success, "Stablecoin transfer failed");
-
-        require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
-
-        stablecoinContributions[msg.sender] += amount;
-        totalFundsRaised += amount;
-        sale.tokensSold += tokensToBuy;
-        totalTokensSold += tokensToBuy;
-
-    if (tokensBoughtByInvestor[msg.sender] == 0) {
+    // Update state variables
+    if (tokenBalances[msg.sender] == 0) {
         investors.push(msg.sender); // Track new investor
     }
+    bnbContributions[msg.sender] += msg.value; // Update BNB contributions
+    tokenBalances[msg.sender] += tokensToBuy;  // Update token allocation
 
-    emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPriceInUsd, amount);
-    }
+    currentSale.tokensSold += tokensToBuy;
+    totalTokensSold += tokensToBuy;
+
+    emit TokensPurchased(msg.sender, tokensToBuy, msg.value, address(0)); // address(0) for BNB
+}
 
 
-    // uint256 tokenAmount;
-    // if (tokenAddress == usdcAddress || tokenAddress == usdtAddress) {
-    //     // Normalize stablecoin (6 decimals) to 18 decimals
-    //     uint256 normalizedAmount = amount * 10**12;
-    //     tokenAmount = normalizedAmount / tokenPriceInUSD; // Calculate tokens
-    // } else if (tokenAddress == daiAddress) {
-    //     // DAI already has 18 decimals
-    //     tokenAmount = stablecoinAmount / tokenPriceInUSD;
-    // } else {
-    //     revert("Unsupported stablecoin");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // // if using whitelisting mechanism then add isWhitelisted modifier in buy token funtion
+    // function buyTokens() external payable icoNotFinalized {
+    //     require(msg.sender != owner(), "Owner cannot buy tokens");
+    //     uint256 currentSaleId = getCurrentSaleId();
+    //     require(currentSaleId != 0, "No active sale");
+    //     require(msg.value > 0, "Enter a valid amount");
+
+    //     // Finalize previous sales
+    //     for (uint256 i = 1; i <= saleCount; i++) {
+    //         finalizeSaleIfEnded(i);
+    //     }
+
+    //     // 61268230870 ** 10^18/ usd decimal
+
+
+    //     Sale storage sale = sales[currentSaleId];
+    //     require(!sale.isFinalized, "Sale already finalized");
+    //     uint256 tokenDecimals = 10 ** erc20token(token).decimals();
+
+    //     uint256 tokenPrice = sale.tokenPrice;                                                                                                           
+    //     require(msg.value % tokenPrice == 0, "Amount must be equal or multiple of the token price");
+
+    //     uint256 tokensToBuy = (msg.value/ tokenPrice) * uint256(tokenDecimals);
+    //     require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
+
+    //     contributions[msg.sender] += msg.value;
+    //     totalFundsRaised += msg.value;
+    //     sale.tokensSold += tokensToBuy;
+    //     totalTokensSold += tokensToBuy;
+
+    //     // Track investors and their purchases
+    //     if (tokensBoughtByInvestor[msg.sender] == 0) {
+    //         investors.push(msg.sender);
+    //     }
+    //     tokensBoughtByInvestor[msg.sender] += tokensToBuy;
+
+    //     emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPrice, msg.value);
+    // }
+
+
+
+    // function buyTokenStablecoin(address _stablecoin, uint256 amount) external payable icoNotFinalized{
+    //     require(acceptedStablecoins[_stablecoin], "Stablecoin not accepted");
+    //     require(msg.sender != owner(), "Owner cannot buy tokens");
+    //     require(_stablecoin !=address(0),"Invalid token address");
+    //     uint256 currentSaleId = getCurrentSaleId();
+    //     require(currentSaleId != 0, "No active sale");
+    //     require(amount > 0, "Enter a valid amount");
+
+    //     for (uint256 i = 1; i <= saleCount; i++) {
+    //         finalizeSaleIfEnded(i);
+    //     }
+
+    //     Sale storage sale = sales[currentSaleId];
+    //     require(!sale.isFinalized, "Sale already finalized");
+    //     uint256 tokenPriceInBnb = sale.tokenPrice; 
+
+    //     uint256 bnbUsdPrice = 63261256000; // Get BNB/USD price
+    //     uint256 tokenPriceInUsd = (tokenPriceInBnb * bnbUsdPrice) / 10**18; // Token price in USD
+
+    //     uint256 tokensToBuy = (amount * 10**18) / tokenPriceInUsd;
+    //     require(tokensToBuy > 0, "Insufficient stablecoin for tokens");
+
+    //     bool success = IERC20(_stablecoin).transferFrom(msg.sender, address(this), amount);
+    //     require(success, "Stablecoin transfer failed");
+
+    //     require(totalFundsRaised + msg.value <= hardCapInFunds, "Purchase exceeds hard cap in funds");
+
+    //     stablecoinContributions[msg.sender] += amount;
+    //     totalFundsRaised += amount;
+    //     sale.tokensSold += tokensToBuy;
+    //     totalTokensSold += tokensToBuy;
+
+    // if (tokensBoughtByInvestor[msg.sender] == 0) {
+    //     investors.push(msg.sender); // Track new investor
+    // }
+
+    // emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, tokenPriceInUsd, amount);
     // }
 
     
@@ -262,7 +297,7 @@ contract ICO is Ownable,ReentrancyGuard {
     }
 
     function initiateRefund() external onlyOwner icoNotFinalized nonReentrant{
-        require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
+        require(block.timestamp > getLatestSaleEndTime() || allowImmediateFinalization, "Sale ongoing");
         require(totalFundsRaised < softCapInFunds, "Soft cap reached");
         uint256 investorLength=investors.length;
         for (uint256 i = 0; i < investorLength; i++) {
