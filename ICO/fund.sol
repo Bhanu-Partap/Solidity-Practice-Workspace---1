@@ -392,6 +392,7 @@
 pragma solidity ^0.8.26;
 
 import "./Erc20.sol";
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
@@ -399,155 +400,227 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 contract ICO is Ownable, ReentrancyGuard {
 
     // Chainlink Price Feeds
+    AggregatorV3Interface public priceFeedETH;
     AggregatorV3Interface public priceFeedBNB; 
     AggregatorV3Interface public priceFeedUSDT; 
     AggregatorV3Interface public priceFeedUSDC; 
-    AggregatorV3Interface public priceFeedMATIC;
 
     // Struct
-    // struct Sale {
-    //     uint256 startTime;
-    //     uint256 endTime;
-    //     uint256 tokenPriceUSD; 
-    //     uint256 tokensSold;
-    //     bool isFinalized; 
-    // }
+    struct Sale {
+        uint256 startTime;
+        uint256 endTime;
+        uint256 tokenPriceUSD; 
+        uint256 tokensSold;
+        bool isFinalized; 
+    }
+
+    enum PaymentMethod { ETH, BNB, USDT, USDC }
 
     // State variables
     erc20token public token;
-    // uint256 public softCapInUSD;  
-    // uint256 public hardCapInUSD;  
-    // uint256 public saleCount;
-    // uint256 public totalFundsRaisedUSD; 
-    // uint256 public totalTokensSold;
-    // bool public isICOFinalized = false;
-    // bool public isTokensAirdropped = false;
-    // bool public allowImmediateFinalization = false; 
-
-    // address[] public investors;
+    uint256 public softCapInUSD;  
+    uint256 public hardCapInUSD;  
+    uint256 public saleCount;
+    uint256 public totalFundsRaisedUSD; 
+    uint256 public totalTokensSold;
+    bool public isICOFinalized = false;
+    bool public isTokensAirdropped = false;
+    bool public allowImmediateFinalization = false; 
+    address[] public investors;
 
     // Mappings
-    // mapping(uint256 => Sale) public sales;
-    // mapping(address => uint256) public contributionsInUSD;  
-    mapping(address => bool) public acceptedStablecoins;
-    // mapping(address => uint256) public tokensBoughtByInvestor; 
+    mapping(uint256 => Sale) public sales;
+    mapping(address => uint256) public contributionsInUSD;  
+    mapping(address => uint256) public tokensBoughtByInvestor; 
     mapping(address => AggregatorV3Interface) private priceFeeds;
 
 
     // Events
-    // event ICOFinalized(uint256 totalTokensSold);
-    // event ImmediateFinalization(uint256 saleId);
-    // event RefundInitiated(address investor, uint256 amount);
-    // event TokenAirdropped(address investor, uint256 airdroppedAmount);
-    // event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD, uint256 amountPaid);
-    // event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPriceUSD);
+    event ICOFinalized(uint256 totalTokensSold);
+    event ImmediateFinalization(uint256 saleId);
+    event RefundInitiated(address investor, uint256 amount);
+    event TokenAirdropped(address investor, uint256 airdroppedAmount);
+    event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD, uint256 amountPaid);
+    event NewSaleCreated(uint256 saleId, uint256 startTime, uint256 endTime, uint256 tokenPriceUSD);
 
     constructor(
-        // erc20token _token, 
-        // uint256 _softCapInUSD, 
-        // uint256 _hardCapInUSD, 
+        erc20token _token, 
+        uint256 _softCapInUSD, 
+        uint256 _hardCapInUSD, 
+        address _priceFeedETH,
         address _priceFeedBNB,
         address _priceFeedUSDT,
-        address _priceFeedUSDC,
-        address _priceFeedMATIC
-
+        address _priceFeedUSDC
     ) Ownable(msg.sender) {
         // token = _token;
-        // softCapInUSD = _softCapInUSD;
-        // hardCapInUSD = _hardCapInUSD;
+        softCapInUSD = _softCapInUSD;
+        hardCapInUSD = _hardCapInUSD;
+        priceFeedETH = AggregatorV3Interface(_priceFeedETH);
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
         priceFeedUSDT = AggregatorV3Interface(_priceFeedUSDT);
         priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
-        priceFeedMATIC = AggregatorV3Interface(_priceFeedMATIC);
     }
 
-    // modifier icoNotFinalized() {
-    //     require(!isICOFinalized, "ICO already finalized");
-    //     _;
+    modifier icoNotFinalized() {
+        require(!isICOFinalized, "ICO already finalized");
+        _;
+    }
+
+    function _getPriceFeed(PaymentMethod paymentMethod) public view returns (int256) {
+        if (paymentMethod == PaymentMethod.ETH) {
+            (, int256 price, , , ) = priceFeedETH.latestRoundData();
+            return price ;
+        }
+
+        if (paymentMethod == PaymentMethod.BNB) {
+            (, int256 price, , , ) = priceFeedBNB.latestRoundData();
+            return price;
+        }
+
+        if (paymentMethod == PaymentMethod.USDT) {
+            (, int256 price, , , ) = priceFeedUSDT.latestRoundData();
+            return price;
+        }
+
+        if (paymentMethod == PaymentMethod.USDC) {
+            (, int256 price, , , ) = priceFeedUSDC.latestRoundData();
+            return price;
+        }
+        revert("Unsupported payment method");
+    }
+
+
+    function calculateTokenAmount(PaymentMethod paymentMethod, uint256 paymentAmount) public view returns (uint256) {
+        int256 price = _getPriceFeed(paymentMethod);
+        // uint256 currentSaleId = getCurrentSaleId();
+        // Sale storage sale = sales[currentSaleId];
+        uint256 tokenPriceInUSD = 1 * 10**18;//  for test
+        // uint256 tokenPriceInUSD = sale.tokenPriceUSD; 
+        console.log("tokenPriceInUSD",tokenPriceInUSD);
+        uint256 paymentAmountInUSD = uint256(price) * paymentAmount;
+        console.log("paymentAmountInUSD",paymentAmountInUSD);
+        uint256 tokenAmount = paymentAmountInUSD / tokenPriceInUSD;
+        console.log("tokenAmount",tokenAmount);
+        return tokenAmount;
+    }
+
+    // // Convert BNB to USD using Chainlink
+    // function _convertBNBToUSD(uint256 bnbAmount) internal view returns (uint256) {
+    //     (, int256 price, , , ) = priceFeedBNB.latestRoundData();
+    //     require(price > 0, "Invalid price feed");
+    //     return (bnbAmount * uint256(price)) / 10 ** 18; // Adjust for Chainlink decimals
     // }
 
-function addStablecoin(address _stablecoin, address _priceFeed) external onlyOwner {
-        require(_stablecoin != address(0), "Invalid stablecoin address");
-        require(_priceFeed != address(0), "Invalid price feed address");
-        priceFeeds[_stablecoin] = AggregatorV3Interface(_priceFeed);
+
+// 1000000000000000000
+// 2000000000000000000
+// 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
+// 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
+// 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
+// 0x90c069C4538adAc136E051052E14c1cD799C41B7
+
+
+    function createSale(
+        uint256 _startTime,
+        uint256 _endTime,
+        uint256 _tokenPriceUSD
+    ) external onlyOwner icoNotFinalized {
+        require(_startTime > block.timestamp, "Start time must be greater than current time");
+        require(_endTime > _startTime, "End time must be greater than start time");
+        require(_startTime > getLatestSaleEndTime(), "New sale must start after the last sale ends");
+
+        saleCount++;
+        sales[saleCount] = Sale({
+            startTime: _startTime,
+            endTime: _endTime,
+            tokenPriceUSD: _tokenPriceUSD,
+            tokensSold: 0,
+            isFinalized: false
+        });
+        emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPriceUSD);
     }
 
-    // Remove a stablecoin
-    function removeStablecoin(address _stablecoin) external onlyOwner {
-        require(priceFeeds[_stablecoin] != AggregatorV3Interface(address(0)), "Stablecoin not supported");
-        delete priceFeeds[_stablecoin];
-    }
+    function buyTokensWithNativeCurrency(PaymentMethod paymentMethod) external payable icoNotFinalized {
+        uint256 currentSaleId = getCurrentSaleId();
+        require(currentSaleId != 0, "No active sale");
+        require(msg.value > 0, "Send a valid BNB or ETH amount");
 
-    // Get the price feed for a given stablecoin
-    function _getPriceFeed(address paymentToken) internal view returns (AggregatorV3Interface) {
-        AggregatorV3Interface priceFeed = priceFeeds[paymentToken];
-        require(address(priceFeed) != address(0), "Unsupported payment token");
-        return priceFeed;
-    }
+        Sale storage sale = sales[currentSaleId];
+        require(!sale.isFinalized, "Sale already finalized");
+        require(
+        paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB,
+        "Unsupported Currency"
+    );
 
-    function getPriceInUSD(address paymentToken) public view returns (int256) {
-        AggregatorV3Interface priceFeed = _getPriceFeed(paymentToken);
-        (
-        /* uint80 roundID */,
-        int256 price,
-        /* uint256 startedAt */,
-        /* uint256 updatedAt */,
-        /* uint80 answeredInRound */
-        ) = priceFeed.latestRoundData();
-        return price;
+    // Calculate the token amount based on the native currency sent
+        uint256 tokensToBuy = calculateTokenAmount(paymentMethod, msg.value);
+        require(tokensToBuy > 0, "Insufficient payment for tokens");
+
+    // Ensure the purchase does not exceed the hard cap
+        uint256 totalCostInUSD = tokensToBuy * sale.tokenPriceUSD / (10 ** token.decimals());
+        require(totalFundsRaisedUSD + totalCostInUSD <= hardCapInUSD, "Hard cap reached");
+
+    // Update sale and investor data
+        contributionsInUSD[msg.sender] += totalCostInUSD;
+        totalFundsRaisedUSD += totalCostInUSD;
+        sale.tokensSold += tokensToBuy;
+        totalTokensSold += tokensToBuy;
+
+    if (tokensBoughtByInvestor[msg.sender] == 0) {
+        investors.push(msg.sender);
+    }
+        tokensBoughtByInvestor[msg.sender] += tokensToBuy;
+
+    emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, sale.tokenPriceUSD, msg.value);
+}
+
+
+    function buyTokensWithStablecoin(PaymentMethod paymentMethod, uint256 paymentAmount) external icoNotFinalized {
+    uint256 currentSaleId = getCurrentSaleId();
+    require(currentSaleId != 0, "No active sale");
+    require(paymentAmount > 0, "Enter a valid stablecoin amount");
+
+    Sale storage sale = sales[currentSaleId];
+    require(!sale.isFinalized, "Sale already finalized");
+
+    // Validate payment method is USDT or USDC
+    require(
+        paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC,
+        "Unsupported stablecoin"
+    );
+
+    // Calculate token amount
+    uint256 tokensToBuy = calculateTokenAmount(paymentMethod, paymentAmount);
+    require(tokensToBuy > 0, "Insufficient payment for tokens");
+
+    // Ensure the purchase does not exceed the hard cap
+    uint256 totalCostInUSD = tokensToBuy * sale.tokenPriceUSD / (10 ** token.decimals());
+    require(totalFundsRaisedUSD + totalCostInUSD <= hardCapInUSD, "Hard cap reached");
+
+    // Transfer stablecoins from the buyer to the contract
+    IERC20 stablecoinContract ;
+    require(
+        stablecoinContract.transferFrom(msg.sender, address(this), paymentAmount),
+        "Stablecoin transfer failed"
+    );
+
+    // Update sale and investor data
+    contributionsInUSD[msg.sender] += totalCostInUSD;
+    totalFundsRaisedUSD += totalCostInUSD;
+    sale.tokensSold += tokensToBuy;
+    totalTokensSold += tokensToBuy;
+
+    if (tokensBoughtByInvestor[msg.sender] == 0) {
+        investors.push(msg.sender);
+    }
+    tokensBoughtByInvestor[msg.sender] += tokensToBuy;
+
+    emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, sale.tokenPriceUSD, paymentAmount);
 }
 
 
 
 
-
-    // function createSale(
-    //     uint256 _startTime,
-    //     uint256 _endTime,
-    //     uint256 _tokenPriceUSD
-    // ) external onlyOwner icoNotFinalized {
-    //     require(_startTime > block.timestamp, "Start time must be greater than current time");
-    //     require(_endTime > _startTime, "End time must be greater than start time");
-    //     require(_startTime > getLatestSaleEndTime(), "New sale must start after the last sale ends");
-
-    //     saleCount++;
-    //     sales[saleCount] = Sale({
-    //         startTime: _startTime,
-    //         endTime: _endTime,
-    //         tokenPriceUSD: _tokenPriceUSD,
-    //         tokensSold: 0,
-    //         isFinalized: false
-    //     });
-    //     emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPriceUSD);
-    // }
-
-    // // Purchase tokens using BNB
-    // function buyTokensWithBNB() external payable icoNotFinalized {
-    //     uint256 currentSaleId = getCurrentSaleId();
-    //     require(currentSaleId != 0, "No active sale");
-    //     require(msg.value > 0, "Enter a valid amount");
-
-    //     Sale storage sale = sales[currentSaleId];
-    //     require(!sale.isFinalized, "Sale already finalized");
-
-    //     uint256 bnbToUSD = _convertBNBToUSD(msg.value);
-    //     uint256 tokensToBuy = (bnbToUSD * 10 ** token.decimals()) / sale.tokenPriceUSD;
-    //     require(tokensToBuy > 0, "Insufficient funds for token purchase");
-
-    //     require(totalFundsRaisedUSD + bnbToUSD <= hardCapInUSD, "Hard cap reached");
-
-    //     contributionsInUSD[msg.sender] += bnbToUSD;
-    //     totalFundsRaisedUSD += bnbToUSD;
-    //     sale.tokensSold += tokensToBuy;
-    //     totalTokensSold += tokensToBuy;
-
-    //     if (tokensBoughtByInvestor[msg.sender] == 0) {
-    //         investors.push(msg.sender);
-    //     }
-    //     tokensBoughtByInvestor[msg.sender] += tokensToBuy;
-
-    //     emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, sale.tokenPriceUSD, msg.value);
-    // }
 
     // // Purchase tokens using stablecoins (e.g., USDT or USDC)
     // function buyTokensWithStablecoin(address stablecoin, uint256 amount) external nonReentrant {
@@ -580,12 +653,6 @@ function addStablecoin(address _stablecoin, address _priceFeed) external onlyOwn
     //     emit TokensPurchased(msg.sender, currentSaleId, tokensToBuy, sale.tokenPriceUSD, amount);
     // }
 
-    // // Convert BNB to USD using Chainlink
-    // function _convertBNBToUSD(uint256 bnbAmount) internal view returns (uint256) {
-    //     (, int256 price, , , ) = priceFeedBNB.latestRoundData();
-    //     require(price > 0, "Invalid price feed");
-    //     return (bnbAmount * uint256(price)) / 10 ** 18; // Adjust for Chainlink decimals
-    // }
 
     // // Refund logic
     // function initiateRefund() external onlyOwner nonReentrant icoNotFinalized {
@@ -666,42 +733,42 @@ function addStablecoin(address _stablecoin, address _priceFeed) external onlyOwn
     //     isTokensAirdropped = true;
     // }    
 
-    // function getCurrentSaleId() public view returns (uint256) {
-    //     for (uint256 i = 1; i <= saleCount; i++) {
-    //         if (block.timestamp >= sales[i].startTime && block.timestamp <= sales[i].endTime && !sales[i].isFinalized) {
-    //             return i;
-    //         }
-    //     }
-    //     return 0;
-    // }
+    function getCurrentSaleId() public view returns (uint256) {
+        for (uint256 i = 1; i <= saleCount; i++) {
+            if (block.timestamp >= sales[i].startTime && block.timestamp <= sales[i].endTime && !sales[i].isFinalized) {
+                return i;
+            }
+        }
+        return 0;
+    }
 
-    // function getLatestSaleEndTime() internal view returns (uint256) {
-    //     uint256 latestEndTime = 0;
-    //     for (uint256 i = 1; i <= saleCount; i++) {
-    //         if (sales[i].endTime > latestEndTime) {
-    //             latestEndTime = sales[i].endTime;
-    //         }
-    //     }
-    //     return latestEndTime;
-    // }
+    function getLatestSaleEndTime() internal view returns (uint256) {
+        uint256 latestEndTime = 0;
+        for (uint256 i = 1; i <= saleCount; i++) {
+            if (sales[i].endTime > latestEndTime) {
+                latestEndTime = sales[i].endTime;
+            }
+        }
+        return latestEndTime;
+    }
 
-    // function getSaleStartEndTime(uint256 _saleId) public view returns(uint256 _startTime, uint256 _endTime) {
-    //     Sale memory sale = sales[_saleId];
-    //     return (sale.startTime, sale.endTime);
-    // }
+    function getSaleStartEndTime(uint256 _saleId) public view returns(uint256 _startTime, uint256 _endTime) {
+        Sale memory sale = sales[_saleId];
+        return (sale.startTime, sale.endTime);
+    }
 
-    // function getSoftCapReached() public view returns(bool) {
-    //     return (totalFundsRaisedUSD >= softCapInUSD);
-    // }
+    function getSoftCapReached() public view returns(bool) {
+        return (totalFundsRaisedUSD >= softCapInUSD);
+    }
 
-    // function getHardCapReached() public view returns(bool) {
-    //     return (totalFundsRaisedUSD >= hardCapInUSD);
-    // }
+    function getHardCapReached() public view returns(bool) {
+        return (totalFundsRaisedUSD >= hardCapInUSD);
+    }
 
-    // function getInvestorCount() public view returns(uint256 investorCount){
-    //     investorCount = investors.length;
-    //     return investorCount ;
-    // }
+    function getInvestorCount() public view returns(uint256 investorCount){
+        investorCount = investors.length;
+        return investorCount ;
+    }
 }
 
 
