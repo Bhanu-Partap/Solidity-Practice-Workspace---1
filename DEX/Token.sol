@@ -10,18 +10,18 @@ contract erc20token is IERC20, ERC20 {
         _mint(recipient, Amount);
     }
 
-    function approve(
-        address _owner,
-        address spender,
-        uint256 amount
-    ) public virtual returns (bool) {
-        address owner = _owner;
-        _approve(owner, spender, amount);
-        return true;
-    }
+    // function approve(
+    //     address _owner,
+    //     address spender,
+    //     uint256 amount
+    // ) public virtual returns (bool) {
+    //     address owner = _owner;
+    //     _approve(owner, spender, amount);
+    //     return true;
+    // }
 
-     function decimals() public pure override  returns (uint8) {
-        return 6;
-    }
+    //  function decimals() public pure override  returns (uint8) {
+    //     return 6;
+    // }
 
 }
