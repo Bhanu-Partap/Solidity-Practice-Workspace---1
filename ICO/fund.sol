@@ -403,26 +403,24 @@ contract ICO is Ownable, ReentrancyGuard {
         }
     }
     isICOFinalized = true;
-
 }
 
 
     function convertUSDToPaymentMethod(PaymentMethod paymentMethod, uint256 usdAmount) public view returns (uint256) {
-    int256 priceInUSD;
+    uint256 priceInUSD;
     if (paymentMethod == PaymentMethod.BNB) {
-        priceInUSD = _getPriceFeed(paymentMethod);
+        priceInUSD = uint256(_getPriceFeed(paymentMethod)); //8 decimal
     } else if (paymentMethod == PaymentMethod.ETH) {
-        priceInUSD = _getPriceFeed(paymentMethod);
+        priceInUSD = uint256(_getPriceFeed(paymentMethod)); 
     } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-        return usdAmount; // USDT and USDC are already in USD, no conversion needed
+        return usdAmount; // Stablecoins are already in USD
     } else {
         revert("Unsupported payment method");
     }
+    require(priceInUSD > 0, "Invalid price feed value");
+    return (usdAmount * 1e26) / priceInUSD; // (1e18 from wei * 1e8 from price feed scaling)
+    }
 
-    return (usdAmount * 1e10) / uint256(priceInUSD);
-}
-
-    
     
 
     function getCurrentSaleId() public view returns (uint256) {
