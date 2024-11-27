@@ -193,8 +193,10 @@ contract ICO is Ownable, ReentrancyGuard {
     function buyTokens(
     PaymentMethod paymentMethod,
     uint256 paymentAmount) external payable icoNotFinalized {
+    require(msg.sender != owner(), "Owner cannot buy tokens");
     uint256 currentSaleId = getCurrentSaleId();
     require(currentSaleId != 0, "No active sale");
+    
 
     Sale storage sale = sales[currentSaleId];
     require(!sale.isFinalized, "Sale already finalized");
@@ -359,48 +361,49 @@ contract ICO is Ownable, ReentrancyGuard {
     isTokensAirdropped = true;
 }
 
+    function initiateRefund() external onlyOwner icoNotFinalized nonReentrant {
+    require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
+    require(totalFundsRaisedUSD < softCapInUSD, "Soft cap reached");
 
-    function initiateRefund(address investor) external onlyOwner icoNotFinalized {
-    uint256 currentSaleId = getCurrentSaleId();
-    require(currentSaleId != 0, "No active sale");
+    uint256 investorLength = investors.length;
+    for (uint256 i = 0; i < investorLength; i++) {
+        address investor = investors[i];
+        uint256 contributionInUSD = contributionsInUSD[investor];
 
-    Sale storage sale = sales[currentSaleId];
-    require(!sale.isFinalized, "Sale already finalized");
+        if (contributionInUSD > 0) {
+            PaymentMethod paymentMethod = paymentMethodForInvestor[investor];
 
-    // Check if the soft cap has not been reached
-    require(totalFundsRaisedUSD < softCapInUSD, "Soft cap reached, no refunds");
+            // Convert the contribution from USD to the correct payment method
+            uint256 refundAmount = convertUSDToPaymentMethod(paymentMethod, contributionInUSD);
 
-    // Get the investor's contribution in USD
-    uint256 contributionInUSD = contributionsInUSD[investor];
-    require(contributionInUSD > 0, "No contribution to refund");
+            // Reset mappings before processing the refund
+            contributionsInUSD[investor] = 0;
+            tokensBoughtByInvestor[investor] = 0;
 
-    // Get the payment method used by the investor
-    PaymentMethod paymentMethod = paymentMethodForInvestor[investor];
+            // Refund in the correct payment method
+            if (paymentMethod == PaymentMethod.BNB || paymentMethod == PaymentMethod.ETH) {
+                // Refund in ETH/BNB
+                (bool sent, ) = payable(investor).call{value: refundAmount}("");
+                require(sent, "ETH/BNB refund failed");
+            } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
+                // Refund in stablecoin (USDT or USDC)
+                IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
+                    ? IERC20(usdt)
+                    : IERC20(usdc);
+                require(
+                    stablecoin.transfer(investor, refundAmount),
+                    "Stablecoin refund failed"
+                );
+            } else {
+                revert("Unsupported payment method for refund");
+            }
 
-    // Convert the contribution from USD to the correct payment method
-    uint256 refundAmount = convertUSDToPaymentMethod(paymentMethod, contributionInUSD);
-
-    // Refund in the correct payment method
-    if (paymentMethod == PaymentMethod.BNB || paymentMethod == PaymentMethod.ETH) {
-        // Refund in ETH/BNB
-        payable(investor).transfer(refundAmount);
-    } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-        // Refund in stablecoin (USDT or USDC)
-        IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-            ? IERC20(usdt)
-            : IERC20(usdc);
-        require(
-            stablecoin.transfer(investor, refundAmount),
-            "Stablecoin refund failed"
-        );
-    } else {
-        revert("Unsupported payment method for refund");
+            // Emit event for each refund
+            emit RefundInitiated(investor, refundAmount , paymentMethod);
+        }
     }
+    isICOFinalized = true;
 
-    // Update the mappings to reflect the refund
-    contributionsInUSD[investor] = 0; // Reset the contribution in USD
-    tokensBoughtByInvestor[investor] = 0; 
-    emit RefundInitiated(investor, refundAmount, paymentMethod);
 }
 
 
