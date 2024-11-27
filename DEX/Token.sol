@@ -20,8 +20,8 @@ contract erc20token is IERC20, ERC20 {
     //     return true;
     // }
 
-    //  function decimals() public pure override  returns (uint8) {
-    //     return 6;
-    // }
+     function decimals() public pure override  returns (uint8) {
+        return 6;
+    }
 
 }
