@@ -126,8 +126,8 @@ contract ICO is Ownable, ReentrancyGuard {
         revert("Unsupported payment method");
     }
 
-    // 1000000000000000000
-    // 2000000000000000000
+    // 100000000000000000000
+    // 200000000000000000000
     // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
     // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
     // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
@@ -166,7 +166,8 @@ contract ICO is Ownable, ReentrancyGuard {
         PaymentMethod paymentMethod,
         uint256 paymentAmount
     ) public view returns (uint256) {
-        int256 price = _getPriceFeed(paymentMethod); // Fetch price from Chainlink feed
+        int256 price = _getPriceFeed(paymentMethod)*1e10; // Fetch price from Chainlink feed
+        // console.log("Price in 18 decimal",price);
         uint256 currentSaleId = getCurrentSaleId();
         Sale storage sale = sales[currentSaleId];
 
@@ -185,7 +186,8 @@ contract ICO is Ownable, ReentrancyGuard {
         }
 
         console.log("paymentAmountInUSD", paymentAmountInUSD);
-        uint256 tokenAmount = paymentAmountInUSD / tokenPriceInUSD;
+        require(paymentAmountInUSD >= tokenPriceInUSD, "Insufficient payment for 1 token");
+        uint256 tokenAmount =(paymentAmountInUSD * 1e18)/ tokenPriceInUSD;
         console.log("tokenAmount", tokenAmount);
 
         return tokenAmount;
