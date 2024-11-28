@@ -48,8 +48,9 @@ contract ICO is Ownable, ReentrancyGuard {
     mapping(uint256 => Sale) public sales;
     mapping(address => uint256) public contributionsInUSD;
     mapping(address => uint256) public tokensBoughtByInvestor;
-    mapping(address => PaymentMethod) public paymentMethodForInvestor; 
     mapping(address => AggregatorV3Interface) private priceFeeds;
+    mapping(address => PaymentMethod) public paymentMethodForInvestor; 
+    mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
 
     // Events
     event ICOFinalized(uint256 totalTokensSold);
@@ -190,23 +191,20 @@ contract ICO is Ownable, ReentrancyGuard {
         return tokenAmount;
     }
 
-    function buyTokens(
-    PaymentMethod paymentMethod,
-    uint256 paymentAmount) external payable icoNotFinalized {
+    function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount) external payable icoNotFinalized {
     require(msg.sender != owner(), "Owner cannot buy tokens");
     uint256 currentSaleId = getCurrentSaleId();
     require(currentSaleId != 0, "No active sale");
     
-
     Sale storage sale = sales[currentSaleId];
     require(!sale.isFinalized, "Sale already finalized");
 
     uint256 tokenAmount;
-
     if (paymentMethod == PaymentMethod.BNB || paymentMethod == PaymentMethod.ETH) {
         // Handle native currency payments (ETH/BNB)
         require(msg.value > 0, "Send a valid ETH/BNB amount");
         tokenAmount = calculateTokenAmount(paymentMethod, msg.value);
+        investorPayments[msg.sender][paymentMethod] += msg.value;
         console.log("Token amount for Native Payment:", tokenAmount);
     } else if (
         paymentMethod == PaymentMethod.USDT ||
@@ -230,6 +228,7 @@ contract ICO is Ownable, ReentrancyGuard {
 
         // Calculate token amount for stablecoin payment
         tokenAmount = calculateTokenAmount(paymentMethod, paymentAmount);
+        investorPayments[msg.sender][paymentMethod] += paymentAmount;
         console.log("Token amount for Stablecoin Payment:", tokenAmount);
     } else {
         revert("Unsupported payment method");
@@ -318,7 +317,6 @@ contract ICO is Ownable, ReentrancyGuard {
     function _transferFundsToOwner() private {
     // Transfer native funds (ETH/BNB)
     uint256 nativeBalance = address(this).balance;
-    
     if (nativeBalance > 0) {
         (bool success, ) = payable(owner()).call{value: nativeBalance}("");
         require(success, "Transfer failed");
@@ -368,60 +366,35 @@ contract ICO is Ownable, ReentrancyGuard {
     uint256 investorLength = investors.length;
     for (uint256 i = 0; i < investorLength; i++) {
         address investor = investors[i];
-        uint256 contributionInUSD = contributionsInUSD[investor];
 
-        if (contributionInUSD > 0) {
-            PaymentMethod paymentMethod = paymentMethodForInvestor[investor];
+        // Refund contributions for all payment methods
+        for (uint8 j = 0; j < 4; j++) { 
+            PaymentMethod paymentMethod = PaymentMethod(j);
+            uint256 amount = investorPayments[investor][paymentMethod];
 
-            // Convert the contribution from USD to the correct payment method
-            uint256 refundAmount = convertUSDToPaymentMethod(paymentMethod, contributionInUSD);
-
-            // Reset mappings before processing the refund
-            contributionsInUSD[investor] = 0;
-            tokensBoughtByInvestor[investor] = 0;
-
-            // Refund in the correct payment method
-            if (paymentMethod == PaymentMethod.BNB || paymentMethod == PaymentMethod.ETH) {
-                // Refund in ETH/BNB
-                (bool sent, ) = payable(investor).call{value: refundAmount}("");
-                require(sent, "ETH/BNB refund failed");
-            } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-                // Refund in stablecoin (USDT or USDC)
-                IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-                    ? IERC20(usdt)
-                    : IERC20(usdc);
-                require(
-                    stablecoin.transfer(investor, refundAmount),
-                    "Stablecoin refund failed"
-                );
-            } else {
-                revert("Unsupported payment method for refund");
+            if (amount > 0) {
+                investorPayments[investor][paymentMethod] = 0;
+                if (paymentMethod == PaymentMethod.BNB || paymentMethod == PaymentMethod.ETH) {
+                    (bool sent, ) = payable(investor).call{value: amount}("");
+                    require(sent, "ETH/BNB refund failed");
+                } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
+                    IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
+                        ? IERC20(usdt)
+                        : IERC20(usdc);
+                    require(
+                        stablecoin.transfer(investor, amount),
+                        "Stablecoin refund failed"
+                    );
+                } else {
+                    revert("Unsupported payment method for refund");
+                }
+                emit RefundInitiated(investor, amount, paymentMethod);
             }
-
-            // Emit event for each refund
-            emit RefundInitiated(investor, refundAmount , paymentMethod);
         }
     }
     isICOFinalized = true;
 }
 
-
-    function convertUSDToPaymentMethod(PaymentMethod paymentMethod, uint256 usdAmount) public view returns (uint256) {
-    uint256 priceInUSD;
-    if (paymentMethod == PaymentMethod.BNB) {
-        priceInUSD = uint256(_getPriceFeed(paymentMethod)); //8 decimal
-    } else if (paymentMethod == PaymentMethod.ETH) {
-        priceInUSD = uint256(_getPriceFeed(paymentMethod)); 
-    } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-        return usdAmount; // Stablecoins are already in USD
-    } else {
-        revert("Unsupported payment method");
-    }
-    require(priceInUSD > 0, "Invalid price feed value");
-    return (usdAmount * 1e26) / priceInUSD; // (1e18 from wei * 1e8 from price feed scaling)
-    }
-
-    
 
     function getCurrentSaleId() public view returns (uint256) {
         for (uint256 i = 1; i <= saleCount; i++) {
