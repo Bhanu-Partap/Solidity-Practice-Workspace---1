@@ -126,6 +126,7 @@ contract ICO is Ownable, ReentrancyGuard {
         revert("Unsupported payment method");
     }
 
+//Constructor Data
     // 100000000000000000000
     // 200000000000000000000
     // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
@@ -386,6 +387,11 @@ contract ICO is Ownable, ReentrancyGuard {
     }
     isICOFinalized = true;
 }
+
+receive() external payable {
+    revert("Direct ETH transfers not allowed");
+}
+
 
 
     function getCurrentSaleId() public view returns (uint256) {
