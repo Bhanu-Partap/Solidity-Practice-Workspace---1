@@ -166,30 +166,30 @@ contract ICO is Ownable, ReentrancyGuard {
         PaymentMethod paymentMethod,
         uint256 paymentAmount
     ) public view returns (uint256) {
-        int256 price = _getPriceFeed(paymentMethod)*1e10; // Fetch price from Chainlink feed
+        int256 price = _getPriceFeed(paymentMethod)*1e10;
+        require(price > 0, "Invalid price feed");
         // console.log("Price in 18 decimal",price);
+
         uint256 currentSaleId = getCurrentSaleId();
         Sale storage sale = sales[currentSaleId];
 
-        uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in USD (18 decimals)
+        uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in (18 decimals)
         console.log("tokenPriceInUSD", tokenPriceInUSD);
 
         uint256 paymentAmountInUSD;
 
         if (paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB) {
-            paymentAmountInUSD = (uint256(price) * paymentAmount) / 1e8;
+            // 1e26 is because of 8 decimal of feed and 18 decimal of price converted to 18 decimal
+            paymentAmountInUSD = (uint256(price) * paymentAmount) / 1e18;  
+        } else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
+        uint256 stablecoinDecimals = 6; 
+        uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals)); 
+        paymentAmountInUSD = (uint256(price) * normalizedAmount) / 1e18; 
         } else {
-            uint256 stablecoinDecimals = 6;
-            paymentAmountInUSD =
-                paymentAmount *
-                (10**(18 - stablecoinDecimals));
+        revert("Unsupported payment method");
         }
 
-        console.log("paymentAmountInUSD", paymentAmountInUSD);
-        require(paymentAmountInUSD >= tokenPriceInUSD, "Insufficient payment for 1 token");
         uint256 tokenAmount =(paymentAmountInUSD * 1e18)/ tokenPriceInUSD;
-        console.log("tokenAmount", tokenAmount);
-
         return tokenAmount;
     }
 
@@ -217,17 +217,7 @@ contract ICO is Ownable, ReentrancyGuard {
         IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
             ? IERC20(usdt)
             : IERC20(usdc);
-
-        // Transfer stablecoins to the contract
-        require(
-            stablecoin.transferFrom(
-                msg.sender,
-                address(this),
-                paymentAmount
-            ),
-            "Stablecoin transfer failed"
-        );
-
+        require(stablecoin.transferFrom(msg.sender,address(this),paymentAmount),"Stablecoin transfer failed");
         // Calculate token amount for stablecoin payment
         tokenAmount = calculateTokenAmount(paymentMethod, paymentAmount);
         investorPayments[msg.sender][paymentMethod] += paymentAmount;
@@ -347,14 +337,14 @@ contract ICO is Ownable, ReentrancyGuard {
 
         if (tokensBought > 0) {
             // Multiply by 1e18 to convert human-readable amount to 'wei' equivalent if needed
-            uint256 tokenAmountInWei = tokensBought * 1e18;
+            // uint256 tokenAmountInWei = tokensBought * 1e18;
             
             // Transfer the calculated token amount to the investor
-            bool success = token.transferFrom(owner(), investor, tokenAmountInWei);
+            bool success = token.transferFrom(owner(), investor, tokensBought);
             require(success, "Token transfer failed");
             
             // Emit the token airdrop event
-            emit TokenAirdropped(investor, tokenAmountInWei);
+            emit TokenAirdropped(investor, tokensBought);
         }
     }
 
@@ -362,7 +352,7 @@ contract ICO is Ownable, ReentrancyGuard {
 }
 
     function initiateRefund() external onlyOwner icoNotFinalized nonReentrant {
-    require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
+    require(block.timestamp > getLatestSaleEndTime() || allowImmediateFinalization, "Sale ongoing");
     require(totalFundsRaisedUSD < softCapInUSD, "Soft cap reached");
 
     uint256 investorLength = investors.length;
