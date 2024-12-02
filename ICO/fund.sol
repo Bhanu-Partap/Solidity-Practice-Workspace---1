@@ -8,13 +8,14 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract ICO is Ownable, ReentrancyGuard {
+    
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedETH;
     AggregatorV3Interface public priceFeedBNB;
     AggregatorV3Interface public priceFeedUSDT;
     AggregatorV3Interface public priceFeedUSDC;
 
-    // Struct
+
     struct Sale {
         uint256 startTime;
         uint256 endTime;
@@ -391,7 +392,6 @@ contract ICO is Ownable, ReentrancyGuard {
 receive() external payable {
     revert("Direct ETH transfers not allowed");
 }
-
 
 
     function getCurrentSaleId() public view returns (uint256) {
