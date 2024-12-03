@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract ICO is Ownable, ReentrancyGuard {
-    
+
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedETH;
     AggregatorV3Interface public priceFeedBNB;
@@ -127,7 +127,7 @@ contract ICO is Ownable, ReentrancyGuard {
         revert("Unsupported payment method");
     }
 
-//Constructor Data
+    //Constructor Data
     // 100000000000000000000
     // 200000000000000000000
     // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
