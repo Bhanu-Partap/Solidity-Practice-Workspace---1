@@ -127,13 +127,6 @@ contract ICO is Ownable, ReentrancyGuard {
         revert("Unsupported payment method");
     }
 
-    //Constructor Data
-    // 100000000000000000000
-    // 200000000000000000000
-    // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
-    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
-    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
-    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
 
     function createSale(
         uint256 _startTime,
@@ -166,7 +159,7 @@ contract ICO is Ownable, ReentrancyGuard {
 
     function calculateTokenAmount(
         PaymentMethod paymentMethod,
-        uint256 paymentAmount
+        uint256 paymentAmount   
     ) public view returns (uint256) {
         int256 price = _getPriceFeed(paymentMethod)*1e10;
         require(price > 0, "Invalid price feed");
@@ -261,7 +254,6 @@ contract ICO is Ownable, ReentrancyGuard {
     } else {
         revert("Unsupported payment method");
     }
-
     require(tokenAmount > 0, "Invalid token amount");
 
     // Ensure the purchase does not exceed the hard cap
@@ -372,9 +364,6 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 tokensBought = tokensBoughtByInvestor[investor];
 
         if (tokensBought > 0) {
-            // Multiply by 1e18 to convert human-readable amount to 'wei' equivalent if needed
-            // uint256 tokenAmountInWei = tokensBought * 1e18;
-            
             // Transfer the calculated token amount to the investor
             bool success = token.transferFrom(owner(), investor, tokensBought);
             require(success, "Token transfer failed");

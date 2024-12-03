@@ -127,13 +127,6 @@ contract ICO is Ownable, ReentrancyGuard {
         revert("Unsupported payment method");
     }
 
-    //Constructor Data
-    // 100000000000000000000
-    // 200000000000000000000
-    // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
-    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
-    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
-    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
 
     function createSale(
         uint256 _startTime,
@@ -166,11 +159,10 @@ contract ICO is Ownable, ReentrancyGuard {
 
     function calculateTokenAmount(
         PaymentMethod paymentMethod,
-        uint256 paymentAmount
+        uint256 paymentAmount   
     ) public view returns (uint256) {
         int256 price = _getPriceFeed(paymentMethod)*1e10;
         require(price > 0, "Invalid price feed");
-        // console.log("Price in 18 decimal",price);
 
         uint256 currentSaleId = getCurrentSaleId();
         Sale storage sale = sales[currentSaleId];
@@ -181,7 +173,6 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 paymentAmountInUSD;
 
         if (paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB) {
-            // 1e26 is because of 8 decimal of feed and 18 decimal of price converted to 18 decimal
             paymentAmountInUSD = (uint256(price) * paymentAmount) / 1e18;  
         } else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
         uint256 stablecoinDecimals = 6; 
@@ -194,6 +185,42 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 tokenAmount =(paymentAmountInUSD * 1e18)/ tokenPriceInUSD;
         return tokenAmount;
     }
+
+    //Constructor Data
+    // 100000000000000000000
+    // 200000000000000000000
+    // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
+    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
+    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
+    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
+
+
+    function calculatePaymentAmount(PaymentMethod paymentMethod,uint256 tokenAmount) public view returns (uint256) {
+    require(tokenAmount > 0, "Token amount must be greater than zero");
+
+    int256 price = _getPriceFeed(paymentMethod) * 1e10; 
+    require(price > 0, "Invalid price feed");
+
+    uint256 currentSaleId = getCurrentSaleId();
+    require(currentSaleId != 0, "No active sale");
+    
+    Sale storage sale = sales[currentSaleId];
+    uint256 tokenPriceInUSD = sale.tokenPriceUSD;
+    uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / 1e18;
+
+    uint256 paymentAmount;
+    if (paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB) {
+        paymentAmount = (totalPaymentInUSD * 1e18) / uint256(price);
+    } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
+        uint256 stablecoinDecimals = 6;
+        uint256 normalizedAmount = (totalPaymentInUSD * (10**stablecoinDecimals)) / 1e18;
+        paymentAmount = normalizedAmount;
+    } else {
+        revert("Unsupported payment method");
+    }
+    return paymentAmount;
+}
+
 
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount) external payable icoNotFinalized {
     require(msg.sender != owner(), "Owner cannot buy tokens");
@@ -227,7 +254,6 @@ contract ICO is Ownable, ReentrancyGuard {
     } else {
         revert("Unsupported payment method");
     }
-
     require(tokenAmount > 0, "Invalid token amount");
 
     // Ensure the purchase does not exceed the hard cap
@@ -338,9 +364,6 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 tokensBought = tokensBoughtByInvestor[investor];
 
         if (tokensBought > 0) {
-            // Multiply by 1e18 to convert human-readable amount to 'wei' equivalent if needed
-            // uint256 tokenAmountInWei = tokensBought * 1e18;
-            
             // Transfer the calculated token amount to the investor
             bool success = token.transferFrom(owner(), investor, tokensBought);
             require(success, "Token transfer failed");
