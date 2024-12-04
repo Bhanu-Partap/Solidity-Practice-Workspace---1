@@ -71,3 +71,81 @@ contract TokenVesting is Ownable {
         token.transfer(owner(), remainingAmount);
     }
 }
+
+
+
+// lock up vesting and cliff period 
+
+// pragma solidity ^0.8.0;
+
+// contract AllInOneVesting {
+//     address public owner;
+//     address public beneficiary;
+
+//     uint256 public startTime;        // When vesting starts
+//     uint256 public cliffDuration;    // Duration of the cliff period
+//     uint256 public vestingDuration;  // Total vesting duration
+//     uint256 public lockUpDuration;   // Lock-up period after vesting
+
+//     uint256 public totalTokens;      // Total tokens allocated for vesting
+//     uint256 public tokensClaimed;    // Tokens already claimed
+
+//     event TokensClaimed(address indexed beneficiary, uint256 amount, uint256 timestamp);
+//     event VestingCompleted(address indexed beneficiary, uint256 totalTokens, uint256 timestamp);
+
+//     constructor(
+//         address _beneficiary,
+//         uint256 _startTime,
+//         uint256 _cliffDuration,
+//         uint256 _vestingDuration,
+//         uint256 _lockUpDuration,
+//         uint256 _totalTokens
+//     ) {
+//         require(_beneficiary != address(0), "Invalid beneficiary address");
+//         require(_cliffDuration <= _vestingDuration, "Cliff exceeds vesting duration");
+
+//         owner = msg.sender;
+//         beneficiary = _beneficiary;
+//         startTime = _startTime;
+//         cliffDuration = _cliffDuration;
+//         vestingDuration = _vestingDuration;
+//         lockUpDuration = _lockUpDuration;
+//         totalTokens = _totalTokens;
+//     }
+
+//     function claimTokens() external {
+//         require(msg.sender == beneficiary, "Only beneficiary can claim tokens");
+//         require(block.timestamp >= startTime + cliffDuration, "Cliff period not reached");
+
+//         uint256 elapsedTime = block.timestamp - startTime;
+//         uint256 vestedAmount;
+
+//         if (elapsedTime >= vestingDuration) {
+//             // All tokens are vested after the vesting period
+//             vestedAmount = totalTokens;
+//         } else {
+//             // Gradual vesting calculation
+//             vestedAmount = (totalTokens * elapsedTime) / vestingDuration;
+//         }
+
+//         uint256 claimable = vestedAmount - tokensClaimed;
+
+//         require(claimable > 0, "No tokens available to claim");
+//         tokensClaimed += claimable;
+
+//         // Ensure lock-up restrictions
+//         if (block.timestamp < startTime + vestingDuration + lockUpDuration) {
+//             revert("Tokens are locked and cannot be transferred yet");
+//         }
+
+//         // Simulate token transfer (replace with actual ERC20 transfer logic)
+//         // token.transfer(beneficiary, claimable);
+
+//         emit TokensClaimed(beneficiary, claimable, block.timestamp);
+
+//         // Emit event when fully vested
+//         if (tokensClaimed == totalTokens) {
+//             emit VestingCompleted(beneficiary, totalTokens, block.timestamp);
+//         }
+//     }
+// }
