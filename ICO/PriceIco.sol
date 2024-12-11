@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity 0.8.26;
 
 import "./Erc20.sol";
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
@@ -38,6 +37,8 @@ contract ICO is Ownable, ReentrancyGuard {
     uint256 public saleCount;
     uint256 public totalFundsRaisedUSD;
     uint256 public totalTokensSold;
+    uint256 constant PRECISION_10 = 1e10;
+    uint256 constant PRECISION_18 = 1e18;
     bool public isICOFinalized = false;
     bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false;
@@ -161,28 +162,27 @@ contract ICO is Ownable, ReentrancyGuard {
         PaymentMethod paymentMethod,
         uint256 paymentAmount   
     ) public view returns (uint256) {
-        int256 price = _getPriceFeed(paymentMethod)*1e10;
+        int256 price = _getPriceFeed(paymentMethod)*int256(PRECISION_10);
         require(price > 0, "Invalid price feed");
 
         uint256 currentSaleId = getCurrentSaleId();
         Sale storage sale = sales[currentSaleId];
 
         uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in (18 decimals)
-        console.log("tokenPriceInUSD", tokenPriceInUSD);
 
         uint256 paymentAmountInUSD;
 
         if (paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB) {
-            paymentAmountInUSD = (uint256(price) * paymentAmount) / 1e18;  
+            paymentAmountInUSD = (uint256(price) * paymentAmount) / uint256(PRECISION_18);  
         } else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
         uint256 stablecoinDecimals = 6; 
         uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals)); 
-        paymentAmountInUSD = (uint256(price) * normalizedAmount) / 1e18; 
+        paymentAmountInUSD = (uint256(price) * normalizedAmount) / uint256(PRECISION_18); 
         } else {
         revert("Unsupported payment method");
         }
 
-        uint256 tokenAmount =(paymentAmountInUSD * 1e18)/ tokenPriceInUSD;
+        uint256 tokenAmount =(paymentAmountInUSD * uint256(PRECISION_18))/ tokenPriceInUSD;
         return tokenAmount;
     }
 
@@ -198,7 +198,7 @@ contract ICO is Ownable, ReentrancyGuard {
     function calculatePaymentAmount(PaymentMethod paymentMethod,uint256 tokenAmount) public view returns (uint256) {
     require(tokenAmount > 0, "Token amount must be greater than zero");
 
-    int256 price = _getPriceFeed(paymentMethod) * 1e10; 
+    int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); 
     require(price > 0, "Invalid price feed");
 
     uint256 currentSaleId = getCurrentSaleId();
@@ -206,14 +206,14 @@ contract ICO is Ownable, ReentrancyGuard {
     
     Sale storage sale = sales[currentSaleId];
     uint256 tokenPriceInUSD = sale.tokenPriceUSD;
-    uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / 1e18;
+    uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / PRECISION_18;
 
     uint256 paymentAmount;
     if (paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB) {
-        paymentAmount = (totalPaymentInUSD * 1e18) / uint256(price);
+        paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
     } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
         uint256 stablecoinDecimals = 6;
-        uint256 normalizedAmount = (totalPaymentInUSD * (10**stablecoinDecimals)) / 1e18;
+        uint256 normalizedAmount = (totalPaymentInUSD * (10**stablecoinDecimals)) / PRECISION_18;
         paymentAmount = normalizedAmount;
     } else {
         revert("Unsupported payment method");
@@ -236,7 +236,6 @@ contract ICO is Ownable, ReentrancyGuard {
         require(msg.value > 0, "Send a valid ETH/BNB amount");
         tokenAmount = calculateTokenAmount(paymentMethod, msg.value);
         investorPayments[msg.sender][paymentMethod] += msg.value;
-        console.log("Token amount for Native Payment:", tokenAmount);
     } else if (
         paymentMethod == PaymentMethod.USDT ||
         paymentMethod == PaymentMethod.USDC
@@ -250,14 +249,12 @@ contract ICO is Ownable, ReentrancyGuard {
         // Calculate token amount for stablecoin payment
         tokenAmount = calculateTokenAmount(paymentMethod, paymentAmount);
         investorPayments[msg.sender][paymentMethod] += paymentAmount;
-        console.log("Token amount for Stablecoin Payment:", tokenAmount);
     } else {
         revert("Unsupported payment method");
     }
     require(tokenAmount > 0, "Invalid token amount");
-
     // Ensure the purchase does not exceed the hard cap
-    uint256 totalCostInUSD = tokenAmount * sale.tokenPriceUSD / 1e18; 
+    uint256 totalCostInUSD = tokenAmount * sale.tokenPriceUSD / PRECISION_18; 
     require(
         totalFundsRaisedUSD + totalCostInUSD <= hardCapInUSD,
         "Hard cap reached"
@@ -284,22 +281,18 @@ contract ICO is Ownable, ReentrancyGuard {
     );
 }
 
-    function finalizeSaleIfEnded(uint256 saleId) internal {
+    // Owner decides whether immediate finalization is allowed
+    function setAllowImmediateFinalization(uint256 saleId, bool _allow) public onlyOwner {
+        allowImmediateFinalization = _allow; 
         Sale storage sale = sales[saleId];
 
         if (block.timestamp <= sale.endTime && !sale.isFinalized) {
             sale.isFinalized = true;
         }
-    }
-
-    // Owner decides whether immediate finalization is allowed
-    function setAllowImmediateFinalization(uint256 saleId, bool _allow) public onlyOwner {
-        allowImmediateFinalization = _allow; 
-        finalizeSaleIfEnded(saleId);
         emit ImmediateFinalization(saleId);
     }
 
-    function finalizeICO() public onlyOwner icoNotFinalized nonReentrant {
+    function finalizeICO() public nonReentrant onlyOwner icoNotFinalized {
         require(
             totalFundsRaisedUSD >= softCapInUSD || totalFundsRaisedUSD >= hardCapInUSD || block.timestamp >= getLatestSaleEndTime(),
             "Cannot finalize: Soft cap not reached or sale is ongoing"
@@ -354,7 +347,7 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 }
 
-    function airdropTokens() external onlyOwner nonReentrant {
+    function airdropTokens() external nonReentrant onlyOwner  {
     require(!isTokensAirdropped, "Airdrop already completed");
     require(isICOFinalized, "ICO not finalized");
 
@@ -376,7 +369,7 @@ contract ICO is Ownable, ReentrancyGuard {
     isTokensAirdropped = true;
 }
 
-    function initiateRefund() external onlyOwner icoNotFinalized nonReentrant {
+    function initiateRefund() external nonReentrant onlyOwner icoNotFinalized  {
     require(block.timestamp > getLatestSaleEndTime() || allowImmediateFinalization, "Sale ongoing");
     require(totalFundsRaisedUSD < softCapInUSD, "Soft cap reached");
 
@@ -413,7 +406,7 @@ contract ICO is Ownable, ReentrancyGuard {
 }
 
 receive() external payable {
-    revert("Direct ETH transfers not allowed");
+    revert("Direct BNB transfers not allowed");
 }
 
 
