@@ -43,8 +43,8 @@ contract ICO is Ownable, ReentrancyGuard {
     bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false;
     address[] public investors;
-    address usdt;
-    address usdc;
+    address public usdt;
+    address public usdc;
 
     // Mappings
     mapping(uint256 => Sale) public sales;
@@ -213,8 +213,10 @@ contract ICO is Ownable, ReentrancyGuard {
         paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
     } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
         uint256 stablecoinDecimals = 6;
-        uint256 normalizedAmount = (totalPaymentInUSD * (10**stablecoinDecimals)) / PRECISION_18;
-        paymentAmount = normalizedAmount;
+         uint256 normalizedPrice = uint256(price) / PRECISION_10;
+        paymentAmount = normalizedPrice;
+        require(normalizedPrice > 0, "Invalid normalized price feed");
+        paymentAmount = (totalPaymentInUSD * (10**stablecoinDecimals)) / normalizedPrice;
     } else {
         revert("Unsupported payment method");
     }
