@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import "./Erc20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract ICO is Ownable, ReentrancyGuard {
@@ -127,7 +127,13 @@ contract ICO is Ownable, ReentrancyGuard {
         }
         revert("Unsupported payment method");
     }
-
+    //Constructor Data
+    // 100000000000000000000
+    // 200000000000000000000
+    // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
+    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
+    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
+    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
 
     function createSale(
         uint256 _startTime,
@@ -186,40 +192,32 @@ contract ICO is Ownable, ReentrancyGuard {
         return tokenAmount;
     }
 
-    //Constructor Data
-    // 100000000000000000000
-    // 200000000000000000000
-    // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
-    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
-    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
-    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
 
-
-    function calculatePaymentAmount(PaymentMethod paymentMethod,uint256 tokenAmount) public view returns (uint256) {
+function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount) public view returns (uint256) {
     require(tokenAmount > 0, "Token amount must be greater than zero");
 
-    int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); 
+    int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
     require(price > 0, "Invalid price feed");
 
     uint256 currentSaleId = getCurrentSaleId();
     require(currentSaleId != 0, "No active sale");
-    
+
     Sale storage sale = sales[currentSaleId];
-    uint256 tokenPriceInUSD = sale.tokenPriceUSD;
+    uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Assumes token price is in 18 decimals
     uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / PRECISION_18;
 
     uint256 paymentAmount;
     if (paymentMethod == PaymentMethod.ETH || paymentMethod == PaymentMethod.BNB) {
         paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
     } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-        uint256 stablecoinDecimals = 6;
-        uint256 normalizedAmount = (totalPaymentInUSD * (10**stablecoinDecimals)) / PRECISION_18;
-        paymentAmount = normalizedAmount;
+        paymentAmount = (totalPaymentInUSD * (10 ** 6)) / uint256(price);
     } else {
         revert("Unsupported payment method");
     }
+
     return paymentAmount;
 }
+
 
 
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount) external payable icoNotFinalized {
