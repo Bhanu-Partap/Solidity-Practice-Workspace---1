@@ -13,15 +13,20 @@ contract TokenVesting is Ownable {
     using SafeMath for uint256;
 
     erc20token public token;
+    address public icoContract; 
 
     struct VestingSchedule {
-        uint256 totalAmount;
-        uint256 amountClaimed;
-        uint256 startTime;
-        uint256 duration; // Vesting period in seconds
-    }
+        uint256 totalTokens;      // Total tokens allocated to the investor
+        uint256 claimedTokens;    // Tokens already claimed
+        uint256 lockUpEndTime;    // End time of lock-up period
+        uint256 cliffEndTime;     // End time of cliff period
+        uint256 vestingEndTime;   // End time of vesting period
+}
 
-    mapping(address => VestingSchedule) public vestingSchedules;
+
+    // mapping(address => VestingSchedule) public vestingSchedules;
+    mapping(uint256 => mapping(address => VestingSchedule)) public vestingSchedules; // saleId => (investor => VestingSchedule)
+
 
     event VestingAllocated(address indexed beneficiary, uint256 totalAmount, uint256 startTime, uint256 duration);
     event TokensClaimed(address indexed beneficiary, uint256 amount);
@@ -31,19 +36,25 @@ contract TokenVesting is Ownable {
     }
 
     // Allocate vesting to a user
-    function allocateVesting(address beneficiary, uint256 tokenAmount, uint256 duration) external {
-        console.log("Entered in allocating vesting function");
-        require(vestingSchedules[beneficiary].totalAmount == 0, "Vesting already exists for this address");
-        console.log("condition checked in allocating vesting function");
-        vestingSchedules[beneficiary] = VestingSchedule({
-            totalAmount: tokenAmount,
-            amountClaimed: 0,
-            startTime: block.timestamp,
-            duration: duration
-        });
-        console.log("vesting allocated");
-        emit VestingAllocated(beneficiary, tokenAmount, block.timestamp, duration);
-    }
+    function registerVesting(
+    uint256 saleId,
+    address investor,
+    uint256 amount,
+    uint256 startTime,
+    uint256 lockUpPeriod,
+    uint256 cliffPeriod,
+    uint256 vestingPeriod
+    ) external {
+    require(msg.sender == icoContract, "ICO contract can register vesting");
+    vestingSchedules[saleId][investor] = VestingSchedule({
+        totalTokens: amount,
+        claimedTokens: 0,
+        lockUpEndTime: startTime + lockUpPeriod,
+        cliffEndTime: startTime + lockUpPeriod + cliffPeriod,
+        vestingEndTime: startTime + lockUpPeriod + cliffPeriod + vestingPeriod
+    });
+}
+
 
     // Claim available vested tokens
     function claimVestedTokens() external {

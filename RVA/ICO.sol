@@ -2,25 +2,29 @@
 pragma solidity 0.8.26;
 
 import "./Token.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Vesting.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract ICO is Ownable, ReentrancyGuard {
+    using SafeMath for uint256;
 
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedBNB;
     AggregatorV3Interface public priceFeedUSDT;
     AggregatorV3Interface public priceFeedUSDC;
 
-
     struct Sale {
-        uint256 startTime;
-        uint256 endTime;
-        uint256 tokenPriceUSD;
-        uint256 tokensSold;
-        bool isFinalized;
-    }
+        uint256 totalTokens;    
+        uint256 tokensSold;     
+        uint256 softCap;        
+        uint256 hardCap;        
+        uint256 tokenPrice;   //(USD)
+        uint256 startTime;      
+        uint256 endTime;        
+        bool isFinalized;       
+}
 
     enum PaymentMethod {
         ETH,
@@ -31,6 +35,7 @@ contract ICO is Ownable, ReentrancyGuard {
 
     // State variables
     erc20token public token;
+    TokenVesting public vesting;
     uint256 public softCapInUSD;
     uint256 public hardCapInUSD;
     uint256 public saleCount;
@@ -42,8 +47,9 @@ contract ICO is Ownable, ReentrancyGuard {
     bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false;
     address[] public investors;
-    address public usdt;
-    address public usdc;
+    address public immutable usdt;
+    address public immutable usdc;
+    address public  vestingContractAddress;
 
     // Mappings
     mapping(uint256 => Sale) public sales;
