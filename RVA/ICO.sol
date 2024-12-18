@@ -273,17 +273,16 @@ contract ICO is Ownable, ReentrancyGuard {
         vestingContract.registerVesting(
             msg.sender,
             sale,
-            tokenAmount,
+            lockedTokens,
             block.timestamp,
             1 years,
-            12 months,
-            24 months
+            2 years
         );
     } else if (
         keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") ||
         keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B")
     ) {
-        // Define private sale lockup/vesting logic if needed
+        
     } else {
         // No lockup for public sale
     }

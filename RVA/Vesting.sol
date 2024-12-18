@@ -12,6 +12,7 @@ contract TokenVesting is Ownable {
     address public icoContract;
 
     struct VestingSchedule {
+        uint256 saleId;
         uint256 totalTokens;   
         uint256 claimedTokens;    
         uint256 lockUpEndTime; 
@@ -30,22 +31,23 @@ contract TokenVesting is Ownable {
 
     // Allocate vesting to a user
     function registerVesting(
-        address investor,
-        uint256 saleId,
-        uint256 tokenAmount,
-        uint256 startTime,
-        uint256 lockUpPeriod,
-        uint256 vestingPeriod
+        address _investor,
+        uint256 _saleId,
+        uint256 _tokenAmount,
+        uint256 _startTime,
+        uint256 _lockUpPeriod,
+        uint256 _vestingPeriod
     ) external {
         require(msg.sender == icoContract, "Only ICO contract can register vesting");
-        vestingSchedules[saleId][investor] = VestingSchedule({
-            totalTokens: tokenAmount,
+        vestingSchedules[_saleId][_investor] = VestingSchedule({
+            saleId : _saleId,
+            totalTokens: _tokenAmount,
             claimedTokens: 0,
-            lockUpEndTime: startTime + lockUpPeriod,
-            vestingEndTime: startTime + lockUpPeriod + vestingPeriod
+            lockUpEndTime: _startTime + _lockUpPeriod,
+            vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod
         });
 
-        emit VestingAllocated(investor, tokenAmount, startTime + lockUpPeriod, startTime + lockUpPeriod + vestingPeriod);
+        emit VestingAllocated(_investor, _tokenAmount, _startTime + _lockUpPeriod, _startTime + _lockUpPeriod + _vestingPeriod);
     }
 
     // Claim vested tokens
