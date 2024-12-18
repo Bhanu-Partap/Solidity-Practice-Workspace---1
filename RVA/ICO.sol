@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./Token.sol";
 import "./Vesting.sol";
+import "./UpgradableToken.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
@@ -12,31 +12,30 @@ contract ICO is Ownable, ReentrancyGuard {
 
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedBNB;
-    AggregatorV3Interface public priceFeedUSDT;
-    AggregatorV3Interface public priceFeedUSDC;
+    // AggregatorV3Interface public priceFeedUSDT;
+    // AggregatorV3Interface public priceFeedUSDC;
 
     struct Sale {
-        uint256 totalTokens;    
-        uint256 tokensSold;     
-        uint256 softCap;        
-        uint256 hardCap;        
-        uint256 tokenPrice;   //(USD)
         uint256 startTime;      
         uint256 endTime;        
-        bool isFinalized;       
+        // uint256 softCap;        
+        uint256 hardCap;        
+        uint256 tokenPrice;   //(USD)
+        uint256 tokensSold;     
+        // uint256 totalTokens;    
+        bool isFinalized;    
+        string saleName;   
 }
 
     enum PaymentMethod {
-        ETH,
-        BNB,
-        USDT,
-        USDC
+        BNB
+        // USDT,
+        // USDC
     }
 
     // State variables
-    erc20token public token;
+    erc20Token public token;
     TokenVesting public vesting;
-    uint256 public softCapInUSD;
     uint256 public hardCapInUSD;
     uint256 public saleCount;
     uint256 public totalFundsRaisedUSD;
@@ -44,7 +43,6 @@ contract ICO is Ownable, ReentrancyGuard {
     uint256 constant PRECISION_10 = 1e10;
     uint256 constant PRECISION_18 = 1e18;
     bool public isICOFinalized = false;
-    bool public isTokensAirdropped = false;
     bool public allowImmediateFinalization = false;
     address[] public investors;
     address public immutable usdt;
@@ -54,49 +52,42 @@ contract ICO is Ownable, ReentrancyGuard {
     // Mappings
     mapping(uint256 => Sale) public sales;
     mapping(address => uint256) public contributionsInUSD;
-    mapping(address => uint256) public tokensBoughtByInvestor;
+    mapping(uint256 => mapping(address => uint256)) public tokensBoughtByInvestorForSale;
     mapping(address => AggregatorV3Interface) private priceFeeds;
-    mapping(address => PaymentMethod) public paymentMethodForInvestor; 
-    mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
+    // mapping(address => PaymentMethod) public paymentMethodForInvestor; 
+    // mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
 
     // Events
     event ICOFinalized(uint256 totalTokensSold);
     event ImmediateFinalization(uint256 saleId);
-    event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
+    // event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
+    // event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid, PaymentMethod paymentMethod);
+    event RefundInitiated(address investor, uint256 amount ) ;
     event TokenAirdropped(address investor, uint256 airdroppedAmount);
-    event TokensPurchased(
-        address buyer,
-        uint256 saleId,
-        uint256 tokenPurchaseAmount,
-        uint256 tokenPriceUSD,
-        uint256 amountPaid,
-        PaymentMethod paymentMethod
-    );
+    event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
+    
     event NewSaleCreated(
         uint256 saleId,
         uint256 startTime,
         uint256 endTime,
-        uint256 tokenPriceUSD
+        uint256 hardcap,
+        uint256 tokenPriceUSD,
+        string saleName
     );
 
     constructor(
-        erc20token _token,
+        ERC20Token _token,
         address _usdt,
         address _usdc,
         uint256 _softCapInUSD,
         uint256 _hardCapInUSD,
-        address _priceFeedBNB,
-        address _priceFeedUSDT,
-        address _priceFeedUSDC
+        address _priceFeedBNB
     ) Ownable(msg.sender) {
         token = _token;
-        softCapInUSD = _softCapInUSD;
         hardCapInUSD = _hardCapInUSD;
         usdt = _usdt;
         usdc = _usdc;
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
-        priceFeedUSDT = AggregatorV3Interface(_priceFeedUSDT);
-        priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
     }
 
     modifier icoNotFinalized() {
@@ -115,17 +106,9 @@ contract ICO is Ownable, ReentrancyGuard {
             return price;
         }
 
-        if (paymentMethod == PaymentMethod.USDT) {
-            (, int256 price, , , ) = priceFeedUSDT.latestRoundData();
-            return price;
-        }
-
-        if (paymentMethod == PaymentMethod.USDC) {
-            (, int256 price, , , ) = priceFeedUSDC.latestRoundData();
-            return price;
-        }
         revert("Unsupported payment method");
     }
+
     //Constructor Data
     // 100000000000000000000
     // 200000000000000000000
@@ -137,7 +120,11 @@ contract ICO is Ownable, ReentrancyGuard {
     function createSale(
         uint256 _startTime,
         uint256 _endTime,
-        uint256 _tokenPriceUSD
+        uint256 _hardCap,   
+        uint256 _tokenPriceUSD, //(USD)
+        uint256 _tokensSold,   
+        bool _isFinalized,
+        string memory _saleName
     ) external onlyOwner icoNotFinalized {
         require(
             _startTime > block.timestamp,
@@ -156,123 +143,152 @@ contract ICO is Ownable, ReentrancyGuard {
         sales[saleCount] = Sale({
             startTime: _startTime,
             endTime: _endTime,
+            hardcap:_hardCap,
             tokenPriceUSD: _tokenPriceUSD,
             tokensSold: 0,
-            isFinalized: false
+            isFinalized: false,
+            saleName:_saleName
         });
-        emit NewSaleCreated(saleCount, _startTime, _endTime, _tokenPriceUSD);
+        emit NewSaleCreated(saleCount, _startTime, _endTime,_hardCap,_tokenPriceUSD,_saleName);
     }
 
-    function calculateTokenAmount(
-        PaymentMethod paymentMethod,
-        uint256 paymentAmount   
-    ) public view returns (uint256) {
-        int256 price = _getPriceFeed(paymentMethod)*int256(PRECISION_10);
-        require(price > 0, "Invalid price feed");
+    // function calculateTokenAmount(
+    //     PaymentMethod paymentMethod,
+    //     uint256 paymentAmount   
+    // ) public view returns (uint256) {
+    //     int256 price = _getPriceFeed(paymentMethod)*int256(PRECISION_10);
+    //     require(price > 0, "Invalid price feed");
 
-        uint256 currentSaleId = getCurrentSaleId();
-        Sale storage sale = sales[currentSaleId];
+    //     uint256 currentSaleId = getCurrentSaleId();
+    //     Sale storage sale = sales[currentSaleId];
 
-        uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in (18 decimals)
+    //     uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in (18 decimals)
 
-        uint256 paymentAmountInUSD;
+    //     uint256 paymentAmountInUSD;
 
-        if (paymentMethod == PaymentMethod.BNB) {
-            paymentAmountInUSD = (uint256(price) * paymentAmount) / uint256(PRECISION_18);  
-        } else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
-        uint256 stablecoinDecimals = 6; 
-        uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals)); 
-        paymentAmountInUSD = (uint256(price) * normalizedAmount) / uint256(PRECISION_18); 
-        } else {
-        revert("Unsupported payment method");
-        }
+    //     if (paymentMethod == PaymentMethod.BNB) {
+    //         paymentAmountInUSD = (uint256(price) * paymentAmount) / uint256(PRECISION_18);  
+    //     } else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
+    //     uint256 stablecoinDecimals = 6; 
+    //     uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals)); 
+    //     paymentAmountInUSD = (uint256(price) * normalizedAmount) / uint256(PRECISION_18); 
+    //     } else {
+    //     revert("Unsupported payment method");
+    //     }
 
-        uint256 tokenAmount =(paymentAmountInUSD * uint256(PRECISION_18))/ tokenPriceInUSD;
-        return tokenAmount;
-    }
-
-
-function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount) public view returns (uint256) {
-    require(tokenAmount > 0, "Token amount must be greater than zero");
-
-    int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
-    require(price > 0, "Invalid price feed");
-
-    uint256 currentSaleId = getCurrentSaleId();
-    require(currentSaleId != 0, "No active sale");
-
-    Sale storage sale = sales[currentSaleId];
-    uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Assumes token price is in 18 decimals
-    uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / PRECISION_18;
-
-    uint256 paymentAmount;
-    if (paymentMethod == PaymentMethod.BNB) {
-        paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
-    } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-        paymentAmount = (totalPaymentInUSD * (10 ** 6)) / uint256(price);
-    } else {
-        revert("Unsupported payment method");
-    }
-
-    return paymentAmount;
-}
+    //     uint256 tokenAmount =(paymentAmountInUSD * uint256(PRECISION_18))/ tokenPriceInUSD;
+    //     return tokenAmount;
+    // }
 
 
-    function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount) external payable icoNotFinalized {
+// function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount) public view returns (uint256) {
+//     require(tokenAmount > 0, "Token amount must be greater than zero");
+
+//     int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
+//     require(price > 0, "Invalid price feed");
+
+//     uint256 currentSaleId = getCurrentSaleId();
+//     require(currentSaleId != 0, "No active sale");
+
+//     Sale storage sale = sales[currentSaleId];
+//     uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Assumes token price is in 18 decimals
+//     uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / PRECISION_18;
+
+//     uint256 paymentAmount;
+//     if (paymentMethod == PaymentMethod.BNB) {
+//         paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
+//     } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
+//         paymentAmount = (totalPaymentInUSD * (10 ** 6)) / uint256(price);
+//     } else {
+//         revert("Unsupported payment method");
+//     }
+
+//     return paymentAmount;
+// }
+
+
+    function buyTokens() external payable icoNotFinalized {
     require(msg.sender != owner(), "Owner cannot buy tokens");
     uint256 currentSaleId = getCurrentSaleId();
     require(currentSaleId != 0, "No active sale");
-    
+
     Sale storage sale = sales[currentSaleId];
     require(!sale.isFinalized, "Sale already finalized");
 
-    uint256 tokenAmount;
-    if (paymentMethod == PaymentMethod.BNB) {
-        require(msg.value > 0, "Send a valid ETH/BNB amount");
-        tokenAmount = calculateTokenAmount(paymentMethod, msg.value);
-        investorPayments[msg.sender][paymentMethod] += msg.value;
-    } else if (
-        paymentMethod == PaymentMethod.USDT ||
-        paymentMethod == PaymentMethod.USDC
+    // 1. Check whitelist for restricted sales
+    if (
+        keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital") ||
+        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") ||
+        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B")
     ) {
-        // Handle stablecoin payments
-        require(paymentAmount > 0, "Enter a valid stablecoin amount");
-        IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-            ? IERC20(usdt)
-            : IERC20(usdc);
-        require(stablecoin.transferFrom(msg.sender,address(this),paymentAmount),"Stablecoin transfer failed");
-        tokenAmount = calculateTokenAmount(paymentMethod, paymentAmount);
-        investorPayments[msg.sender][paymentMethod] += paymentAmount;
-    } else {
-        revert("Unsupported payment method");
+        require(whitelistedUsers[msg.sender], "Only whitelisted users allowed");
     }
+
+    // Ensure valid BNB payment
+    require(msg.value > 0, "Send a valid BNB amount");
+    uint256 tokenAmount = calculateTokenAmount(PaymentMethod.BNB, msg.value);
     require(tokenAmount > 0, "Invalid token amount");
-    uint256 totalCostInUSD = tokenAmount * sale.tokenPriceUSD / PRECISION_18; 
+
+    uint256 totalCostInUSD = (tokenAmount * sale.tokenPriceUSD) / PRECISION_18;
     require(
         totalFundsRaisedUSD + totalCostInUSD <= hardCapInUSD,
         "Hard cap reached"
     );
 
+    // Update contributions and sales data
+    investorPayments[msg.sender][PaymentMethod.BNB] += msg.value;
     contributionsInUSD[msg.sender] += totalCostInUSD;
     totalFundsRaisedUSD += totalCostInUSD;
     sale.tokensSold += tokenAmount;
     totalTokensSold += tokenAmount;
 
+    // 2. Track tokens purchased by the investor for the current sale
+    tokensBoughtByInvestorForSale[currentSaleId][msg.sender] += tokenAmount;
+
     if (tokensBoughtByInvestor[msg.sender] == 0) {
         investors.push(msg.sender);
     }
     tokensBoughtByInvestor[msg.sender] += tokenAmount;
-    paymentMethodForInvestor[msg.sender] = paymentMethod;
 
     emit TokensPurchased(
         msg.sender,
         currentSaleId,
         tokenAmount,
         sale.tokenPriceUSD,
-        paymentAmount,
-        paymentMethod
+        msg.value,
+        PaymentMethod.BNB
     );
+
+    // 3. Call setLockup in the vesting contract based on the sale
+    uint256 initialRelease;
+    uint256 lockedTokens;
+    if (
+        keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital")
+    ) {
+        // Lockup logic for venture capital sale
+        initialRelease = (tokenAmount * 5) / 100; // 5% initial release
+        lockedTokens = tokenAmount - initialRelease;
+
+        // Set lockup: 12-month lockup for 95% of tokens with 24-month vesting
+        vestingContract.registerVesting(
+            msg.sender,
+            sale,
+            tokenAmount,
+            block.timestamp,
+            1 years,
+            12 months,
+            24 months
+        );
+    } else if (
+        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") ||
+        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B")
+    ) {
+        // Define private sale lockup/vesting logic if needed
+    } else {
+        // No lockup for public sale
+    }
 }
+
 
     // Owner decides whether immediate finalization is allowed
     function setAllowImmediateFinalization(uint256 saleId, bool _allow) public onlyOwner {

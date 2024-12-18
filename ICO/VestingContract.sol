@@ -78,7 +78,6 @@ contract TokenVesting is Ownable {
         VestingSchedule storage schedule = vestingSchedules[beneficiary];
         uint256 remainingAmount = schedule.totalAmount.sub(schedule.amountClaimed);
         delete vestingSchedules[beneficiary];
-        
         token.transfer(owner(), remainingAmount);
     }
 }
