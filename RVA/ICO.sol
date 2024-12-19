@@ -34,8 +34,8 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 
     // State variables
-    erc20Token public token;
-    TokenVesting public vesting;
+    ERC20Token public token;
+    TokenVesting public vestingContract;
     uint256 public hardCapInUSD;
     uint256 public saleCount;
     uint256 public totalFundsRaisedUSD;
@@ -45,19 +45,21 @@ contract ICO is Ownable, ReentrancyGuard {
     bool public isICOFinalized = false;
     bool public allowImmediateFinalization = false;
     address[] public investors;
-    address public immutable usdt;
-    address public immutable usdc;
+    // address public immutable usdt;
+    // address public immutable usdc;
     address public  vestingContractAddress;
 
     // Mappings
     mapping(uint256 => Sale) public sales;
+    mapping(address => bool) public whitelistedUsers;
     mapping(address => uint256) public contributionsInUSD;
-    mapping(uint256 => mapping(address => uint256)) public tokensBoughtByInvestorForSale;
+    // mapping(uint256 => mapping(address => uint256)) public tokensBoughtByInvestorForSale;
     mapping(address => AggregatorV3Interface) private priceFeeds;
     // mapping(address => PaymentMethod) public paymentMethodForInvestor; 
-    // mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
+    mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
 
     // Events
+    event Whitelisted(address indexed account);
     event ICOFinalized(uint256 totalTokensSold);
     event ImmediateFinalization(uint256 saleId);
     // event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
@@ -77,22 +79,33 @@ contract ICO is Ownable, ReentrancyGuard {
 
     constructor(
         ERC20Token _token,
-        address _usdt,
-        address _usdc,
+        // address _usdt,
+        // address _usdc,
         uint256 _softCapInUSD,
         uint256 _hardCapInUSD,
         address _priceFeedBNB
     ) Ownable(msg.sender) {
         token = _token;
         hardCapInUSD = _hardCapInUSD;
-        usdt = _usdt;
-        usdc = _usdc;
+        // usdt = _usdt;
+        // usdc = _usdc;
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
     }
 
     modifier icoNotFinalized() {
         require(!isICOFinalized, "ICO already finalized");
         _;
+    }
+
+    modifier isWhitelisted() {
+        require(whitelistedUsers[msg.sender], "Not a whitelisted user");
+        _;
+    }
+// 
+    function whitelistUser(address _user) external onlyOwner {
+        require(_user != address(0), "Invalid address");
+        whitelistedUsers[_user] = true;
+        emit Whitelisted(_user);
     }
 
     function _getPriceFeed(PaymentMethod paymentMethod)
@@ -105,7 +118,6 @@ contract ICO is Ownable, ReentrancyGuard {
             (, int256 price, , , ) = priceFeedBNB.latestRoundData();
             return price;
         }
-
         revert("Unsupported payment method");
     }
 
@@ -215,7 +227,7 @@ contract ICO is Ownable, ReentrancyGuard {
     Sale storage sale = sales[currentSaleId];
     require(!sale.isFinalized, "Sale already finalized");
 
-    // 1. Check whitelist for restricted sales
+    // Check whitelist for restricted sales
     if (
         keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital") ||
         keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") ||
@@ -242,7 +254,6 @@ contract ICO is Ownable, ReentrancyGuard {
     sale.tokensSold += tokenAmount;
     totalTokensSold += tokenAmount;
 
-    // 2. Track tokens purchased by the investor for the current sale
     tokensBoughtByInvestorForSale[currentSaleId][msg.sender] += tokenAmount;
 
     if (tokensBoughtByInvestor[msg.sender] == 0) {
@@ -259,12 +270,11 @@ contract ICO is Ownable, ReentrancyGuard {
         PaymentMethod.BNB
     );
 
-    // 3. Call setLockup in the vesting contract based on the sale
+    // Call setLockup in the vesting contract based on the sale
     uint256 initialRelease;
     uint256 lockedTokens;
-    if (
-        keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital")
-    ) {
+    if (keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital")) {
+        
         // Lockup logic for venture capital sale
         initialRelease = (tokenAmount * 5) / 100; // 5% initial release
         lockedTokens = tokenAmount - initialRelease;
@@ -279,12 +289,52 @@ contract ICO is Ownable, ReentrancyGuard {
             2 years
         );
     } else if (
-        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") ||
-        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B")
-    ) {
-        
-    } else {
-        // No lockup for public sale
+        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") 
+    ){
+        // Lockup logic for Private Sale A
+        initialRelease = (tokenAmount * 10) / 100; // 10% initial release
+        lockedTokens = tokenAmount - initialRelease;
+
+        // Set lockup: 6-month lockup for 90% of tokens with 18-month vesting
+        vestingContract.registerVesting(
+            msg.sender,
+            sale,
+            lockedTokens,
+            block.timestamp,
+            0.5 years,
+            1.5 years
+        );
+    }
+    else if(keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B") ){
+         // Lockup logic for Private Sale B
+        initialRelease = (tokenAmount * 15) / 100; // 15% initial release
+        lockedTokens = tokenAmount - initialRelease;
+
+        // Set lockup: 3-month lockup for 90% of tokens with 12-month vesting
+        vestingContract.registerVesting(
+            msg.sender,
+            sale,
+            lockedTokens,
+            block.timestamp,
+            0.25 years,
+            1 years
+        );
+    } 
+    else if(keccak256(abi.encodePacked(sale.name)) == keccak256("public sale")) {
+
+        // Lockup logic for Public Sale
+        initialRelease = (tokenAmount * 15) / 100; // 15% initial release
+        lockedTokens = tokenAmount - initialRelease;
+
+        // Set lockup: 3-month lockup for 90% of tokens with 12-month vesting
+        vestingContract.registerVesting(
+            msg.sender,
+            sale,
+            lockedTokens,
+            block.timestamp,
+            0.25 years,
+            1 years
+        );
     }
 }
 

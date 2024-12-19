@@ -219,7 +219,6 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
 }
 
 
-
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount) external payable icoNotFinalized {
     require(msg.sender != owner(), "Owner cannot buy tokens");
     uint256 currentSaleId = getCurrentSaleId();
