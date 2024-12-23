@@ -1,0 +1,64 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "version",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Version contract gives the versioning information of the implementation contract",
+			"kind": "dev",
+			"methods": {
+				"version()": {
+					"details": "Returns the string of the current version."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			".deps/npm/@onchain-id/solidity/contracts/version/Version.sol": "Version"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		".deps/npm/@onchain-id/solidity/contracts/version/Version.sol": {
+			"keccak256": "0x72b12b88f0266d69a3bf42730d00d1abf9ca0c05a7b5c25a27ea1945640e0007",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://9da7981589ef9638f1f0ff902ccada20d80af8abb7e65cf7bedf568aa83604f1",
+				"dweb:/ipfs/QmRe58fcQ4p8utwQ99HyTqqfswW3QduUDqng3CD3fsTm5k"
+			]
+		}
+	},
+	"version": 1
+}

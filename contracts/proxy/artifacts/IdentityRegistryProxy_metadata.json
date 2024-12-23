@@ -1,0 +1,177 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "implementationAuthority",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_trustedIssuersRegistry",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_claimTopicsRegistry",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_identityStorage",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_implementationAuthority",
+						"type": "address"
+					}
+				],
+				"name": "ImplementationAuthoritySet",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint8",
+						"name": "version",
+						"type": "uint8"
+					}
+				],
+				"name": "Initialized",
+				"type": "event"
+			},
+			{
+				"stateMutability": "nonpayable",
+				"type": "fallback"
+			},
+			{
+				"inputs": [],
+				"name": "getImplementationAuthority",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_newImplementationAuthority",
+						"type": "address"
+					}
+				],
+				"name": "setImplementationAuthority",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"events": {
+				"ImplementationAuthoritySet(address)": {
+					"notice": "events"
+				}
+			},
+			"kind": "user",
+			"methods": {
+				"setImplementationAuthority(address)": {
+					"notice": "functions"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"erc3643/proxy/IdentityRegistryProxy.sol": "IdentityRegistryProxy"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+			"keccak256": "0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e",
+				"dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+			"keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+				"dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+			]
+		},
+		"erc3643/factory/Ifactory.sol": {
+			"keccak256": "0x3e67d4c86a65ff2e93eb27a5e31ba24c9f14a597fa91f06069c91e3585c2de74",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://3100bde0bae1e70eaa034298af2005e5c7944ea46ae287c68f8400e36987730c",
+				"dweb:/ipfs/QmZgXTqKRdxJyG7C4sX5cuY9TPKfSrBwMTeFRwXnojFJ7p"
+			]
+		},
+		"erc3643/proxy/AbstractProxy.sol": {
+			"keccak256": "0x5314d8a1360398feb1e78025c9f5b11d5ad10d859977d24bec70eb3d1326cc1b",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b9c19b36486174c1fc9344f7321977ef15ec9b56881d8aa2094b67b915d0b7e8",
+				"dweb:/ipfs/QmYPj8S8wKGyiXeay54vjrzNySxNpisqeN3owvJhkzC5Rq"
+			]
+		},
+		"erc3643/proxy/IProxy.sol": {
+			"keccak256": "0xeeb4288c06a414d50547eeb0aef8737c3b974fc16e2b6ca793d1d2c515021ed2",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://4a21825dc56da4e95442425483241986f1e1ec035b5df62edd6eaedab85e8b38",
+				"dweb:/ipfs/QmZriseVg11CXqrhuS6LNNp9qcVm9EJYS3915wkraLaYN9"
+			]
+		},
+		"erc3643/proxy/IdentityRegistryProxy.sol": {
+			"keccak256": "0xbdb6533048349199f86dd662853a11897527c141d0c5c5347ab3c2a964ae3554",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://67257ce5514297f156c7f4c7003a27d11bd358552f42a4ee5e3480d1414922ae",
+				"dweb:/ipfs/QmS9tjdNh94e56jrDgs4nDvsYxjb1ZdXT33mzgwVFuCfJh"
+			]
+		}
+	},
+	"version": 1
+}

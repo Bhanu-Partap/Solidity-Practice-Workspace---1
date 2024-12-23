@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Practice tokens/DynamicNFT.sol": "Dyn"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Practice tokens/DynamicNFT.sol": {
+			"keccak256": "0x571827483b36d58b45030218d7e36450860393096c5d4d6c2505a834f06982e5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6bf90855f50cb6d4e0d49b236e2afddb5f87969a4757603a313eb61a3db7f121",
+				"dweb:/ipfs/QmRebBk4c8PvSnS9pL3h1uuwQQpBrZtFtXgKyUZvH6qYmr"
+			]
+		}
+	},
+	"version": 1
+}

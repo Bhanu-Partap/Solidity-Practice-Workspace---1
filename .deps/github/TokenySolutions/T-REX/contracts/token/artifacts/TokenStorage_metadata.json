@@ -1,0 +1,137 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"stateVariables": {
+				"__gap": {
+					"details": "This empty reserved space is put in place to allow future versions to add new variables without shifting down storage in the inheritance chain."
+				},
+				"_balances": {
+					"details": "ERC20 basic variables"
+				},
+				"_frozen": {
+					"details": "Variables of freeze and pause functions"
+				},
+				"_tokenCompliance": {
+					"details": "Compliance contract linked to the onchain validator system"
+				},
+				"_tokenIdentityRegistry": {
+					"details": "Identity Registry contract used by the onchain validator system"
+				},
+				"_tokenName": {
+					"details": "Token information"
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			".deps/github/TokenySolutions/T-REX/contracts/token/TokenStorage.sol": "TokenStorage"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		".deps/github/TokenySolutions/T-REX/contracts/compliance/modular/IModularCompliance.sol": {
+			"keccak256": "0xf632b47a306502ce66a0e432c7c3a7d3290ab8325a854bdefe2268d61fb7cc7f",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://988eb31577cdd253e9ff2743983c466f81fdb6b944b24d3c55b0263ae45f3d3d",
+				"dweb:/ipfs/QmZFixdMi55m78eEfrLN3yiNL4VR3AWSgKcjaRBBq4FskX"
+			]
+		},
+		".deps/github/TokenySolutions/T-REX/contracts/registry/interface/IClaimTopicsRegistry.sol": {
+			"keccak256": "0x878a76f41e117a67b97a698755e9875701282fcc12890c5ebaf85264808e5608",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://46639925c8db6a5442687f74c489bd9f05904acc2f87579f3f538e2a8d5045e2",
+				"dweb:/ipfs/QmQSQHd9jMT98LDnD3cxHFK4L9zZ7fLLd9tJUu1ddZYoLn"
+			]
+		},
+		".deps/github/TokenySolutions/T-REX/contracts/registry/interface/IIdentityRegistry.sol": {
+			"keccak256": "0xce63ed845f95b5fe108f16029a6cbe77df130c37e91fed3651098aab7ac82747",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://2ed88bfac46fb3b6f5600276b68f043ce40a624f77c4c13ccb7091932d9277bb",
+				"dweb:/ipfs/QmYKqQfmLWJUJrrcYdCXU5bCZU8baZGgqq4vPEaRDsGPa1"
+			]
+		},
+		".deps/github/TokenySolutions/T-REX/contracts/registry/interface/IIdentityRegistryStorage.sol": {
+			"keccak256": "0x8ada486c1c9fe45156df6bde7326dd2454ebf16b00caf003915c82847b08cfee",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8dca0a89a9d95dc3dc29333fafcdc0834169dc3e51b3b19203ec6a18dbde3170",
+				"dweb:/ipfs/QmVjJwN6kKq6MwZc7hpw98wjmXyyyAqPkr7KAnixe2jxTj"
+			]
+		},
+		".deps/github/TokenySolutions/T-REX/contracts/registry/interface/ITrustedIssuersRegistry.sol": {
+			"keccak256": "0xf85a074a00edd299b7e980da614debe8b17af0dac4a3f98d5cba7e6f2a3a8263",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ce3fca047a970c6039cd238f3b3a7203221876f8a8924f3164ab36f9f1771dcb",
+				"dweb:/ipfs/QmcGym6CWid1ejg4MmJmFBfk32gg7K1F7YutEkTriDQYTj"
+			]
+		},
+		".deps/github/TokenySolutions/T-REX/contracts/token/TokenStorage.sol": {
+			"keccak256": "0x6110806c1dee340e2ebd25213bcfe90b15b74fba9b87c5c1eeb80fffb1083e73",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://888b4501d31f7e7f5dd7ae6f3b56b2264310f3a96058a20d29582b11246e798b",
+				"dweb:/ipfs/QmSTYow4mda3ZBJMTjazccv21vVM5LNLq7a4H6ahGzZMag"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
+				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
+				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
+				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
+				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+			]
+		}
+	},
+	"version": 1
+}

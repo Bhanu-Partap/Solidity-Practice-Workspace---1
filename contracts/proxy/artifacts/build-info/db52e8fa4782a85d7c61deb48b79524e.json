@@ -1,0 +1,357 @@
+{
+	"id": "db52e8fa4782a85d7c61deb48b79524e",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.17",
+	"solcLongVersion": "0.8.17+commit.8df45f5f",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"erc3643/proxy/interface.sol": {
+				"content": "// SPDX-License-Identifier: GPL-3.0\n//\n//                                             :+#####%%%%%%%%%%%%%%+\n//                                         .-*@@@%+.:+%@@@@@%%#***%@@%=\n//                                     :=*%@@@#=.      :#@@%       *@@@%=\n//                       .-+*%@%*-.:+%@@@@@@+.     -*+:  .=#.       :%@@@%-\n//                   :=*@@@@%%@@@@@@@@@%@@@-   .=#@@@%@%=             =@@@@#.\n//             -=+#%@@%#*=:.  :%@@@@%.   -*@@#*@@@@@@@#=:-              *@@@@+\n//            =@@%=:.     :=:   *@@@@@%#-   =%*%@@@@#+-.        =+       :%@@@%-\n//           -@@%.     .+@@@     =+=-.         @@#-           +@@@%-       =@@@@%:\n//          :@@@.    .+@@#%:                   :    .=*=-::.-%@@@+*@@=       +@@@@#.\n//          %@@:    +@%%*                         =%@@@@@@@@@@@#.  .*@%-       +@@@@*.\n//         #@@=                                .+@@@@%:=*@@@@@-      :%@%:      .*@@@@+\n//        *@@*                                +@@@#-@@%-:%@@*          +@@#.      :%@@@@-\n//       -@@%           .:-=++*##%%%@@@@@@@@@@@@*. :@+.@@@%:            .#@@+       =@@@@#:\n//      .@@@*-+*#%%%@@@@@@@@@@@@@@@@%%#**@@%@@@.   *@=*@@#                :#@%=      .#@@@@#-\n//      -%@@@@@@@@@@@@@@@*+==-:-@@@=    *@# .#@*-=*@@@@%=                 -%@@@*       =@@@@@%-\n//         -+%@@@#.   %@%%=   -@@:+@: -@@*    *@@*-::                   -%@@%=.         .*@@@@@#\n//            *@@@*  +@* *@@##@@-  #@*@@+    -@@=          .         :+@@@#:           .-+@@@%+-\n//             +@@@%*@@:..=@@@@*   .@@@*   .#@#.       .=+-       .=%@@@*.         :+#@@@@*=:\n//              =@@@@%@@@@@@@@@@@@@@@@@@@@@@%-      :+#*.       :*@@@%=.       .=#@@@@%+:\n//               .%@@=                 .....    .=#@@+.       .#@@@*:       -*%@@@@%+.\n//                 +@@#+===---:::...         .=%@@*-         +@@@+.      -*@@@@@%+.\n//                  -@@@@@@@@@@@@@@@@@@@@@@%@@@@=          -@@@+      -#@@@@@#=.\n//                    ..:::---===+++***###%%%@@@#-       .#@@+     -*@@@@@#=.\n//                                           @@@@@@+.   +@@*.   .+@@@@@%=.\n//                                          -@@@@@=   =@@%:   -#@@@@%+.\n//                                          +@@@@@. =@@@=  .+@@@@@*:\n//                                          #@@@@#:%@@#. :*@@@@#-\n//                                          @@@@@%@@@= :#@@@@+.\n//                                         :@@@@@@@#.:#@@@%-\n//                                         +@@@@@@-.*@@@*:\n//                                         #@@@@#.=@@@+.\n//                                         @@@@+-%@%=\n//                                        :@@@#%@%=\n//                                        +@@@@%-\n//                                        :#%%=\n//\n/**\n *     NOTICE\n *\n *     The T-REX software is licensed under a proprietary license or the GPL v.3.\n *     If you choose to receive it under the GPL v.3 license, the following applies:\n *     T-REX is a suite of smart contracts implementing the ERC-3643 standard and\n *     developed by Tokeny to manage and transfer financial assets on EVM blockchains\n *\n *     Copyright (C) 2023, Tokeny sàrl.\n *\n *     This program is free software: you can redistribute it and/or modify\n *     it under the terms of the GNU General Public License as published by\n *     the Free Software Foundation, either version 3 of the License, or\n *     (at your option) any later version.\n *\n *     This program is distributed in the hope that it will be useful,\n *     but WITHOUT ANY WARRANTY; without even the implied warranty of\n *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n *     GNU General Public License for more details.\n *\n *     You should have received a copy of the GNU General Public License\n *     along with this program.  If not, see <https://www.gnu.org/licenses/>.\n */\n\npragma solidity 0.8.17;\n\ninterface IProxy {\n\n    /// events\n\n    event ImplementationAuthoritySet(address indexed _implementationAuthority);\n\n    /// functions\n\n    function setImplementationAuthority(address _newImplementationAuthority) external;\n\n    function getImplementationAuthority() external view returns(address);\n}"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": true,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			}
+		}
+	},
+	"output": {
+		"contracts": {
+			"erc3643/proxy/interface.sol": {
+				"IProxy": {
+					"abi": [
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "_implementationAuthority",
+									"type": "address"
+								}
+							],
+							"name": "ImplementationAuthoritySet",
+							"type": "event"
+						},
+						{
+							"inputs": [],
+							"name": "getImplementationAuthority",
+							"outputs": [
+								{
+									"internalType": "address",
+									"name": "",
+									"type": "address"
+								}
+							],
+							"stateMutability": "view",
+							"type": "function"
+						},
+						{
+							"inputs": [
+								{
+									"internalType": "address",
+									"name": "_newImplementationAuthority",
+									"type": "address"
+								}
+							],
+							"name": "setImplementationAuthority",
+							"outputs": [],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {
+							"getImplementationAuthority()": "2d5f1187",
+							"setImplementationAuthority(address)": "92dd9d65"
+						}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_implementationAuthority\",\"type\":\"address\"}],\"name\":\"ImplementationAuthoritySet\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getImplementationAuthority\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newImplementationAuthority\",\"type\":\"address\"}],\"name\":\"setImplementationAuthority\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"events\":{\"ImplementationAuthoritySet(address)\":{\"notice\":\"events\"}},\"kind\":\"user\",\"methods\":{\"setImplementationAuthority(address)\":{\"notice\":\"functions\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"erc3643/proxy/interface.sol\":\"IProxy\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"erc3643/proxy/interface.sol\":{\"keccak256\":\"0xeeb4288c06a414d50547eeb0aef8737c3b974fc16e2b6ca793d1d2c515021ed2\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://4a21825dc56da4e95442425483241986f1e1ec035b5df62edd6eaedab85e8b38\",\"dweb:/ipfs/QmZriseVg11CXqrhuS6LNNp9qcVm9EJYS3915wkraLaYN9\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"events": {
+							"ImplementationAuthoritySet(address)": {
+								"notice": "events"
+							}
+						},
+						"kind": "user",
+						"methods": {
+							"setImplementationAuthority(address)": {
+								"notice": "functions"
+							}
+						},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"erc3643/proxy/interface.sol": {
+				"ast": {
+					"absolutePath": "erc3643/proxy/interface.sol",
+					"exportedSymbols": {
+						"IProxy": [
+							18
+						]
+					},
+					"id": 19,
+					"license": "GPL-3.0",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"0.8",
+								".17"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "3817:23:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "IProxy",
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"fullyImplemented": false,
+							"id": 18,
+							"linearizedBaseContracts": [
+								18
+							],
+							"name": "IProxy",
+							"nameLocation": "3852:6:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"anonymous": false,
+									"documentation": {
+										"id": 2,
+										"nodeType": "StructuredDocumentation",
+										"src": "3866:11:0",
+										"text": "events"
+									},
+									"eventSelector": "3b1074392ed8e8424715d0dda2197eede67080b377fc8370e26f3e882207f6b8",
+									"id": 6,
+									"name": "ImplementationAuthoritySet",
+									"nameLocation": "3888:26:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 5,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 4,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "_implementationAuthority",
+												"nameLocation": "3931:24:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 6,
+												"src": "3915:40:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 3,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "3915:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "3914:42:0"
+									},
+									"src": "3882:75:0"
+								},
+								{
+									"documentation": {
+										"id": 7,
+										"nodeType": "StructuredDocumentation",
+										"src": "3963:14:0",
+										"text": "functions"
+									},
+									"functionSelector": "92dd9d65",
+									"id": 12,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "setImplementationAuthority",
+									"nameLocation": "3991:26:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 10,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 9,
+												"mutability": "mutable",
+												"name": "_newImplementationAuthority",
+												"nameLocation": "4026:27:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 12,
+												"src": "4018:35:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 8,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "4018:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "4017:37:0"
+									},
+									"returnParameters": {
+										"id": 11,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "4063:0:0"
+									},
+									"scope": 18,
+									"src": "3982:82:0",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"functionSelector": "2d5f1187",
+									"id": 17,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "getImplementationAuthority",
+									"nameLocation": "4079:26:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 13,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "4105:2:0"
+									},
+									"returnParameters": {
+										"id": 16,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 15,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 17,
+												"src": "4130:7:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 14,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "4130:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "4129:9:0"
+									},
+									"scope": 18,
+									"src": "4070:69:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 19,
+							"src": "3842:299:0",
+							"usedErrors": []
+						}
+					],
+					"src": "3817:324:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

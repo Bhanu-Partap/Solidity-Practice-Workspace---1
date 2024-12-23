@@ -1,0 +1,59 @@
+{
+	"compiler": {
+		"version": "0.8.22+commit.4fc1097e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "ownerch",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Naut/Telephone.sol": "Call"
+		},
+		"evmVersion": "shanghai",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Naut/Telephone.sol": {
+			"keccak256": "0xc0717328865518155ab19db789c7a376af1f3309dda05947ca625f4a25795573",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://53310e4c1c26ca83a8f224f557490c0c4791f4c23cecb1487db1f32f7abb7502",
+				"dweb:/ipfs/QmZvwS9DNWpnw6AGwqdSP9jLJ8SMHicvML9D7ycjQ18BMT"
+			]
+		}
+	},
+	"version": 1
+}

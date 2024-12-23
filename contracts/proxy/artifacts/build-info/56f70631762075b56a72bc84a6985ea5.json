@@ -1,0 +1,357 @@
+{
+	"id": "56f70631762075b56a72bc84a6985ea5",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.17",
+	"solcLongVersion": "0.8.17+commit.8df45f5f",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"erc3643/erc3643/proxy/IProxy.sol": {
+				"content": "// SPDX-License-Identifier: GPL-3.0\n\npragma solidity 0.8.17;\n\ninterface IProxy {\n    /// events\n\n    event ImplementationAuthoritySet(address indexed _implementationAuthority);\n\n    /// functions\n\n    function setImplementationAuthority(address _newImplementationAuthority)\n        external;\n\n    function getImplementationAuthority() external view returns (address);\n}\n"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": true,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			}
+		}
+	},
+	"output": {
+		"contracts": {
+			"erc3643/erc3643/proxy/IProxy.sol": {
+				"IProxy": {
+					"abi": [
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "_implementationAuthority",
+									"type": "address"
+								}
+							],
+							"name": "ImplementationAuthoritySet",
+							"type": "event"
+						},
+						{
+							"inputs": [],
+							"name": "getImplementationAuthority",
+							"outputs": [
+								{
+									"internalType": "address",
+									"name": "",
+									"type": "address"
+								}
+							],
+							"stateMutability": "view",
+							"type": "function"
+						},
+						{
+							"inputs": [
+								{
+									"internalType": "address",
+									"name": "_newImplementationAuthority",
+									"type": "address"
+								}
+							],
+							"name": "setImplementationAuthority",
+							"outputs": [],
+							"stateMutability": "nonpayable",
+							"type": "function"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {
+							"getImplementationAuthority()": "2d5f1187",
+							"setImplementationAuthority(address)": "92dd9d65"
+						}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_implementationAuthority\",\"type\":\"address\"}],\"name\":\"ImplementationAuthoritySet\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"getImplementationAuthority\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newImplementationAuthority\",\"type\":\"address\"}],\"name\":\"setImplementationAuthority\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"events\":{\"ImplementationAuthoritySet(address)\":{\"notice\":\"events\"}},\"kind\":\"user\",\"methods\":{\"setImplementationAuthority(address)\":{\"notice\":\"functions\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"erc3643/erc3643/proxy/IProxy.sol\":\"IProxy\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"erc3643/erc3643/proxy/IProxy.sol\":{\"keccak256\":\"0x6493d0ec313502af3a02f83a3fbb5480d39db3a835019e6d63758ed092ce261e\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://3341cfa96e3672e9f7f831844731dcd93bc68526f0dd6c130f07547c7ca49538\",\"dweb:/ipfs/QmV7FZqjcUvi4tmhuQrFG744jPqRP3SqqM7U6dWNEVHFJw\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"events": {
+							"ImplementationAuthoritySet(address)": {
+								"notice": "events"
+							}
+						},
+						"kind": "user",
+						"methods": {
+							"setImplementationAuthority(address)": {
+								"notice": "functions"
+							}
+						},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"erc3643/erc3643/proxy/IProxy.sol": {
+				"ast": {
+					"absolutePath": "erc3643/erc3643/proxy/IProxy.sol",
+					"exportedSymbols": {
+						"IProxy": [
+							18
+						]
+					},
+					"id": 19,
+					"license": "GPL-3.0",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"0.8",
+								".17"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "37:23:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "IProxy",
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"fullyImplemented": false,
+							"id": 18,
+							"linearizedBaseContracts": [
+								18
+							],
+							"name": "IProxy",
+							"nameLocation": "72:6:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"anonymous": false,
+									"documentation": {
+										"id": 2,
+										"nodeType": "StructuredDocumentation",
+										"src": "85:11:0",
+										"text": "events"
+									},
+									"eventSelector": "3b1074392ed8e8424715d0dda2197eede67080b377fc8370e26f3e882207f6b8",
+									"id": 6,
+									"name": "ImplementationAuthoritySet",
+									"nameLocation": "107:26:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 5,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 4,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "_implementationAuthority",
+												"nameLocation": "150:24:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 6,
+												"src": "134:40:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 3,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "134:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "133:42:0"
+									},
+									"src": "101:75:0"
+								},
+								{
+									"documentation": {
+										"id": 7,
+										"nodeType": "StructuredDocumentation",
+										"src": "182:14:0",
+										"text": "functions"
+									},
+									"functionSelector": "92dd9d65",
+									"id": 12,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "setImplementationAuthority",
+									"nameLocation": "210:26:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 10,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 9,
+												"mutability": "mutable",
+												"name": "_newImplementationAuthority",
+												"nameLocation": "245:27:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 12,
+												"src": "237:35:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 8,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "237:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "236:37:0"
+									},
+									"returnParameters": {
+										"id": 11,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "290:0:0"
+									},
+									"scope": 18,
+									"src": "201:90:0",
+									"stateMutability": "nonpayable",
+									"virtual": false,
+									"visibility": "external"
+								},
+								{
+									"functionSelector": "2d5f1187",
+									"id": 17,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "getImplementationAuthority",
+									"nameLocation": "306:26:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 13,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "332:2:0"
+									},
+									"returnParameters": {
+										"id": 16,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 15,
+												"mutability": "mutable",
+												"name": "",
+												"nameLocation": "-1:-1:-1",
+												"nodeType": "VariableDeclaration",
+												"scope": 17,
+												"src": "358:7:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 14,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "358:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "357:9:0"
+									},
+									"scope": 18,
+									"src": "297:70:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 19,
+							"src": "62:307:0",
+							"usedErrors": []
+						}
+					],
+					"src": "37:333:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.10+commit.fc410830"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"CrossChain/utils/BytesLib.sol": "BytesLib"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"CrossChain/utils/BytesLib.sol": {
+			"keccak256": "0x288c940d1717fd94ed0ef2d68c1e334f79cf9484234ff37ef69a1fb79abde0bf",
+			"license": "Unlicense",
+			"urls": [
+				"bzz-raw://e6ad51fa3800db78faa546d12cc1780e43b60038d491131ea027beac2e41dc14",
+				"dweb:/ipfs/QmYd2n4yPCY2mvtTYpbakwEcMSqX8A3vddb58vVZF7ycdW"
+			]
+		}
+	},
+	"version": 1
+}

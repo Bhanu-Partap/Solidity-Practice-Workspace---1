@@ -1,0 +1,669 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_agentAddress",
+						"type": "address"
+					}
+				],
+				"name": "TokenAgentAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_agentAddress",
+						"type": "address"
+					}
+				],
+				"name": "TokenAgentRemoved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "TokenBound",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "TokenUnbound",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_country",
+						"type": "uint256"
+					}
+				],
+				"name": "UnWhitelistedCountry",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "_country",
+						"type": "uint256"
+					}
+				],
+				"name": "WhitelistedCountry",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_agentAddress",
+						"type": "address"
+					}
+				],
+				"name": "addTokenAgent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "_countries",
+						"type": "uint256[]"
+					}
+				],
+				"name": "batchUnWhitelistCountries",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "_countries",
+						"type": "uint256[]"
+					}
+				],
+				"name": "batchWhitelistCountries",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "bindToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "canTransfer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "complianceCheckOnCountryWhitelisting",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "created",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "destroyed",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_country",
+						"type": "uint256"
+					}
+				],
+				"name": "isCountryWhitelisted",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_agentAddress",
+						"type": "address"
+					}
+				],
+				"name": "isTokenAgent",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "isTokenBound",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_agentAddress",
+						"type": "address"
+					}
+				],
+				"name": "removeTokenAgent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokenBound",
+				"outputs": [
+					{
+						"internalType": "contract IToken",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transferred",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_country",
+						"type": "uint256"
+					}
+				],
+				"name": "unWhitelistCountry",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "unbindToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_country",
+						"type": "uint256"
+					}
+				],
+				"name": "whitelistCountry",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Tokeny Project/Compliance/Compliance Rules/CountryWhitelisting.sol": "CountryWhitelisting"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
+				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
+				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
+				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
+				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+			"keccak256": "0x4075622496acc77fd6d4de4cc30a8577a744d5c75afad33fdeacf1704d6eda98",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://99c8cb3cd19a44bbfb6612605affb7d8b06cee1f6aa9362a37a8672b4f7eeaf8",
+				"dweb:/ipfs/QmasyxFDBUp7k5KFgfDWEzM8PYSKEq7GVznzMJ1VxVRF4B"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+			"keccak256": "0x89be10e757d242e9b18d5a32c9fbe2019f6d63052bbe46397a430a1d60d7f794",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f103ee2e4aecd37aac6ceefe670709cdd7613dee25fa2d4d9feaf7fc0aaa155e",
+				"dweb:/ipfs/QmRiNZLoJk5k3HPMYGPGjZFd2ke1ZxjhJZkM45Ec9GH9hv"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+			"keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+				"dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+			"keccak256": "0x963ea7f0b48b032eef72fe3a7582edf78408d6f834115b9feadd673a4d5bd149",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d6520943ea55fdf5f0bafb39ed909f64de17051bc954ff3e88c9e5621412c79c",
+				"dweb:/ipfs/QmWZ4rAKTQbNG2HxGs46AcTXShsVytKeLs7CUCdCSv5N7a"
+			]
+		},
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0xa94b34880e3c1b0b931662cb1c09e5dfa6662f31cba80e07c5ee71cd135c9673",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://40fb1b5102468f783961d0af743f91b9980cf66b50d1d12009f6bb1869cea4d2",
+				"dweb:/ipfs/QmYqEbJML4jB1GHbzD4cUZDtJg5wVwNm3vDJq1GbyDus8y"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+				"dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+			]
+		},
+		"Tokeny Project/Compliance/Compliance Rules/CountryWhitelisting.sol": {
+			"keccak256": "0x19d679ba82f5bc31bfaf2f0ff61324e3567c6149126da41e3858109a9213e208",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://197eb43a1e347d95ef0d04147634e36de4d6a36f186c7df68edff20ec37f3b1b",
+				"dweb:/ipfs/QmTfKbzWdbNMKx7z5zrD7o2HuQP5JGAMmnem3GKF7EiWqb"
+			]
+		},
+		"Tokeny Project/Compliance/Compliance.sol": {
+			"keccak256": "0x87b9cd74e512f4729ef20a2a93f44550520fdedac4e41755e7ac2f6ce912b8d9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://26462e769d87b2ba1ad184a6f46ff624143ee194a458550b409ea3923f6eb10a",
+				"dweb:/ipfs/QmWoEa3jKE29Nf2kozk5hd9pQL6kXvMkkwNkWCD5VKHtyG"
+			]
+		},
+		"Tokeny Project/Compliance/ICompliance.sol": {
+			"keccak256": "0x25c1daad2d85f7e143c6f16295a4a80e16e6602b3d0935750b164100cc00fcab",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a90f8928799c40c05543409c636100abee2dd8376843fb1cb46ec9f441c2e758",
+				"dweb:/ipfs/QmX5RhUXJPvVG1R435oC6Lea4B1VeEm5NC5782TS6PZRpR"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/compliance/modular/IModularCompliance.sol": {
+			"keccak256": "0xf632b47a306502ce66a0e432c7c3a7d3290ab8325a854bdefe2268d61fb7cc7f",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://988eb31577cdd253e9ff2743983c466f81fdb6b944b24d3c55b0263ae45f3d3d",
+				"dweb:/ipfs/QmZFixdMi55m78eEfrLN3yiNL4VR3AWSgKcjaRBBq4FskX"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/registry/interface/IClaimTopicsRegistry.sol": {
+			"keccak256": "0x878a76f41e117a67b97a698755e9875701282fcc12890c5ebaf85264808e5608",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://46639925c8db6a5442687f74c489bd9f05904acc2f87579f3f538e2a8d5045e2",
+				"dweb:/ipfs/QmQSQHd9jMT98LDnD3cxHFK4L9zZ7fLLd9tJUu1ddZYoLn"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/registry/interface/IIdentityRegistry.sol": {
+			"keccak256": "0xce63ed845f95b5fe108f16029a6cbe77df130c37e91fed3651098aab7ac82747",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://2ed88bfac46fb3b6f5600276b68f043ce40a624f77c4c13ccb7091932d9277bb",
+				"dweb:/ipfs/QmYKqQfmLWJUJrrcYdCXU5bCZU8baZGgqq4vPEaRDsGPa1"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/registry/interface/IIdentityRegistryStorage.sol": {
+			"keccak256": "0x8ada486c1c9fe45156df6bde7326dd2454ebf16b00caf003915c82847b08cfee",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://8dca0a89a9d95dc3dc29333fafcdc0834169dc3e51b3b19203ec6a18dbde3170",
+				"dweb:/ipfs/QmVjJwN6kKq6MwZc7hpw98wjmXyyyAqPkr7KAnixe2jxTj"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/registry/interface/ITrustedIssuersRegistry.sol": {
+			"keccak256": "0xf85a074a00edd299b7e980da614debe8b17af0dac4a3f98d5cba7e6f2a3a8263",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ce3fca047a970c6039cd238f3b3a7203221876f8a8924f3164ab36f9f1771dcb",
+				"dweb:/ipfs/QmcGym6CWid1ejg4MmJmFBfk32gg7K1F7YutEkTriDQYTj"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/roles/AgentRole.sol": {
+			"keccak256": "0xfebc21759b87ba0438761fab245254e5d0f0ec3cfbd23a75992f79b24ae4b83b",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b1829bc44c2a27dc004c23ee17ae2854a758c64ad45b96c5cce3bc9970dbf833",
+				"dweb:/ipfs/QmcWazbZU8BFXEvxTSMGT3knLkEs3mFL7AmWFvx2PUH2Rw"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/roles/AgentRoleUpgradeable.sol": {
+			"keccak256": "0x8e5c6409d5d25a3d73e615fe568ea72edb0dae9e2393f392ec694b33655727e5",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://327c9f2b5f56bf3a969b852c4c22dfc6a67eb0e97ed0b15b386d930387ced245",
+				"dweb:/ipfs/QmWMwpykNT2cihW4mVWtEcKwNtQ96YLnSJZCSzRCmBE9PD"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/roles/Roles.sol": {
+			"keccak256": "0xb69d89c5433a8f4fdfed0c175c57b0fa2e9c3d38a4f055b0106c8508d6f61191",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://317653424be944ca693bd934c21ab500eccd37eea765d4d7901f8102e736310b",
+				"dweb:/ipfs/QmXijBCZ6C8ATZY9CxFn1HvuQFuLvSbfyZCjXQ6SJkEWBc"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/token/IToken.sol": {
+			"keccak256": "0xf5c167244bcf46aa12fa678c6821c9534cd7b251c254dafd4fefb7586d3310ef",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://386e323cddab4b50c2d904ce549f4cdf096881d65ca3d28a5ec79db313c3357c",
+				"dweb:/ipfs/QmQ1VqhgoGpfKFXGhgvSqKsQFLnbbJd9FWogSouoFDs45q"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/token/Token.sol": {
+			"keccak256": "0xce2431371c162d3045deee6d2029ee737e9b69ad755ec828f25d223eabcfbf7b",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://56d9b82b2d2ff5f469949a788d8a992fd7b6afabd1c5f439c9746a0923ce1d48",
+				"dweb:/ipfs/QmUDzaZzjG6gDciGeeui8ngu1rcMXEDDJex2SrUe5E9KLS"
+			]
+		},
+		"https://github.com/TokenySolutions/T-REX/blob/main/contracts/token/TokenStorage.sol": {
+			"keccak256": "0x6110806c1dee340e2ebd25213bcfe90b15b74fba9b87c5c1eeb80fffb1083e73",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://888b4501d31f7e7f5dd7ae6f3b56b2264310f3a96058a20d29582b11246e798b",
+				"dweb:/ipfs/QmSTYow4mda3ZBJMTjazccv21vVM5LNLq7a4H6ahGzZMag"
+			]
+		}
+	},
+	"version": 1
+}

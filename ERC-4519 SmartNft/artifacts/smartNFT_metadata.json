@@ -1,0 +1,490 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenID",
+						"type": "uint256"
+					}
+				],
+				"name": "OwnerEngaged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenID",
+						"type": "uint256"
+					}
+				],
+				"name": "TimeoutAlarm",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenID",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "_addressUser",
+						"type": "address"
+					}
+				],
+				"name": "UserAssigned",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "tokenID",
+						"type": "uint256"
+					}
+				],
+				"name": "UserEngaged",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "checkTimeout",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressSD",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_addressOwner",
+						"type": "address"
+					}
+				],
+				"name": "createToken",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hashK_D",
+						"type": "uint256"
+					}
+				],
+				"name": "ownerEngagement",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressSD",
+						"type": "address"
+					}
+				],
+				"name": "ownerOfFromBCA",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_timeout",
+						"type": "uint256"
+					}
+				],
+				"name": "setTimeout",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_addressUser",
+						"type": "address"
+					}
+				],
+				"name": "setUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dataEngage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_hashK_O",
+						"type": "uint256"
+					}
+				],
+				"name": "startOwnerEngagement",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_dataEngage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_hashK_U",
+						"type": "uint256"
+					}
+				],
+				"name": "startUserEngagement",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressSD",
+						"type": "address"
+					}
+				],
+				"name": "tokenFromBCA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "updateTimestamp",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressUser",
+						"type": "address"
+					}
+				],
+				"name": "userBalanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressUser",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_addressOwner",
+						"type": "address"
+					}
+				],
+				"name": "userBalanceOfAnOwner",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hashK_D",
+						"type": "uint256"
+					}
+				],
+				"name": "userEngagement",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "userOf",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addressSD",
+						"type": "address"
+					}
+				],
+				"name": "userOfFromBCA",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"events": {
+				"OwnerEngaged(uint256)": {
+					"details": "This emits when an owner of a NFT verifies a device  This event emits when the owner of a device finishes the transfer process"
+				},
+				"UserAssigned(uint256,address)": {
+					"details": "This emits when an user of a NFT changes  This event emits when the user of a token is assigned  (`_addressUser` == 0) when a user is unassigned"
+				},
+				"UserEngaged(uint256)": {
+					"details": "This emits when an user of a NFT verifies a device  This event emits when the user of a device finishes the assignment process"
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"createToken(address,address)": {
+					"details": "Only the manufacturer of the smart device account can create a token and will be the first owner of the token  The initial state of the token is \"waitingForOwner\" until verified by the new owner",
+					"params": {
+						"_addressSD": "An address generated by the smart device. Only de smart device can generate this account. _addressOwner is the first owner of the Smart Device"
+					},
+					"returns": {
+						"_0": "The tokenID of the token bound to the smart device"
+					}
+				},
+				"ownerOfFromBCA(address)": {
+					"details": "Everybody can call this function. It does not execute any code on blockchain, only reads",
+					"params": {
+						"_addressSD": "The address to obtain its owner"
+					},
+					"returns": {
+						"_0": "The owner of the token bound to _addressSD"
+					}
+				},
+				"setUser(uint256,address)": {
+					"details": "Only the owner of the token account can transfer a token provided that the state of the token is \"engagedWithOwner\",\"waitingForUser\" or \"engagedWithUser\".  The state of the token must change to \"waitingForUser\" and the parameter addressUser of the token defined by _tokenID must change to _addressUser",
+					"params": {
+						"_addressUser": "The address of the new user",
+						"_tokenId": "The tokenID of the smart device"
+					}
+				},
+				"tokenFromBCA(address)": {
+					"details": "Everybody can call this function. It does not execute any code on blockchain, only reads",
+					"params": {
+						"_addressSD": "The address to obtain its token ID"
+					},
+					"returns": {
+						"_0": "The token ID of the token bound to _addressSD"
+					}
+				},
+				"userBalanceOf(address)": {
+					"details": "Everybody can call this function. It does not execute any code on blockchain, only reads",
+					"params": {
+						"_addressUser": "The address of the user to know the number of tokens"
+					},
+					"returns": {
+						"_0": "The number of tokens of the user"
+					}
+				},
+				"userBalanceOfAnOwner(address,address)": {
+					"details": "Everybody can call this function. It does not execute any code on blockchain, only reads",
+					"params": {
+						"_addressOwner": "The address of the owner of the tokens",
+						"_addressUser": "The address of the user to know the number of tokens"
+					},
+					"returns": {
+						"_0": "The number of tokens of an owner that an user can use"
+					}
+				},
+				"userOf(uint256)": {
+					"details": "Everybody can call this function. It does not execute any code on blockchain, only reads",
+					"params": {
+						"_tokenId": "of the token to obtain its user"
+					},
+					"returns": {
+						"_0": "The user of the token with _tokenId"
+					}
+				},
+				"userOfFromBCA(address)": {
+					"details": "Everybody can call this function. It does not execute any code on blockchain, only reads",
+					"params": {
+						"_addressSD": "The address to obtain its user."
+					},
+					"returns": {
+						"_0": "The user of the token bound to _addressSD."
+					}
+				}
+			},
+			"title": "smartNFT: Hardblock - ERC-721 Non-Fungible Token Standard-based",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"createToken(address,address)": {
+					"notice": "This function defines how the smart device is bound to a new token"
+				},
+				"ownerOfFromBCA(address)": {
+					"notice": "This function let us know who is the owner of the token from the address of the smart device"
+				},
+				"setUser(uint256,address)": {
+					"notice": "This function defines the transference of use of a smart device"
+				},
+				"tokenFromBCA(address)": {
+					"notice": "This function let us obtain the tokenID from an address of smart device "
+				},
+				"userBalanceOf(address)": {
+					"notice": "This function let us know how many tokens an user has"
+				},
+				"userBalanceOfAnOwner(address,address)": {
+					"notice": "This function let us know how many tokens of an owner an user has"
+				},
+				"userOf(uint256)": {
+					"notice": "This function let us know who is the user of the token from the tokenId"
+				},
+				"userOfFromBCA(address)": {
+					"notice": "This function let us know who is the user of the token from the address of the smart device"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"ERC-3519 SmartNft/smartNFT_interface.sol": "smartNFT"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"ERC-3519 SmartNft/smartNFT_interface.sol": {
+			"keccak256": "0x32f5e82bc8f948bb7aee3f1406c1c875d6b50cb834f78cdc9914284fbe595970",
+			"license": "CC0-1.0",
+			"urls": [
+				"bzz-raw://60d3f49c2584734b34b9517b10e2e73787d0fefa46b9983f99f376a9431c4c3c",
+				"dweb:/ipfs/QmYHvNVu6c9SLJDzAQWu52xLSkcbR2w7HhfXiiSQ9ocUUR"
+			]
+		}
+	},
+	"version": 1
+}

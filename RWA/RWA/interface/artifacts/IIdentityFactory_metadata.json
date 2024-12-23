@@ -1,0 +1,78 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "createidentity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "getidentity",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"RWA/RWA/interface/IIdentityFactory.sol": "IIdentityFactory"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"RWA/RWA/interface/IIdentityFactory.sol": {
+			"keccak256": "0x3a1f878834dcff5bb226acb303b8866d7c532169d48c327b8fd0d49f66526e60",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2497329789e385d03d44bf8983fa26cae0fb088d73b6a4aa07a887598db73414",
+				"dweb:/ipfs/QmUBZe74VyCSsb3ZKRgEsfnaRUu8xtom7seEVUWYBajwLX"
+			]
+		}
+	},
+	"version": 1
+}
