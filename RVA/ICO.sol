@@ -22,7 +22,6 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 hardCap;        
         uint256 tokenPrice;   //(USD)
         uint256 tokensSold;     
-        // uint256 totalTokens;    
         bool isFinalized;    
         string saleName;   
 }
@@ -47,7 +46,7 @@ contract ICO is Ownable, ReentrancyGuard {
     address[] public investors;
     // address public immutable usdt;
     // address public immutable usdc;
-    address public  vestingContractAddress;
+    // address public  vestingContractAddress;
 
     // Mappings
     mapping(uint256 => Sale) public sales;
@@ -65,7 +64,7 @@ contract ICO is Ownable, ReentrancyGuard {
     // event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
     // event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid, PaymentMethod paymentMethod);
     event RefundInitiated(address investor, uint256 amount ) ;
-    event TokenAirdropped(address investor, uint256 airdroppedAmount);
+    // event TokenAirdropped(address investor, uint256 airdroppedAmount);
     event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
     
     event NewSaleCreated(
@@ -79,6 +78,7 @@ contract ICO is Ownable, ReentrancyGuard {
 
     constructor(
         ERC20Token _token,
+        TokenVesting _vestingContract,
         // address _usdt,
         // address _usdc,
         uint256 _softCapInUSD,
@@ -86,6 +86,7 @@ contract ICO is Ownable, ReentrancyGuard {
         address _priceFeedBNB
     ) Ownable(msg.sender) {
         token = _token;
+        vestingContract = _vestingContract;
         hardCapInUSD = _hardCapInUSD;
         // usdt = _usdt;
         // usdc = _usdc;
@@ -101,7 +102,7 @@ contract ICO is Ownable, ReentrancyGuard {
         require(whitelistedUsers[msg.sender], "Not a whitelisted user");
         _;
     }
-// 
+
     function whitelistUser(address _user) external onlyOwner {
         require(_user != address(0), "Invalid address");
         whitelistedUsers[_user] = true;
@@ -113,7 +114,6 @@ contract ICO is Ownable, ReentrancyGuard {
         view
         returns (int256)
     {
-
         if (paymentMethod == PaymentMethod.BNB) {
             (, int256 price, , , ) = priceFeedBNB.latestRoundData();
             return price;
@@ -124,10 +124,7 @@ contract ICO is Ownable, ReentrancyGuard {
     //Constructor Data
     // 100000000000000000000
     // 200000000000000000000
-    // 0x143db3CEEfbdfe5631aDD3E50f7614B6ba708BA7
     // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
-    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
-    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
 
     function createSale(
         uint256 _startTime,
@@ -164,59 +161,62 @@ contract ICO is Ownable, ReentrancyGuard {
         emit NewSaleCreated(saleCount, _startTime, _endTime,_hardCap,_tokenPriceUSD,_saleName);
     }
 
-    // function calculateTokenAmount(
-    //     PaymentMethod paymentMethod,
-    //     uint256 paymentAmount   
-    // ) public view returns (uint256) {
-    //     int256 price = _getPriceFeed(paymentMethod)*int256(PRECISION_10);
-    //     require(price > 0, "Invalid price feed");
+    function calculateTokenAmount(
+        PaymentMethod paymentMethod,
+        uint256 paymentAmount   
+    ) public view returns (uint256) {
+        int256 price = _getPriceFeed(paymentMethod)*int256(PRECISION_10);
+        require(price > 0, "Invalid price feed");
 
-    //     uint256 currentSaleId = getCurrentSaleId();
-    //     Sale storage sale = sales[currentSaleId];
+        uint256 currentSaleId = getCurrentSaleId();
+        Sale storage sale = sales[currentSaleId];
 
-    //     uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in (18 decimals)
+        uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Token price in (18 decimals)
 
-    //     uint256 paymentAmountInUSD;
+        uint256 paymentAmountInUSD;
 
-    //     if (paymentMethod == PaymentMethod.BNB) {
-    //         paymentAmountInUSD = (uint256(price) * paymentAmount) / uint256(PRECISION_18);  
-    //     } else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
-    //     uint256 stablecoinDecimals = 6; 
-    //     uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals)); 
-    //     paymentAmountInUSD = (uint256(price) * normalizedAmount) / uint256(PRECISION_18); 
-    //     } else {
-    //     revert("Unsupported payment method");
-    //     }
+        if (paymentMethod == PaymentMethod.BNB) {
+            paymentAmountInUSD = (uint256(price) * paymentAmount) / uint256(PRECISION_18);  
+        } 
+        // else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
+        // uint256 stablecoinDecimals = 6; 
+        // uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals)); 
+        // paymentAmountInUSD = (uint256(price) * normalizedAmount) / uint256(PRECISION_18); 
+        // } 
+        else {
+        revert("Unsupported payment method");
+        }
 
-    //     uint256 tokenAmount =(paymentAmountInUSD * uint256(PRECISION_18))/ tokenPriceInUSD;
-    //     return tokenAmount;
-    // }
+        uint256 tokenAmount =(paymentAmountInUSD * uint256(PRECISION_18))/ tokenPriceInUSD;
+        return tokenAmount;
+    }
 
 
-// function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount) public view returns (uint256) {
-//     require(tokenAmount > 0, "Token amount must be greater than zero");
+function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount) public view returns (uint256) {
+    require(tokenAmount > 0, "Token amount must be greater than zero");
 
-//     int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
-//     require(price > 0, "Invalid price feed");
+    int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
+    require(price > 0, "Invalid price feed");
 
-//     uint256 currentSaleId = getCurrentSaleId();
-//     require(currentSaleId != 0, "No active sale");
+    uint256 currentSaleId = getCurrentSaleId();
+    require(currentSaleId != 0, "No active sale");
 
-//     Sale storage sale = sales[currentSaleId];
-//     uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Assumes token price is in 18 decimals
-//     uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / PRECISION_18;
+    Sale storage sale = sales[currentSaleId];
+    uint256 tokenPriceInUSD = sale.tokenPriceUSD; // Assumes token price is in 18 decimals
+    uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) / PRECISION_18;
 
-//     uint256 paymentAmount;
-//     if (paymentMethod == PaymentMethod.BNB) {
-//         paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
-//     } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-//         paymentAmount = (totalPaymentInUSD * (10 ** 6)) / uint256(price);
-//     } else {
-//         revert("Unsupported payment method");
-//     }
-
-//     return paymentAmount;
-// }
+    uint256 paymentAmount;
+    if (paymentMethod == PaymentMethod.BNB) {
+        paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
+    } 
+    // else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
+    //     paymentAmount = (totalPaymentInUSD * (10 ** 6)) / uint256(price);
+    // } 
+    else {
+        revert("Unsupported payment method");
+    }
+    return paymentAmount;
+}
 
 
     function buyTokens() external payable icoNotFinalized {

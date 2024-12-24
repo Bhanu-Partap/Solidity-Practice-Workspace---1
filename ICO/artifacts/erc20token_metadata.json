@@ -488,11 +488,11 @@
 			]
 		},
 		"ICO/Erc20.sol": {
-			"keccak256": "0x98311bfdb3390687297f34da0125e42075e37780b0e883651b675026b02a5ea6",
+			"keccak256": "0xcf1bb7e2e99c6d238e6c472358e72ac1421f2b17997d0f3d50530f7b80abc9d5",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3469afe342b16ab47e4c98bd9df3cd54f60a493bee0b59485804993b2ecca3b6",
-				"dweb:/ipfs/QmfBSo7XWXjHcoChgDtPMx7xgkwu4o6NT2XJqk1o8UA7iC"
+				"bzz-raw://7700c90b8efbddda96965c07a1474554cc4e1ce69894dacfc6d554d1a8974d71",
+				"dweb:/ipfs/QmR6cz3dRNRKKw7VLyX4bdEbPSXEc7AyTXwcbNvCVLDnKq"
 			]
 		}
 	},

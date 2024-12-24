@@ -53,20 +53,20 @@ contract ICO is Ownable, ReentrancyGuard {
     mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
 
     // Events
-    event ICOFinalized(uint256 totalTokensSold);
-    event ImmediateFinalization(uint256 saleId);
-    event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
-    event TokenAirdropped(address investor, uint256 airdroppedAmount);
+    event ICOFinalized(uint256 indexed totalTokensSold);
+    event ImmediateFinalization(uint256 indexed saleId);
+    event RefundInitiated(address indexed investor, uint256 amount , PaymentMethod paymentMethod) ;
+    event TokenAirdropped(address indexed investor, uint256 airdroppedAmount);
     event TokensPurchased(
-        address buyer,
-        uint256 saleId,
+        address indexed buyer,
+        uint256 indexed saleId,
         uint256 tokenPurchaseAmount,
         uint256 tokenPriceUSD,
         uint256 amountPaid,
         PaymentMethod paymentMethod
     );
     event NewSaleCreated(
-        uint256 saleId,
+        uint256 indexed saleId,
         uint256 startTime,
         uint256 endTime,
         uint256 tokenPriceUSD

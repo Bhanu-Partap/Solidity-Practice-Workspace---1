@@ -17,16 +17,18 @@ contract TokenVesting is Ownable {
         uint256 claimedTokens;    
         uint256 lockUpEndTime; 
         uint256 vestingEndTime;  
+        uint256 vestingInterval; 
     }
 
     // Mapping: saleId => (investor => VestingSchedule)
     mapping(uint256 => mapping(address => VestingSchedule)) public vestingSchedules;
 
-    event VestingAllocated(address indexed beneficiary, uint256 totalAmount, uint256 lockUpEndTime, uint256 vestingEndTime);
+    event VestingAllocated(address indexed beneficiary, uint256 totalAmount, uint256 lockUpEndTime, uint256 vestingEndTime, uint256 vestingInterval);
     event TokensClaimed(address indexed beneficiary, uint256 amount);
 
-    constructor(address _tokenAddress) Ownable(msg.sender) {
+    constructor(address _tokenAddress, address _icoAddress) Ownable(msg.sender) {
         icoToken = ERC20Token(_tokenAddress);
+        icoContract = _icoAddress;
     }
 
     // Allocate vesting to a user
@@ -36,7 +38,8 @@ contract TokenVesting is Ownable {
         uint256 _tokenAmount,
         uint256 _startTime,
         uint256 _lockUpPeriod,
-        uint256 _vestingPeriod
+        uint256 _vestingPeriod,
+        uint256 _vestingInterval
     ) external {
         require(msg.sender == icoContract, "Only ICO contract can register vesting");
         vestingSchedules[_saleId][_investor] = VestingSchedule({
@@ -44,10 +47,10 @@ contract TokenVesting is Ownable {
             totalTokens: _tokenAmount,
             claimedTokens: 0,
             lockUpEndTime: _startTime + _lockUpPeriod,
-            vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod
+            vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod,
+            vestingInterval: _vestingInterval
         });
-
-        emit VestingAllocated(_investor, _tokenAmount, _startTime + _lockUpPeriod, _startTime + _lockUpPeriod + _vestingPeriod);
+        emit VestingAllocated(_investor, _tokenAmount, _startTime + _lockUpPeriod, _startTime + _lockUpPeriod + _vestingPeriod, _vestingInterval);
     }
 
     // Claim vested tokens
@@ -82,3 +85,45 @@ contract TokenVesting is Ownable {
         icoContract = _icoContract;
     }
 }
+
+
+// function createVestingSchedule(
+//     address beneficiary,
+//     uint256 amount,
+//     uint256 startTime,
+//     uint256 duration
+// ) external onlyICO {
+//     require(beneficiary != address(0), "Invalid beneficiary");
+//     require(amount > 0, "Amount must be greater than zero");
+
+//     // Store the vesting schedule
+//     vestingSchedules[beneficiary] = VestingSchedule({
+//         amount: amount,
+//         startTime: startTime,
+//         duration: duration,
+//         released: 0
+//     });
+// }
+
+// function claim() external {
+//     VestingSchedule storage schedule = vestingSchedules[msg.sender];
+//     require(schedule.amount > 0, "No vesting schedule found");
+    
+//     uint256 vestedAmount = _computeVestedAmount(schedule);
+//     uint256 claimableAmount = vestedAmount - schedule.released;
+
+//     require(claimableAmount > 0, "No tokens to claim");
+
+//     schedule.released += claimableAmount;
+//     require(token.transfer(msg.sender, claimableAmount), "Token transfer failed");
+// }
+
+// function _computeVestedAmount(VestingSchedule memory schedule) private view returns (uint256) {
+//     if (block.timestamp < schedule.startTime) {
+//         return 0;
+//     }
+//     uint256 elapsedTime = block.timestamp - schedule.startTime;
+//     uint256 vestedAmount = (schedule.amount * elapsedTime) / schedule.duration;
+
+//     return elapsedTime >= schedule.duration ? schedule.amount : vestedAmount;
+// }
