@@ -52,23 +52,24 @@ contract ICO is Ownable, ReentrancyGuard {
     mapping(uint256 => Sale) public sales;
     mapping(address => bool) public whitelistedUsers;
     mapping(address => uint256) public contributionsInUSD;
-    // mapping(uint256 => mapping(address => uint256)) public tokensBoughtByInvestorForSale;
+    mapping(address => uint256) public tokensBoughtByInvestor;
+    mapping(uint256 => mapping(address => uint256)) public tokensBoughtByInvestorForSale;
     mapping(address => AggregatorV3Interface) private priceFeeds;
     // mapping(address => PaymentMethod) public paymentMethodForInvestor; 
     mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
 
     // Events
     event Whitelisted(address indexed account);
-    event ICOFinalized(uint256 totalTokensSold);
-    event ImmediateFinalization(uint256 saleId);
+    event ICOFinalized(uint256 indexed totalTokensSold);
+    event ImmediateFinalization(uint256 indexed saleId);
     // event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
     // event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid, PaymentMethod paymentMethod);
-    event RefundInitiated(address investor, uint256 amount ) ;
+    event RefundInitiated(address indexed investor, uint256 amount ) ;
     // event TokenAirdropped(address investor, uint256 airdroppedAmount);
-    event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
+    event TokensPurchased(address indexed buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
     
     event NewSaleCreated(
-        uint256 saleId,
+        uint256 indexed saleId,
         uint256 startTime,
         uint256 endTime,
         uint256 hardcap,
@@ -229,9 +230,9 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
 
     // Check whitelist for restricted sales
     if (
-        keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital") ||
-        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") ||
-        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B")
+        keccak256(abi.encodePacked(sale.name)) == keccak256("Venture Capital") ||
+        keccak256(abi.encodePacked(sale.name)) == keccak256("Private Sale A") ||
+        keccak256(abi.encodePacked(sale.name)) == keccak256("Private Sale B")
     ) {
         require(whitelistedUsers[msg.sender], "Only whitelisted users allowed");
     }
@@ -273,7 +274,7 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
     // Call setLockup in the vesting contract based on the sale
     uint256 initialRelease;
     uint256 lockedTokens;
-    if (keccak256(abi.encodePacked(sale.name)) == keccak256("venture capital")) {
+    if (keccak256(abi.encodePacked(sale.name)) == keccak256("Venture Capital")) {
         
         // Lockup logic for venture capital sale
         initialRelease = (tokenAmount * 5) / 100; // 5% initial release
@@ -289,7 +290,7 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
             2 years // vesting period
         );
     } else if (
-        keccak256(abi.encodePacked(sale.name)) == keccak256("private sale A") 
+        keccak256(abi.encodePacked(sale.name)) == keccak256("Private Sale A") 
     ){
         // Lockup logic for Private Sale A
         initialRelease = (tokenAmount * 10) / 100; // 10% initial release
@@ -305,7 +306,7 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
             1.5 years  // vesting period
         );
     }
-    else if(keccak256(abi.encodePacked(sale.name)) == keccak256("private sale B") ){
+    else if(keccak256(abi.encodePacked(sale.name)) == keccak256("Private Sale B") ){
 
          // Lockup logic for Private Sale B
         initialRelease = (tokenAmount * 15) / 100; // 15% initial release
@@ -321,7 +322,7 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
             1 years    // vesting period
         );
     } 
-    else if(keccak256(abi.encodePacked(sale.name)) == keccak256("public sale")) {
+    else if(keccak256(abi.encodePacked(sale.name)) == keccak256("Public Sale")) {
 
         // Lockup logic for Public Sale
         initialRelease = (tokenAmount * 25) / 100; // 25% initial release
@@ -393,16 +394,16 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
         require(success, "Transfer failed");
     }
 
-    // Transfer stablecoin funds (USDT/USDC)
-    uint256 usdtBalance = IERC20(usdt).balanceOf(address(this));
-    if (usdtBalance > 0) {
-        require(IERC20(usdt).transfer(owner(), usdtBalance), "USDT transfer failed");
-    }
+    // // Transfer stablecoin funds (USDT/USDC)
+    // uint256 usdtBalance = IERC20(usdt).balanceOf(address(this));
+    // if (usdtBalance > 0) {
+    //     require(IERC20(usdt).transfer(owner(), usdtBalance), "USDT transfer failed");
+    // }
 
-    uint256 usdcBalance = IERC20(usdc).balanceOf(address(this));
-    if (usdcBalance > 0) {
-        require(IERC20(usdc).transfer(owner(), usdcBalance), "USDC transfer failed");
-    }
+    // uint256 usdcBalance = IERC20(usdc).balanceOf(address(this));
+    // if (usdcBalance > 0) {
+    //     require(IERC20(usdc).transfer(owner(), usdcBalance), "USDC transfer failed");
+    // }
 }
 
     function initiateRefund() external nonReentrant onlyOwner icoNotFinalized  {
@@ -423,15 +424,17 @@ function calculatePaymentAmount(PaymentMethod paymentMethod, uint256 tokenAmount
                 if (paymentMethod == PaymentMethod.BNB ) {
                     (bool sent, ) = payable(investor).call{value: amount}("");
                     require(sent, "ETH/BNB refund failed");
-                } else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-                    IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-                        ? IERC20(usdt)
-                        : IERC20(usdc);
-                    require(
-                        stablecoin.transfer(investor, amount),
-                        "Stablecoin refund failed"
-                    );
-                } else {
+                } 
+                // else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
+                //     IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
+                //         ? IERC20(usdt)
+                //         : IERC20(usdc);
+                //     require(
+                //         stablecoin.transfer(investor, amount),
+                //         "Stablecoin refund failed"
+                //     );
+                // } 
+                else {
                     revert("Unsupported payment method for refund");
                 }
                 emit RefundInitiated(investor, amount, paymentMethod);
@@ -478,9 +481,9 @@ receive() external payable {
         return (sale.startTime, sale.endTime);
     }
 
-    function getSoftCapReached() public view returns (bool) {
-        return (totalFundsRaisedUSD >= softCapInUSD);
-    }
+    // function getSoftCapReached() public view returns (bool) {
+    //     return (totalFundsRaisedUSD >= softCapInUSD);
+    // }
 
     function getHardCapReached() public view returns (bool) {
         return (totalFundsRaisedUSD >= hardCapInUSD);

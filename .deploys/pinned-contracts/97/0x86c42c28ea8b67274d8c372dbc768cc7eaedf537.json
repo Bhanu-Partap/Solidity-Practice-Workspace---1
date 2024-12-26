@@ -1,6 +1,6 @@
 {
   "name": "erc20token",
-  "address": "0xb5bf61a1e1e4b4889ee4808355c3507affccd0f3",
+  "address": "0x86c42c28ea8b67274d8c372dbc768cc7eaedf537",
   "abi": [
     {
       "inputs": [
@@ -152,6 +152,24 @@
       ],
       "name": "Approval",
       "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "Amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PublicMint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -327,6 +345,6 @@
       "type": "function"
     }
   ],
-  "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/Erc20.sol",
-  "pinnedAt": 1735034143566
+  "filePath": "Solidity-Practice-Workspace---1-1734927795654/DEX/Token.sol",
+  "pinnedAt": 1735215144995
 }
