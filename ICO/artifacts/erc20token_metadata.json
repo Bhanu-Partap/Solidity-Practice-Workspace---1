@@ -9,13 +9,18 @@
 				"inputs": [
 					{
 						"internalType": "string",
-						"name": "name",
+						"name": "name_",
 						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "symbol",
+						"name": "symbol_",
 						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalSupply_",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -234,7 +239,7 @@
 						"type": "uint8"
 					}
 				],
-				"stateMutability": "pure",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -488,11 +493,11 @@
 			]
 		},
 		"ICO/Erc20.sol": {
-			"keccak256": "0xcf1bb7e2e99c6d238e6c472358e72ac1421f2b17997d0f3d50530f7b80abc9d5",
+			"keccak256": "0x93d0ae21c11f678c415a2f52499dbd816bf0fa31be99fc03fe5391ced4d510b6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7700c90b8efbddda96965c07a1474554cc4e1ce69894dacfc6d554d1a8974d71",
-				"dweb:/ipfs/QmR6cz3dRNRKKw7VLyX4bdEbPSXEc7AyTXwcbNvCVLDnKq"
+				"bzz-raw://0c81817c98416a484c505248c927d3d3b03b015288115a6f89e6e2e4efe9a5b2",
+				"dweb:/ipfs/QmP82LM8RWyFzApjfrhkdH4ddmxwtoMwTBpp5ATAucKRma"
 			]
 		}
 	},

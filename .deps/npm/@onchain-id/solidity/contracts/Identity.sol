@@ -507,7 +507,7 @@ contract Identity is Storage, IIdentity, Version {
         uint256 claimTopic,
         bytes memory sig,
         bytes memory data)
-    public  virtual view returns (bool claimValid)
+    public override virtual view returns (bool claimValid)
     {
         bytes32 dataHash = keccak256(abi.encode(_identity, claimTopic, data));
         // Use abi.encodePacked to concatenate the message prefix and the message to sign.

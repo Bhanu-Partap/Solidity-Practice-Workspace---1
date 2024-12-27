@@ -29,7 +29,7 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 
     // State variables
-    erc20token public token;
+    icotoken public token;
     uint256 public softCapInUSD;
     uint256 public hardCapInUSD;
     uint256 public saleCount;
@@ -73,7 +73,7 @@ contract ICO is Ownable, ReentrancyGuard {
     );
 
     constructor(
-        erc20token _token,
+        icotoken _token,
         address _usdt,
         address _usdc,
         uint256 _softCapInUSD,

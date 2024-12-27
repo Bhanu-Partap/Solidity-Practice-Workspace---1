@@ -8,7 +8,7 @@
 			{
 				"inputs": [
 					{
-						"internalType": "contract erc20token",
+						"internalType": "contract icotoken",
 						"name": "_token",
 						"type": "address"
 					},
@@ -82,7 +82,7 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "totalTokensSold",
 						"type": "uint256"
@@ -95,7 +95,7 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "saleId",
 						"type": "uint256"
@@ -108,7 +108,7 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "saleId",
 						"type": "uint256"
@@ -158,7 +158,7 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "address",
 						"name": "investor",
 						"type": "address"
@@ -183,7 +183,7 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "address",
 						"name": "investor",
 						"type": "address"
@@ -202,13 +202,13 @@
 				"anonymous": false,
 				"inputs": [
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "address",
 						"name": "buyer",
 						"type": "address"
 					},
 					{
-						"indexed": false,
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "saleId",
 						"type": "uint256"
@@ -726,7 +726,7 @@
 				"name": "token",
 				"outputs": [
 					{
-						"internalType": "contract erc20token",
+						"internalType": "contract icotoken",
 						"name": "",
 						"type": "address"
 					}
@@ -942,19 +942,19 @@
 			]
 		},
 		"ICO/Erc20.sol": {
-			"keccak256": "0x98311bfdb3390687297f34da0125e42075e37780b0e883651b675026b02a5ea6",
+			"keccak256": "0xe42770ced11fcabba52fb18828608fb070140ebc0c2d4d10b445b1decf38ccbb",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3469afe342b16ab47e4c98bd9df3cd54f60a493bee0b59485804993b2ecca3b6",
-				"dweb:/ipfs/QmfBSo7XWXjHcoChgDtPMx7xgkwu4o6NT2XJqk1o8UA7iC"
+				"bzz-raw://1bb74a5af2335b2113b913d8781b78b3ee1c0885129c1e0fdd54c6ea240538ca",
+				"dweb:/ipfs/QmPP7Nx1MNasWwnUpms3gewsoT5EkY7CaKCE7GBYhD1fjM"
 			]
 		},
 		"ICO/PriceIco.sol": {
-			"keccak256": "0x75f675c6560b1d30d6586a85491d7dad92c08a11a1cc44c87543da61cf576615",
+			"keccak256": "0x577e389a6b99d03a5e535c1ff828d6b9a9b2a6be76fe5a339d9db9acf5404db9",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://650b05b047d5c24a1e2613fa2978ee31f000a94964b1e1eed25bf89e5629db4c",
-				"dweb:/ipfs/Qma8eoEX8uukMpbFa4qHjoE3UqztBMmwe7wweL21bW538u"
+				"bzz-raw://9af762715db0dec3b3af0897149d2af8d963cbb5ffbd036d902966b5bbe8d2ab",
+				"dweb:/ipfs/QmQFb97PqZVp48khf5KUWbyiEHB3viDgEk2JGgyk3sCcma"
 			]
 		}
 	},

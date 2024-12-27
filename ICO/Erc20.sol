@@ -1,18 +1,11 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+    // SPDX-License-Identifier: MIT
+    pragma solidity 0.8.26;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract erc20token is IERC20, ERC20 {
+    contract icotoken is ERC20 {
 
-    uint256 private _totalSupply = 1000000 * 10 ** 18; // 1 million tokens with 18 decimals
-
-    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-         _mint(msg.sender, _totalSupply); // Mint the total supply to the owner
+        constructor(string memory name_,string memory symbol_, uint256 totalSupply_) ERC20(name_, symbol_) {
+            _mint(msg.sender, totalSupply_);
+        }
     }
-    
-    function decimals() public pure override returns (uint8) {
-        return 18;
-    }
-
-}
