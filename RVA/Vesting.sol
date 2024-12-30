@@ -14,7 +14,8 @@ contract TokenVesting is Ownable {
     struct VestingSchedule {
         uint256 saleId;
         uint256 totalTokens;   
-        uint256 claimedTokens;    
+        uint256 claimedTokens;   
+        uint256 startTime; 
         uint256 lockUpEndTime; 
         uint256 vestingEndTime;  
         uint256 vestingInterval; 
@@ -46,12 +47,14 @@ contract TokenVesting is Ownable {
             saleId : _saleId,
             totalTokens: _tokenAmount,
             claimedTokens: 0,
+            startTime: _startTime,
             lockUpEndTime: _startTime + _lockUpPeriod,
             vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod,
             vestingInterval: _vestingInterval
         });
         emit VestingAllocated(_investor, _tokenAmount, _startTime + _lockUpPeriod, _startTime + _lockUpPeriod + _vestingPeriod, _vestingInterval);
     }
+
 
     // Claim vested tokens
     function claimTokens(uint256 saleId) external {
@@ -117,6 +120,8 @@ contract TokenVesting is Ownable {
 //     schedule.released += claimableAmount;
 //     require(token.transfer(msg.sender, claimableAmount), "Token transfer failed");
 // }
+
+
 
 // function _computeVestedAmount(VestingSchedule memory schedule) private view returns (uint256) {
 //     if (block.timestamp < schedule.startTime) {
