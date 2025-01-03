@@ -1,6 +1,6 @@
 {
-  "name": "icotoken",
-  "address": "0x0c313977ee74981f4e7f2930ade48118cf18704c",
+  "name": "erc20token",
+  "address": "0xbc7d99a74f93a8892114a9d63af7dd78138afecf",
   "abi": [
     {
       "inputs": [
@@ -30,18 +30,13 @@
       "inputs": [
         {
           "internalType": "string",
-          "name": "name_",
+          "name": "name",
           "type": "string"
         },
         {
           "internalType": "string",
-          "name": "symbol_",
+          "name": "symbol",
           "type": "string"
-        },
-        {
-          "internalType": "uint256",
-          "name": "totalSupply_",
-          "type": "uint256"
         }
       ],
       "stateMutability": "nonpayable",
@@ -157,6 +152,24 @@
       ],
       "name": "Approval",
       "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "Amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PublicMint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -289,7 +302,7 @@
           "type": "uint8"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -332,6 +345,6 @@
       "type": "function"
     }
   ],
-  "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/Erc20.sol",
-  "pinnedAt": 1735879981801
+  "filePath": "Solidity-Practice-Workspace---1-1734927795654/DEX/Token.sol",
+  "pinnedAt": 1735897337038
 }

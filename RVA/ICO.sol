@@ -18,12 +18,14 @@ contract ICO is Ownable, ReentrancyGuard {
     struct Sale {
         uint256 startTime;      
         uint256 endTime;        
-        // uint256 softCap;        
+        uint256 softCap;        
         uint256 hardCap;        
         uint256 tokenPrice;   //(USD)
         uint256 tokensSold;     
         bool isFinalized;    
         string saleName;   
+        uint256 minPurchaseAmount;    
+        uint256 maxPurchaseAmount;  
 }
 
     enum PaymentMethod {
@@ -58,13 +60,15 @@ contract ICO is Ownable, ReentrancyGuard {
     // mapping(address => PaymentMethod) public paymentMethodForInvestor; 
     mapping(address => mapping(PaymentMethod => uint256)) public investorPayments;
 
+
     // Events
     event Whitelisted(address indexed account);
+    event BatchWhitelisted(address[] users);
     event ICOFinalized(uint256 indexed totalTokensSold);
     event ImmediateFinalization(uint256 indexed saleId);
     // event RefundInitiated(address investor, uint256 amount , PaymentMethod paymentMethod) ;
     // event TokensPurchased(address buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid, PaymentMethod paymentMethod);
-    event RefundInitiated(address indexed investor, uint256 amount ) ;
+    event RefundClaimed(address indexed investor, uint256 amount ) ;
     // event TokenAirdropped(address investor, uint256 airdroppedAmount);
     event TokensPurchased(address indexed buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
     
@@ -72,9 +76,12 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 indexed saleId,
         uint256 startTime,
         uint256 endTime,
+        uint256 softCap,
         uint256 hardcap,
         uint256 tokenPriceUSD,
-        string saleName
+        string saleName,
+        uint256 minPurchaseAmount,   
+        uint256 maxPurchaseAmount 
     );
 
     constructor(
@@ -82,13 +89,13 @@ contract ICO is Ownable, ReentrancyGuard {
         TokenVesting _vestingContract,
         // address _usdt,
         // address _usdc,
-        uint256 _softCapInUSD,
-        uint256 _hardCapInUSD,
+        // uint256 _softCapInUSD,
+        // uint256 _hardCapInUSD,
         address _priceFeedBNB
     ) Ownable(msg.sender) {
         token = _token;
         vestingContract = _vestingContract;
-        hardCapInUSD = _hardCapInUSD;
+        // hardCapInUSD = _hardCapInUSD;
         // usdt = _usdt;
         // usdc = _usdc;
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
@@ -108,6 +115,18 @@ contract ICO is Ownable, ReentrancyGuard {
         require(_user != address(0), "Invalid address");
         whitelistedUsers[_user] = true;
         emit Whitelisted(_user);
+    }
+
+    function batchWhitelistUsers(address[] calldata _users) external onlyOwner {
+    require(_users.length > 0, "No addresses provided");
+    uint256 userLength = _users.length;
+    for (uint256 i = 0; i < userLength; i++) {
+        address user = _users[i];
+        require(user != address(0), "Invalid address in batch");
+        require(!whitelistedUsers[user], "Duplicate/Existing address in batch");
+        whitelistedUsers[user] = true;
+    }
+    emit BatchWhitelisted(_users);
     }
 
     function _getPriceFeed(PaymentMethod paymentMethod)
@@ -130,11 +149,12 @@ contract ICO is Ownable, ReentrancyGuard {
     function createSale(
         uint256 _startTime,
         uint256 _endTime,
+        uint256 _softCap,
         uint256 _hardCap,   
         uint256 _tokenPriceUSD, //(USD)
-        uint256 _tokensSold,   
-        bool _isFinalized,
-        string memory _saleName
+        string memory _saleName,
+        uint256 _minPurchaseAmount,
+        uint256 _maxPurchaseAmount
     ) external onlyOwner icoNotFinalized {
         require(
             _startTime > block.timestamp,
@@ -148,18 +168,22 @@ contract ICO is Ownable, ReentrancyGuard {
             _startTime > getLatestSaleEndTime(),
             "New sale must start after the last sale ends"
         );
+        require(_tokenPriceUSD >0, "Price can't be zero");
 
         saleCount++;
         sales[saleCount] = Sale({
             startTime: _startTime,
             endTime: _endTime,
-            hardcap:_hardCap,
+            softCap: _softCap,
+            hardcap: _hardCap,
             tokenPriceUSD: _tokenPriceUSD,
-            tokensSold: 0,
+            tokensSold: 0, 
             isFinalized: false,
-            saleName:_saleName
+            saleName: _saleName,
+            minPurchaseAmount: _minPurchaseAmount,
+            maxPurchaseAmount: _maxPurchaseAmount
         });
-        emit NewSaleCreated(saleCount, _startTime, _endTime,_hardCap,_tokenPriceUSD,_saleName);
+        emit NewSaleCreated(saleCount, _startTime, _endTime,_hardCap,_tokenPriceUSD,_saleName,_minPurchaseAmount,_maxPurchaseAmount);
     }
 
     function calculateTokenAmount(
