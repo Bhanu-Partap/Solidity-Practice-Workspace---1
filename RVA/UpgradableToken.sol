@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
 contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable, UUPSUpgradeable {
     address public icoContract;
     uint256 private _totalSupply;
+    using AddressUpgradeable for address;
 
     mapping(address => uint256) public lockedUntil;
     mapping(address => bool) public blacklisted;
@@ -47,6 +49,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     }
 
     function setLockup(address account, uint256 timestamp) external onlyICOContract {
+        require(account !=address(0),"Null Address");
         if (lockedUntil[account] != timestamp) {
             lockedUntil[account] = timestamp;
             emit LockupSet(account, timestamp);
@@ -54,6 +57,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     }
 
     function setBlacklist(address account, bool status) external onlyOwner {
+        require(account !=address(0),"Null Address");
         blacklisted[account] = status;
         emit Blacklisted(account, status);
     }
@@ -65,6 +69,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     function transfer(address recipient, uint256 amount) public override whenNotPaused returns (bool) {
         require(!blacklisted[msg.sender], "Transfer failed: Sender is blacklisted");
         require(!blacklisted[recipient], "Transfer failed: Recipient is blacklisted");
+        require(amount >0,"Amount shouldn't be zero");
         require(block.timestamp >= lockedUntil[msg.sender] || lockedUntil[msg.sender] == 0, "Transfer failed: Tokens are locked");
         return super.transfer(recipient, amount);
     }
@@ -72,11 +77,14 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     function transferFrom(address sender, address recipient, uint256 amount) public override whenNotPaused returns (bool) {
         require(!blacklisted[sender], "Transfer failed: Sender is blacklisted");
         require(!blacklisted[recipient], "Transfer failed: Recipient is blacklisted");
+        require(amount >0,"Amount shouldn't be zero");
         require(block.timestamp >= lockedUntil[sender] || lockedUntil[sender] == 0, "Transfer failed: Tokens are locked");
         return super.transferFrom(sender, recipient, amount);
     }
 
     function setICOContract(address _icoContract) external onlyOwner {
+        require(_icoContract != address(0), "Null Address");
+        require(_icoContract.isContract(), "Address is not a contract");
         icoContract = _icoContract;
         emit ICOContractSet(_icoContract);
     }

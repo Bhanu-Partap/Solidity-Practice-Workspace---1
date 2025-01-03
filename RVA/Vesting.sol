@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity 0.8.26;
 
 import "./UpgradableToken.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract TokenVesting is Ownable {
     using SafeMath for uint256;
+    using Address for address;
 
     ERC20Token public icoToken;
     address public icoContract;
@@ -85,50 +87,8 @@ contract TokenVesting is Ownable {
 
     // Set the ICO contract address
     function setIcoContract(address _icoContract) external onlyOwner {
+        require(_icoContract != address(0), "Null Address");
+        require(Address.isContract(_icoContract), "Address is not a contract");
         icoContract = _icoContract;
     }
 }
-
-
-// function createVestingSchedule(
-//     address beneficiary,
-//     uint256 amount,
-//     uint256 startTime,
-//     uint256 duration
-// ) external onlyICO {
-//     require(beneficiary != address(0), "Invalid beneficiary");
-//     require(amount > 0, "Amount must be greater than zero");
-
-//     // Store the vesting schedule
-//     vestingSchedules[beneficiary] = VestingSchedule({
-//         amount: amount,
-//         startTime: startTime,
-//         duration: duration,
-//         released: 0
-//     });
-// }
-
-// function claim() external {
-//     VestingSchedule storage schedule = vestingSchedules[msg.sender];
-//     require(schedule.amount > 0, "No vesting schedule found");
-    
-//     uint256 vestedAmount = _computeVestedAmount(schedule);
-//     uint256 claimableAmount = vestedAmount - schedule.released;
-
-//     require(claimableAmount > 0, "No tokens to claim");
-
-//     schedule.released += claimableAmount;
-//     require(token.transfer(msg.sender, claimableAmount), "Token transfer failed");
-// }
-
-
-
-// function _computeVestedAmount(VestingSchedule memory schedule) private view returns (uint256) {
-//     if (block.timestamp < schedule.startTime) {
-//         return 0;
-//     }
-//     uint256 elapsedTime = block.timestamp - schedule.startTime;
-//     uint256 vestedAmount = (schedule.amount * elapsedTime) / schedule.duration;
-
-//     return elapsedTime >= schedule.duration ? schedule.amount : vestedAmount;
-// }
