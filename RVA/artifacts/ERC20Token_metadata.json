@@ -279,6 +279,12 @@
 						"internalType": "uint256",
 						"name": "lockedUntilTimestamp",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "lockedAmount",
+						"type": "uint256"
 					}
 				],
 				"name": "LockupSet",
@@ -560,6 +566,25 @@
 						"type": "address"
 					}
 				],
+				"name": "lockedAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
 				"name": "lockedUntil",
 				"outputs": [
 					{
@@ -678,6 +703,11 @@
 					{
 						"internalType": "uint256",
 						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
 						"type": "uint256"
 					}
 				],
@@ -1136,11 +1166,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x654597f535006cebcb04a8a782d81e2ac3b93d3554cfba3ea9a5fea1cabec032",
+			"keccak256": "0x1565bb8fb960d9e3541052613775e2daa0002db521c1226a4481bed63971d69c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://7157cbd0dfb2dfadc023006179c3ee430a4e7ee91a06e78a4fb0a86b6beb94ff",
-				"dweb:/ipfs/QmTnyQc1bMkCi6khtF3Bb2YPojtBfbnPJn9SGXwR5HtteC"
+				"bzz-raw://189010a41f50f02ec42186c04e09e6ad3539906d38efafd42e0c4dbcdb90af06",
+				"dweb:/ipfs/QmQ4fzf1thBNaWKLSExTpnWprGBwQm3xN8ySnczeJNWEf9"
 			]
 		}
 	},

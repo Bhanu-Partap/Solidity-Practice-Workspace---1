@@ -1,0 +1,90 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"createidentity(address)": "daf9175e",
+			"getidentity(address)": "52487a07"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_useraddress",
+					"type": "address"
+				}
+			],
+			"name": "createidentity",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_useraddress",
+					"type": "address"
+				}
+			],
+			"name": "getidentity",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}

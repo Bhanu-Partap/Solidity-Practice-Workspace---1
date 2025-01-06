@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			".deps/npm/@onchain-id/solidity/contracts/storage/Structs.sol": "Structs"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		".deps/npm/@onchain-id/solidity/contracts/storage/Structs.sol": {
+			"keccak256": "0xe0058f3c22e8347e96387def25b6027b440273688b9f2a4cec113928b1cbf5c9",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://a49321f35e3110069426c720a093356f75705673ff0a281b60142c3d5bd199f9",
+				"dweb:/ipfs/QmNMey1QZUw9QyG2NmLLTTv4coshP2dU6uhSTCUNyqKKL4"
+			]
+		}
+	},
+	"version": 1
+}

@@ -2,13 +2,13 @@
 pragma solidity 0.8.26;
 
 import "./UpgradableToken.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
+// import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract TokenVesting is Ownable {
     using SafeMath for uint256;
-    using Address for address;
+    // using Address for address;
 
     ERC20Token public icoToken;
     address public icoContract;
@@ -16,7 +16,8 @@ contract TokenVesting is Ownable {
     struct VestingSchedule {
         uint256 saleId;
         uint256 totalTokens;   
-        uint256 claimedTokens;   
+        uint256 claimedTokens; 
+        uint256 lockedTokens;  
         uint256 startTime; 
         uint256 lockUpEndTime; 
         uint256 vestingEndTime;  
@@ -39,16 +40,24 @@ contract TokenVesting is Ownable {
         address _investor,
         uint256 _saleId,
         uint256 _tokenAmount,
+        uint256 _claimedTokens,
+        uint256 _lockedTokens,
         uint256 _startTime,
         uint256 _lockUpPeriod,
         uint256 _vestingPeriod,
         uint256 _vestingInterval
     ) external {
         require(msg.sender == icoContract, "Only ICO contract can register vesting");
+        require(_investor != address(0), "Null Investor address");
+        require(_tokenAmount > 0, "Invalid Amount");
+        require(_lockUpPeriod > 0, "Invalid Lockup period");
+        require(_vestingPeriod > 0, "Invalid Vesting period");
+        require(_vestingInterval > 0, "Invalid Vesting interval");
         vestingSchedules[_saleId][_investor] = VestingSchedule({
             saleId : _saleId,
             totalTokens: _tokenAmount,
-            claimedTokens: 0,
+            claimedTokens: _claimedTokens,
+            lockedTokens : _lockedTokens,
             startTime: _startTime,
             lockUpEndTime: _startTime + _lockUpPeriod,
             vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod,
@@ -88,7 +97,7 @@ contract TokenVesting is Ownable {
     // Set the ICO contract address
     function setIcoContract(address _icoContract) external onlyOwner {
         require(_icoContract != address(0), "Null Address");
-        require(Address.isContract(_icoContract), "Address is not a contract");
+        // require(isContract(_icoAddress), "Address is not a contract");
         icoContract = _icoContract;
     }
 }

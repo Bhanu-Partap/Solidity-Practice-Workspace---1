@@ -12,11 +12,12 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     uint256 private _totalSupply;
     using AddressUpgradeable for address;
 
-    mapping(address => uint256) public lockedUntil;
     mapping(address => bool) public blacklisted;
+    mapping(address => uint256) public lockedUntil;
+    mapping(address => uint256) public lockedAmount;
 
     event ICOContractSet(address indexed icoContract);
-    event LockupSet(address indexed account, uint256 lockedUntilTimestamp);
+    event LockupSet(address indexed account, uint256 lockedUntilTimestamp, uint256 lockedAmount);
     event Blacklisted(address indexed account, bool isBlacklisted);
     event EmergencyTokenRecovered(address indexed token, uint256 amount);
 
@@ -48,13 +49,17 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         _unpause();
     }
 
-    function setLockup(address account, uint256 timestamp) external onlyICOContract {
-        require(account !=address(0),"Null Address");
-        if (lockedUntil[account] != timestamp) {
-            lockedUntil[account] = timestamp;
-            emit LockupSet(account, timestamp);
-        }
+    function setLockup(address account, uint256 timestamp, uint256 amount) external onlyICOContract {
+    require(account != address(0), "Null Address");
+    require(amount > 0, "Amount must be greater than zero");
+
+    // Update the locked amount if necessary
+    if (lockedUntil[account] != timestamp || lockedAmount[account] != amount) {
+        lockedUntil[account] = timestamp;
+        lockedAmount[account] = amount;  // Storing the amount to lock
+        emit LockupSet(account, timestamp, amount);
     }
+}
 
     function setBlacklist(address account, bool status) external onlyOwner {
         require(account !=address(0),"Null Address");

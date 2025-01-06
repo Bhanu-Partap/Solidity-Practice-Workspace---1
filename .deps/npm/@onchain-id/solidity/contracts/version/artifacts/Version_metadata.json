@@ -45,18 +45,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		".deps/npm/@onchain-id/solidity/contracts/version/Version.sol": {
-			"keccak256": "0x72b12b88f0266d69a3bf42730d00d1abf9ca0c05a7b5c25a27ea1945640e0007",
+			"keccak256": "0xfb08360ef0cdbdfeb29e616735d476f0b066c9866003da402e3f6af084dd4cfb",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://9da7981589ef9638f1f0ff902ccada20d80af8abb7e65cf7bedf568aa83604f1",
-				"dweb:/ipfs/QmRe58fcQ4p8utwQ99HyTqqfswW3QduUDqng3CD3fsTm5k"
+				"bzz-raw://9c0744a6b47e7d8dd8a00a7e2f3684c6cc7923558c7d9afd8700425f4725cfca",
+				"dweb:/ipfs/QmfPLZ2zbBFUnCXY2rBVbkKsJneQKeh2CCykhzDbyt5mCp"
 			]
 		}
 	},

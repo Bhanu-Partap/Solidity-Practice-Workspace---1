@@ -573,6 +573,40 @@
 			{
 				"inputs": [
 					{
+						"internalType": "contract IIdentity",
+						"name": "_identity",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "claimTopic",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "sig",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "isClaimValid",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "bytes32",
 						"name": "_key",
 						"type": "bytes32"
@@ -668,6 +702,18 @@
 				"getKeysByPurpose(uint256)": {
 					"details": "Returns an array of public key bytes32 held by this identity."
 				},
+				"isClaimValid(address,uint256,bytes,bytes)": {
+					"details": "Checks if a claim is valid.",
+					"params": {
+						"_identity": "the identity contract related to the claim",
+						"claimTopic": "the claim topic of the claim",
+						"data": "the data field of the claim",
+						"sig": "the signature of the claim"
+					},
+					"returns": {
+						"_0": "claimValid true if the claim is valid, false otherwise"
+					}
+				},
 				"keyHasPurpose(bytes32,uint256)": {
 					"details": "Returns TRUE if a key is present and has the given purpose. If the key is not present it returns FALSE."
 				},
@@ -696,7 +742,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -719,11 +765,11 @@
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/interface/IIdentity.sol": {
-			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"keccak256": "0x206c93ed62a48802edcad87e229f53c74817349a49f5ef21ea4780ab27b39cdf",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
-				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+				"bzz-raw://82a0e205a814739ac45b4d1fc490aa40f5f0da4e9a9f1fb1d998c595850a29c4",
+				"dweb:/ipfs/QmTqc9Z9mGmCPw3v76S2oAFkxjjQXrpgJ5YYzYj5gtbrnN"
 			]
 		}
 	},

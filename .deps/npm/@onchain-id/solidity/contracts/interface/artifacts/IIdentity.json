@@ -58,6 +58,7 @@
 			"getKey(bytes32)": "12aaac70",
 			"getKeyPurposes(bytes32)": "fb307b34",
 			"getKeysByPurpose(uint256)": "9010f726",
+			"isClaimValid(address,uint256,bytes,bytes)": "c0969a6e",
 			"keyHasPurpose(bytes32,uint256)": "d202158d",
 			"removeClaim(bytes32)": "4eee424a",
 			"removeKey(bytes32,uint256)": "53d413c5"
@@ -624,6 +625,40 @@
 					"internalType": "bytes32[]",
 					"name": "keys",
 					"type": "bytes32[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "contract IIdentity",
+					"name": "_identity",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "claimTopic",
+					"type": "uint256"
+				},
+				{
+					"internalType": "bytes",
+					"name": "sig",
+					"type": "bytes"
+				},
+				{
+					"internalType": "bytes",
+					"name": "data",
+					"type": "bytes"
+				}
+			],
+			"name": "isClaimValid",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
 				}
 			],
 			"stateMutability": "view",
