@@ -13,8 +13,8 @@ contract ICO is Ownable, ReentrancyGuard {
 
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedBNB;
-    // AggregatorV3Interface public priceFeedUSDT;
-    // AggregatorV3Interface public priceFeedUSDC;
+    AggregatorV3Interface public priceFeedUSDT;
+    AggregatorV3Interface public priceFeedUSDC;
 
     struct Sale {
         uint256 startTime;
@@ -30,9 +30,9 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 
     enum PaymentMethod {
-        BNB
-        // USDT,
-        // USDC
+        BNB,
+        USDT,
+        USDC
     }
 
     // State variables
@@ -48,9 +48,8 @@ contract ICO is Ownable, ReentrancyGuard {
     bool public isICOFinalized = false;
     bool public allowImmediateFinalization = false;
     address[] public investors;
-    // address public immutable usdt;
-    // address public immutable usdc;
-    // address public  vestingContractAddress;
+    address public immutable usdt;
+    address public immutable usdc;
 
     // Mappings
     mapping(uint256 => Sale) public sales;
@@ -81,7 +80,6 @@ contract ICO is Ownable, ReentrancyGuard {
         PaymentMethod paymentMethod
     );
     event RefundClaimed(address indexed investor, uint256 amount);
-    // event TokenAirdropped(address investor, uint256 airdroppedAmount);
     // event TokensPurchased(address indexed buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
 
     event NewSaleCreated(
@@ -100,19 +98,20 @@ contract ICO is Ownable, ReentrancyGuard {
         ERC20Token _token,
         TokenVesting _vestingContract,
         IDfactory _identityContract,
-        // address _usdt,
-        // address _usdc,
-        // uint256 _softCapInUSD,
-        // uint256 _hardCapInUSD,
-        address _priceFeedBNB
+        address _usdt,
+        address _usdc,
+        address _priceFeedBNB,
+        address _priceFeedUSDT,
+        address _priceFeedUSDC
     ) Ownable(msg.sender) {
         token = _token;
         vestingContract = _vestingContract;
         IdentityContract = _identityContract;
-        // hardCapInUSD = _hardCapInUSD;
-        // usdt = _usdt;
-        // usdc = _usdc;
+        usdt = _usdt;
+        usdc = _usdc;
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
+        priceFeedUSDT = AggregatorV3Interface(_priceFeedUSDT);
+        priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
     }
 
     modifier icoNotFinalized() {
@@ -156,6 +155,15 @@ contract ICO is Ownable, ReentrancyGuard {
     {
         if (paymentMethod == PaymentMethod.BNB) {
             (, int256 price, , , ) = priceFeedBNB.latestRoundData();
+            return price;
+        }
+        if (paymentMethod == PaymentMethod.USDT) {
+            (, int256 price, , , ) = priceFeedUSDT.latestRoundData();
+            return price;
+        }
+
+        if (paymentMethod == PaymentMethod.USDC) {
+            (, int256 price, , , ) = priceFeedUSDC.latestRoundData();
             return price;
         }
         revert("Unsupported payment method");
@@ -233,13 +241,17 @@ contract ICO is Ownable, ReentrancyGuard {
             paymentAmountInUSD =
                 (uint256(price) * paymentAmount) /
                 uint256(PRECISION_18);
-        }
-        // else if (paymentMethod == PaymentMethod.USDC || paymentMethod == PaymentMethod.USDT) {
-        // uint256 stablecoinDecimals = 6;
-        // uint256 normalizedAmount = paymentAmount * (10**(18 - stablecoinDecimals));
-        // paymentAmountInUSD = (uint256(price) * normalizedAmount) / uint256(PRECISION_18);
-        // }
-        else {
+        } else if (
+            paymentMethod == PaymentMethod.USDC ||
+            paymentMethod == PaymentMethod.USDT
+        ) {
+            uint256 stablecoinDecimals = 6;
+            uint256 normalizedAmount = paymentAmount *
+                (10**(18 - stablecoinDecimals));
+            paymentAmountInUSD =
+                (uint256(price) * normalizedAmount) /
+                uint256(PRECISION_18);
+        } else {
             revert("Unsupported payment method");
         }
 
@@ -268,11 +280,12 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 paymentAmount;
         if (paymentMethod == PaymentMethod.BNB) {
             paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
-        }
-        // else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
-        //     paymentAmount = (totalPaymentInUSD * (10 ** 6)) / uint256(price);
-        // }
-        else {
+        } else if (
+            paymentMethod == PaymentMethod.USDT ||
+            paymentMethod == PaymentMethod.USDC
+        ) {
+            paymentAmount = (totalPaymentInUSD * (10**6)) / uint256(price);
+        } else {
             revert("Unsupported payment method");
         }
         return paymentAmount;
@@ -283,83 +296,56 @@ contract ICO is Ownable, ReentrancyGuard {
         payable
         icoNotFinalized
     {
-        require(msg.sender != owner(), "Owner cannot buy tokens");
+        require(!blacklistedUsers[msg.sender], "Blacklisted");
+        require(msg.sender != owner(), "Owner restricted");
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
 
         Sale storage sale = sales[currentSaleId];
-        require(!sale.isFinalized, "Sale already finalized");
+        require(!sale.isFinalized, "Sale finalized");
 
-        // Check whitelist for restricted sales
-        if (
-            keccak256(abi.encodePacked(sale.name)) ==
-            keccak256("Venture Capital") ||
-            keccak256(abi.encodePacked(sale.name)) ==
-            keccak256("Private Sale A") ||
-            keccak256(abi.encodePacked(sale.name)) ==
-            keccak256("Private Sale B")
-        ) {
-            require(
-                whitelistedUsers[msg.sender],
-                "Only whitelisted users allowed"
-            );
+        // Check whitelist for specific sales
+        if (isRestrictedSale(sale.name)) {
+            require(whitelistedUsers[msg.sender], "Whitelist only");
         }
+
+        uint256 userTotalPurchase = tokensBoughtByInvestorForSale[
+            currentSaleId
+        ][msg.sender] + paymentAmount;
+        // min max purchse restriciton
         require(
-            paymenAmount >= sale.minPurchaseAmount,
-            "Below minimum purchase amount"
-        );
-        require(
-            paymenAmount <= sale.maxPurchaseAmount,
-            "Exceeds maximum purchase limit"
+            paymentAmount >= sale.minPurchaseAmount &&
+                paymentAmount <= sale.maxPurchaseAmount &&
+                userTotalPurchase <= sale.maxPurchaseAmount,
+            "Invalid purchase amount"
         );
 
-        // Ensure valid BNB payment
-        uint256 tokenAmount;
-        if (paymentMethod == PaymentMethod.BNB) {
-            // Handle native currency payments (BNB)
-            require(msg.value > 0, "Send a valid BNB amount");
-            tokenAmount = calculateTokenAmount(paymentMethod, msg.value);
-            investorPayments[msg.sender][paymentMethod] += msg.value;
-        }
-        // else if (
-        //     paymentMethod == PaymentMethod.USDT ||
-        //     paymentMethod == PaymentMethod.USDC
-        // ) {
-        //     // Handle stablecoin payments
-        //     require(paymentAmount > 0, "Enter a valid stablecoin amount");
-        //     IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-        //         ? IERC20(usdt)
-        //         : IERC20(usdc);
-        //     require(stablecoin.transferFrom(msg.sender,address(this),paymentAmount),"Stablecoin transfer failed");
-        //     // Calculate token amount for stablecoin payment
-        //     tokenAmount = calculateTokenAmount(paymentMethod, paymentAmount);
-        //     investorPayments[msg.sender][paymentMethod] += paymentAmount;
-        // }
-        else {
-            revert("Unsupported payment method");
-        }
+        uint256 tokenAmount = processPayment(paymentMethod, paymentAmount);
         require(tokenAmount > 0, "Invalid token amount");
-        // Ensure the purchase does not exceed the hard cap
+
+        // Ensure hard cap is not exceeded
         uint256 totalCostInUSD = (tokenAmount * sale.tokenPriceUSD) /
             PRECISION_18;
         require(
             totalFundsRaisedUSD + totalCostInUSD <= hardCapInUSD,
-            "Hard cap reached"
+            "Hard cap"
         );
 
-        // Update contributions and sales data
-        investorPayments[msg.sender][PaymentMethod.BNB] += msg.value;
-        contributionsInUSD[msg.sender] += totalCostInUSD;
-        totalFundsRaisedUSD += totalCostInUSD;
-        sale.tokensSold += tokenAmount;
-        totalTokensSold += tokenAmount;
+        // Update state
+        updateInvestorData(
+            msg.sender,
+            currentSaleId,
+            tokenAmount,
+            totalCostInUSD
+        );
 
-        tokensBoughtByInvestorForSale[currentSaleId][msg.sender] += tokenAmount;
-
-        if (tokensBoughtByInvestor[msg.sender] == 0) {
-            investors.push(msg.sender);
-        }
-        tokensBoughtByInvestor[msg.sender] += tokenAmount;
+        // Lockup and vesting
+        distributeTokens(
+            msg.sender,
+            currentSaleId,
+            tokenAmount,
+            sale.tokenPriceUSD
+        );
 
         emit TokensPurchased(
             msg.sender,
@@ -367,46 +353,113 @@ contract ICO is Ownable, ReentrancyGuard {
             tokenAmount,
             sale.tokenPriceUSD,
             msg.value,
-            PaymentMethod.BNB
+            paymentMethod
         );
+    }
 
-        // Call setLockup in the vesting contract based on the sale
-        uint256 initialRelease;
-        uint256 lockedTokens;
+    function isRestrictedSale(string memory saleName)
+        internal
+        pure
+        returns (bool)
+    {
+        bytes32 hashedName = keccak256(abi.encodePacked(saleName));
+        return (hashedName == keccak256("Venture Capital") ||
+            hashedName == keccak256("Private Sale A") ||
+            hashedName == keccak256("Private Sale B"));
+    }
 
-        initialRelease = (tokenAmount * 10) / 100; // 10% initial release
-        console.log(initialRelease, "===initialRelease");
-        lockedTokens = tokenAmount - initialRelease;
-        // Set lockup: 6-month lockup
+    function processPayment(PaymentMethod paymentMethod, uint256 paymentAmount)
+        internal
+        returns (uint256)
+    {
+        if (paymentMethod == PaymentMethod.BNB) {
+            require(msg.value > 0, "Invalid BNB");
+            uint256 tokenAmount = calculateTokenAmount(
+                paymentMethod,
+                msg.value
+            );
+            investorPayments[msg.sender][PaymentMethod.BNB] += msg.value;
+            return tokenAmount;
+        } else if (
+            paymentMethod == PaymentMethod.USDT ||
+            paymentMethod == PaymentMethod.USDC
+        ) {
+            require(paymentAmount > 0, "Invalid stablecoin");
+            IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
+                ? IERC20(usdt)
+                : IERC20(usdc);
+            require(
+                stablecoin.transferFrom(
+                    msg.sender,
+                    address(this),
+                    paymentAmount
+                ),
+                "Stablecoin transfer failed"
+            );
+            uint256 tokenAmount = calculateTokenAmount(
+                paymentMethod,
+                paymentAmount
+            );
+            investorPayments[msg.sender][paymentMethod] += paymentAmount;
+            return tokenAmount;
+        }
+        revert("Unsupported payment");
+    }
+
+    function updateInvestorData(
+        address investor,
+        uint256 saleId,
+        uint256 tokenAmount,
+        uint256 totalCostInUSD
+    ) internal {
+        contributionsInUSD[investor] += totalCostInUSD;
+        totalFundsRaisedUSD += totalCostInUSD;
+        tokensBoughtByInvestorForSale[saleId][investor] += tokenAmount;
+
+        if (tokensBoughtByInvestor[investor] == 0) {
+            investors.push(investor);
+        }
+        tokensBoughtByInvestor[investor] += tokenAmount;
+    }
+
+    function distributeTokens(
+        address investor,
+        uint256 saleId,
+        uint256 tokenAmount,
+        uint256 tokenPriceUSD
+    ) internal {
+        uint256 initialRelease = (tokenAmount * 10) / 100; // 10% initial release
+        console.log("=====initialRelease====", initialRelease);
+        uint256 lockedTokens = tokenAmount - initialRelease;
+        console.log("=====lockedTokens====", lockedTokens);
+
         require(
             token.setLockup(
-                msg.sender,
+                investor,
                 block.timestamp + 0.5 years,
                 initialRelease
             ),
             "Lockup failed"
         );
-        // token.setLockup(msg.sender,0.5 years,initialRelease);
         require(
-            token.transfer(msg.sender, initialRelease),
-            "Token transfer failed"
-        ); // transfer initial 10% to investor
+            token.transfer(investor, initialRelease),
+            "Initial transfer failed"
+        );
         require(
             token.transfer(address(vestingContract), lockedTokens),
-            "Token transfer to vesting contract failed"
+            "Vesting transfer failed"
         );
 
-        // Set 90% of tokens with 12-month vesting
         vestingContract.registerVesting(
-            msg.sender,
-            currentSaleId,
-            tokenAmount, //totaltokens
-            initialRelease, // claimedtokens
-            lockedTokens, //locked tokens
-            block.timestamp, // currenttime
-            0.5 years, // lockup period
-            1 years, // vesting period
-            30 days // interval period
+            investor,
+            saleId,
+            tokenAmount, // Total tokens
+            initialRelease, // Claimed tokens
+            lockedTokens, // Locked tokens
+            block.timestamp, // Start time
+            0.5 years, // Lockup period
+            1 years, // Vesting period
+            30 days // Interval
         );
     }
 
@@ -424,7 +477,12 @@ contract ICO is Ownable, ReentrancyGuard {
         emit ImmediateFinalization(saleId);
     }
 
-    function finalizeICO() public nonReentrant onlyOwner icoNotFinalized {
+    function finalizeICO(address payable withdrawalAddress)
+        public
+        nonReentrant
+        onlyOwner
+        icoNotFinalized
+    {
         require(
             totalFundsRaisedUSD >= softCapInUSD ||
                 totalFundsRaisedUSD >= hardCapInUSD ||
@@ -443,7 +501,7 @@ contract ICO is Ownable, ReentrancyGuard {
         // If the hard cap has been reached, finalize immediately.
         if (totalFundsRaisedUSD >= hardCapInUSD) {
             isICOFinalized = true;
-            _transferFundsToOwner();
+            _transferFunds(withdrawalAddress);
             emit ICOFinalized(totalTokensSold);
         }
         // If the soft cap is reached but sale is not ended, finalize immediately if allowed.
@@ -451,7 +509,7 @@ contract ICO is Ownable, ReentrancyGuard {
             totalFundsRaisedUSD >= softCapInUSD && allowImmediateFinalization
         ) {
             isICOFinalized = true;
-            _transferFundsToOwner();
+            _transferFunds(withdrawalAddress);
             emit ICOFinalized(totalTokensSold);
         }
         // If the soft cap is reached and all sales are completed, finalize the ICO.
@@ -461,28 +519,36 @@ contract ICO is Ownable, ReentrancyGuard {
                 "Sale is still ongoing"
             );
             isICOFinalized = true;
-            _transferFundsToOwner();
+            _transferFunds(withdrawalAddress);
             emit ICOFinalized(totalTokensSold);
         }
     }
 
-    function _transferFundsToOwner() private {
+    function _transferFunds(address payable withdrawalAddress) private {
+        require(withdrawalAddress != address(0), "Invalid address");
+
         uint256 nativeBalance = address(this).balance;
         if (nativeBalance > 0) {
-            (bool success, ) = payable(owner()).call{value: nativeBalance}("");
+            (bool success, ) = withdrawalAddress.call{value: nativeBalance}("");
             require(success, "Transfer failed");
         }
 
-        // // Transfer stablecoin funds (USDT/USDC)
-        // uint256 usdtBalance = IERC20(usdt).balanceOf(address(this));
-        // if (usdtBalance > 0) {
-        //     require(IERC20(usdt).transfer(owner(), usdtBalance), "USDT transfer failed");
-        // }
+        // Transfer stablecoin funds (USDT/USDC)
+        uint256 usdtBalance = IERC20(usdt).balanceOf(address(this));
+        if (usdtBalance > 0) {
+            require(
+                IERC20(usdt).transfer(withdrawalAddress, usdtBalance),
+                "USDT transfer failed"
+            );
+        }
 
-        // uint256 usdcBalance = IERC20(usdc).balanceOf(address(this));
-        // if (usdcBalance > 0) {
-        //     require(IERC20(usdc).transfer(owner(), usdcBalance), "USDC transfer failed");
-        // }
+        uint256 usdcBalance = IERC20(usdc).balanceOf(address(this));
+        if (usdcBalance > 0) {
+            require(
+                IERC20(usdc).transfer(withdrawalAddress, usdcBalance),
+                "USDC transfer failed"
+            );
+        }
     }
 
     function claimRefund() external nonReentrant icoNotFinalized {
@@ -496,7 +562,7 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 totalRefund = 0;
 
         // Refund contributions for all payment methods
-        for (uint8 j = 0; j < 4; j++) {
+        for (uint8 j = 0; j < 3; j++) {
             PaymentMethod paymentMethod = PaymentMethod(j);
             uint256 amount = investorPayments[msg.sender][paymentMethod];
 
@@ -509,7 +575,6 @@ contract ICO is Ownable, ReentrancyGuard {
                     (bool sent, ) = payable(msg.sender).call{value: amount}("");
                     require(sent, "BNB refund failed");
                 }
-                // Uncomment for stablecoin refunds
                 // else if (paymentMethod == PaymentMethod.USDT || paymentMethod == PaymentMethod.USDC) {
                 //     IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
                 //         ? IERC20(usdt)
@@ -522,7 +587,6 @@ contract ICO is Ownable, ReentrancyGuard {
                 else {
                     revert("Unsupported payment method for refund");
                 }
-
                 emit RefundInitiated(msg.sender, amount, paymentMethod);
             }
         }
@@ -567,9 +631,9 @@ contract ICO is Ownable, ReentrancyGuard {
         return (sale.startTime, sale.endTime);
     }
 
-    // function getSoftCapReached() public view returns (bool) {
-    //     return (totalFundsRaisedUSD >= softCapInUSD);
-    // }
+    function getSoftCapReached() public view returns (bool) {
+        return (totalFundsRaisedUSD >= softCapInUSD);
+    }
 
     function getHardCapReached() public view returns (bool) {
         return (totalFundsRaisedUSD >= hardCapInUSD);

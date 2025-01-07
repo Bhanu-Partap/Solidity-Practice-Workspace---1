@@ -83,6 +83,19 @@
 				"inputs": [
 					{
 						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Blacklisted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
 						"internalType": "uint256",
 						"name": "totalTokensSold",
 						"type": "uint256"
@@ -242,6 +255,19 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Whitelisted",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "enum ICO.PaymentMethod",
@@ -270,6 +296,38 @@
 			{
 				"inputs": [],
 				"name": "allowImmediateFinalization",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "blacklistUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "blacklistedUsers",
 				"outputs": [
 					{
 						"internalType": "bool",
@@ -819,6 +877,38 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "whitelistUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "whitelistedUsers",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"stateMutability": "payable",
 				"type": "receive"
 			}
@@ -863,7 +953,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ICO/PriceIco.sol": "ICO"
+			"ICO/Ico.sol": "ICO"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -949,12 +1039,12 @@
 				"dweb:/ipfs/QmPP7Nx1MNasWwnUpms3gewsoT5EkY7CaKCE7GBYhD1fjM"
 			]
 		},
-		"ICO/PriceIco.sol": {
-			"keccak256": "0x577e389a6b99d03a5e535c1ff828d6b9a9b2a6be76fe5a339d9db9acf5404db9",
+		"ICO/Ico.sol": {
+			"keccak256": "0xac78f1cf8da1dedfa44f12816697b37c21d6acc0edf8da1f68902427dd3575e7",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9af762715db0dec3b3af0897149d2af8d963cbb5ffbd036d902966b5bbe8d2ab",
-				"dweb:/ipfs/QmQFb97PqZVp48khf5KUWbyiEHB3viDgEk2JGgyk3sCcma"
+				"bzz-raw://7d059b57d7aa0918bcd10e024f4f5670950525c30b8337fa9d0d6a17aa6cb556",
+				"dweb:/ipfs/QmSeSV3TzjHLokJquKza98NdnkhxryFXG2w9fNH8ZGkGJY"
 			]
 		}
 	},
