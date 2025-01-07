@@ -3,7 +3,7 @@ pragma solidity 0.8.26;
 
 import "./Vesting.sol";
 import "./UpgradableToken.sol";
-import "./IdentityFactory.sol";
+// import "./IdentityFactory.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
@@ -39,7 +39,7 @@ contract ICO is Ownable, ReentrancyGuard {
 
     // State variables
     ERC20Token public token;
-    IDfactory public IdentityContract;
+    // IDfactory public IdentityContract;
     TokenVesting public vestingContract;
     uint256 public saleCount;
     uint256 public totalFundsRaisedUSD;
@@ -78,7 +78,7 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 amountPaid,
         PaymentMethod paymentMethod
     );
-    event RefundClaimed(address indexed investor, uint256 amount);
+    event RefundClaimed(address indexed investor, uint256 amount,PaymentMethod paymentMethod);
     // event TokensPurchased(address indexed buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
 
     event NewSaleCreated(
@@ -96,7 +96,7 @@ contract ICO is Ownable, ReentrancyGuard {
     constructor(
         ERC20Token _token,
         TokenVesting _vestingContract,
-        IDfactory _identityContract,
+        // IDfactory _identityContract,
         address _usdt,
         address _usdc,
         address _priceFeedBNB,
@@ -105,7 +105,7 @@ contract ICO is Ownable, ReentrancyGuard {
     ) Ownable(msg.sender) {
         token = _token;
         vestingContract = _vestingContract;
-        IdentityContract = _identityContract;
+        // IdentityContract = _identityContract;
         usdt = _usdt;
         usdc = _usdc;
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
@@ -328,7 +328,7 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 totalCostInUSD = (tokenAmount * sale.tokenPriceUSD) /
             PRECISION_18;
         require(
-            totalFundsRaisedUSD + totalCostInUSD <= hardCapInUSD,
+            totalFundsRaisedUSD + totalCostInUSD <= sale.hardCap,
             "Hard cap"
         );
 
@@ -413,12 +413,13 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 tokenAmount,
         uint256 totalCostInUSD
     ) internal {
+        Sale storage sale = sales[saleId];
         contributionsInUSD[investor] += totalCostInUSD;
         totalFundsRaisedUSD += totalCostInUSD;
         tokensBoughtByInvestorForSale[saleId][investor] += tokenAmount;
 
         if (tokensBoughtByInvestor[investor] == 0) {
-            investors.push(investor);
+            sale.investors.push(investor);
         }
         tokensBoughtByInvestor[investor] += tokenAmount;
     }
@@ -589,7 +590,7 @@ contract ICO is Ownable, ReentrancyGuard {
                 } else {
                     revert("Unsupported payment method for refund");
                 }
-                emit RefundInitiated(msg.sender, amount, paymentMethod);
+                emit RefundClaimed(msg.sender,amount,paymentMethod);
             }
         }
         require(totalRefund > 0, "No funds to refund");
