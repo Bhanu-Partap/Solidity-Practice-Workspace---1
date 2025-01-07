@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.17+commit.8df45f5f"
+		"version": "0.8.26+commit.8a97fa7a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -814,6 +814,35 @@
 			}
 		],
 		"devdoc": {
+			"events": {
+				"Approved(uint256,bool)": {
+					"details": "Emitted when an execution request was approved. Specification: MUST be triggered when approve was successfully called."
+				},
+				"ClaimAdded(bytes32,uint256,uint256,address,bytes,bytes,string)": {
+					"details": "Emitted when a claim was added. Specification: MUST be triggered when a claim was successfully added."
+				},
+				"ClaimChanged(bytes32,uint256,uint256,address,bytes,bytes,string)": {
+					"details": "Emitted when a claim was changed. Specification: MUST be triggered when addClaim was successfully called on an existing claimId."
+				},
+				"ClaimRemoved(bytes32,uint256,uint256,address,bytes,bytes,string)": {
+					"details": "Emitted when a claim was removed. Specification: MUST be triggered when removeClaim was successfully called."
+				},
+				"Executed(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execute operation was approved and successfully performed. Specification: MUST be triggered when approve was called and the execution was successfully approved."
+				},
+				"ExecutionFailed(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execute operation was called and failed Specification: MUST be triggered when execute call failed"
+				},
+				"ExecutionRequested(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execution request was performed via `execute`. Specification: MUST be triggered when execute was successfully called."
+				},
+				"KeyAdded(bytes32,uint256,uint256)": {
+					"details": "Emitted when a key was added to the Identity. Specification: MUST be triggered when addKey was successfully called."
+				},
+				"KeyRemoved(bytes32,uint256,uint256)": {
+					"details": "Emitted when a key was removed from the Identity. Specification: MUST be triggered when removeKey was successfully called."
+				}
+			},
 			"kind": "dev",
 			"methods": {
 				"addClaim(uint256,uint256,address,bytes,bytes,string)": {
@@ -994,7 +1023,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"RWA/RWA/Identities/Identity.sol": "identities"
+			"RVA/Identities/Identity.sol": "identities"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -1009,70 +1038,70 @@
 	},
 	"sources": {
 		"@onchain-id/solidity/contracts/Identity.sol": {
-			"keccak256": "0xd59a2731074c13d973971645c5db2cb84e0714bef38b441769ebf152dd6acc9c",
+			"keccak256": "0x9da2ac61454d3c68b20eb7abb952fe0ab72c3c0f3eddb0d1c33daffbf4082319",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://35598c0ae05ec82ed132006566ec82e900ec3571ebc4a2ce76f4b58b7ab7ced7",
-				"dweb:/ipfs/QmZch8aNV5knbcf7YExezDXDjfXT5u5JC1Pu8Gdc1M67pG"
+				"bzz-raw://d6c222c596c93de3d9e8bb4c2efadd0fe7210dc8986327bfe9ec8ed757e59521",
+				"dweb:/ipfs/QmVkyVm4rLFEF9Le6AERskXMWAhzgsAjJdjHLLySQ3ECgP"
 			]
 		},
 		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
-			"keccak256": "0x3a12f842236b7ff3579bbd245fb0b243f77e98cd721ea165d679324a099af20d",
+			"keccak256": "0x5ee27a47afe166bd5cb8861cdcbf647a841e5be9fa78a583e19a6a0d0c5b87e4",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a70c3c9183bb995a8fe01e1438c5cceab748f4d20b2da501e6232f2e62835240",
-				"dweb:/ipfs/QmafwCmChS3jFUcZVU5SujANLfu1uX13e1HaMokc8ga6Wz"
+				"bzz-raw://1f11f4b192926d4095abd3bcbf57d19c4a8c266f2b2e6e41d9cb06b89bc1c200",
+				"dweb:/ipfs/QmVLKqwUGXrCayFuzcs2LLhPr6pjyvn9UinYp2CzKbVBAJ"
 			]
 		},
 		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
-			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"keccak256": "0x1176024fe195d6776b18c639a7aae7f41cec2e42a1512a8653372d60c89e6b55",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
-				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+				"bzz-raw://645998579c349ef1ff2dcf49477a21d0c1ed48784e54bda4e49c48de1de3cb8f",
+				"dweb:/ipfs/QmVpGS1VZ54KtzJapCaBZ7dBMCk5fFpKn1rybYzhQdbYiH"
 			]
 		},
 		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
-			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"keccak256": "0x8484095fb545237cbaf3ea70761bf168c77fc54323dab5f8ad74ee4dcd416aaa",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
-				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+				"bzz-raw://955c3fa2a62da7504d4d8be49b23c3ea31ac7f577038b204d7681573f8791b97",
+				"dweb:/ipfs/QmVFDPFZiGGcy3cbgYXAhRPRLGJfpEw3YvwWaGMMkdQf2d"
 			]
 		},
 		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
-			"keccak256": "0x206c93ed62a48802edcad87e229f53c74817349a49f5ef21ea4780ab27b39cdf",
+			"keccak256": "0x908fef4a1a0962facdd9c6b14417edc284864d78805e07eac256d54e415f6186",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://82a0e205a814739ac45b4d1fc490aa40f5f0da4e9a9f1fb1d998c595850a29c4",
-				"dweb:/ipfs/QmTqc9Z9mGmCPw3v76S2oAFkxjjQXrpgJ5YYzYj5gtbrnN"
+				"bzz-raw://cdf0abb91e57adc8111ebeec931a15ea28d86216354917e9de34f40a998bb264",
+				"dweb:/ipfs/QmarS6ikrWSV7vBY56WmC3ENbsLgf15PTPRoa5HYCfr9vo"
 			]
 		},
 		"@onchain-id/solidity/contracts/storage/Storage.sol": {
-			"keccak256": "0x5656735571a3d856fd1aa3f3ca21f1053c338f052f517e7aaa72d9b65e967e5c",
+			"keccak256": "0x069cde4c6b907998363321117446ee2fa269732d3315f1f607123f5d8e3b4d13",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://8f26768949c1c9aa8cb0f3479c7f4d81dd65215be51f95b779675a636a45b0af",
-				"dweb:/ipfs/QmT1GSegmoSJLTsLjAQqERCgZvPGoSyiMLCR7mLiDJVHge"
+				"bzz-raw://2c95964f148d5f4dc150dc35807ee52af4238efad4dd9d834121f60c449cf473",
+				"dweb:/ipfs/QmNvdiMCXUrzfjeDEJtf92JGgWtKxt8kEB5LKeEF7TU9Nu"
 			]
 		},
 		"@onchain-id/solidity/contracts/storage/Structs.sol": {
-			"keccak256": "0xe0058f3c22e8347e96387def25b6027b440273688b9f2a4cec113928b1cbf5c9",
+			"keccak256": "0x4cc1dc80265e110342fc791e6bb95392c8698ff701fd41c9e35bf9cf7ff5bd32",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a49321f35e3110069426c720a093356f75705673ff0a281b60142c3d5bd199f9",
-				"dweb:/ipfs/QmNMey1QZUw9QyG2NmLLTTv4coshP2dU6uhSTCUNyqKKL4"
+				"bzz-raw://3f2ad40831a23a7d8ea156b26a7ad9152785a78aa70ff0463bcdbbbda791cc2c",
+				"dweb:/ipfs/QmX8DicmSMnARZctXdMaKRatBb5e2djdqGHwrwLP3SFMVV"
 			]
 		},
 		"@onchain-id/solidity/contracts/version/Version.sol": {
-			"keccak256": "0xfb08360ef0cdbdfeb29e616735d476f0b066c9866003da402e3f6af084dd4cfb",
+			"keccak256": "0x9edca39fb2e35af59f82ce30de0f2b7727e0a2df9cf9b703288db868ea4e8405",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://9c0744a6b47e7d8dd8a00a7e2f3684c6cc7923558c7d9afd8700425f4725cfca",
-				"dweb:/ipfs/QmfPLZ2zbBFUnCXY2rBVbkKsJneQKeh2CCykhzDbyt5mCp"
+				"bzz-raw://bf16acdc9fbada3d392c243f3ded28d654084f2c367c7103b1769f0ee0a7b1a4",
+				"dweb:/ipfs/QmeVUtHa9LGdiaxKav6swxHuWTYLhz3FXbQfY4wUMUKd97"
 			]
 		},
-		"RWA/RWA/Identities/Identity.sol": {
+		"RVA/Identities/Identity.sol": {
 			"keccak256": "0x5ebaeefc7e74d0f04740263d7a3d9980fdc672bc2a7a2d0e371561da6a4ada6e",
 			"license": "MIT",
 			"urls": [

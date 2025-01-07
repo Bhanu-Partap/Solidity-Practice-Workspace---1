@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.17;
-import "@openzeppelin/contracts-upgradeable@4.9.6/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable@5.0.0/proxy/utils/Initializable.sol";
 import "./Identities/Identity.sol";
 
 // import "./Identities/claimIssuer.sol";

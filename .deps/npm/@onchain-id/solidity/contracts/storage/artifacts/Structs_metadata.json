@@ -33,11 +33,11 @@
 	},
 	"sources": {
 		".deps/npm/@onchain-id/solidity/contracts/storage/Structs.sol": {
-			"keccak256": "0xe0058f3c22e8347e96387def25b6027b440273688b9f2a4cec113928b1cbf5c9",
+			"keccak256": "0x4cc1dc80265e110342fc791e6bb95392c8698ff701fd41c9e35bf9cf7ff5bd32",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a49321f35e3110069426c720a093356f75705673ff0a281b60142c3d5bd199f9",
-				"dweb:/ipfs/QmNMey1QZUw9QyG2NmLLTTv4coshP2dU6uhSTCUNyqKKL4"
+				"bzz-raw://3f2ad40831a23a7d8ea156b26a7ad9152785a78aa70ff0463bcdbbbda791cc2c",
+				"dweb:/ipfs/QmX8DicmSMnARZctXdMaKRatBb5e2djdqGHwrwLP3SFMVV"
 			]
 		}
 	},

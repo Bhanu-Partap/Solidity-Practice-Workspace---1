@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.17+commit.8df45f5f"
+		"version": "0.8.26+commit.8a97fa7a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -740,6 +740,35 @@
 		],
 		"devdoc": {
 			"details": "Implementation of the `IERC734` \"KeyHolder\" and the `IERC735` \"ClaimHolder\" interfaces into a common Identity Contract. This implementation has a separate contract were it declares all storage, allowing for it to be used as an upgradable logic contract.",
+			"events": {
+				"Approved(uint256,bool)": {
+					"details": "Emitted when an execution request was approved. Specification: MUST be triggered when approve was successfully called."
+				},
+				"ClaimAdded(bytes32,uint256,uint256,address,bytes,bytes,string)": {
+					"details": "Emitted when a claim was added. Specification: MUST be triggered when a claim was successfully added."
+				},
+				"ClaimChanged(bytes32,uint256,uint256,address,bytes,bytes,string)": {
+					"details": "Emitted when a claim was changed. Specification: MUST be triggered when addClaim was successfully called on an existing claimId."
+				},
+				"ClaimRemoved(bytes32,uint256,uint256,address,bytes,bytes,string)": {
+					"details": "Emitted when a claim was removed. Specification: MUST be triggered when removeClaim was successfully called."
+				},
+				"Executed(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execute operation was approved and successfully performed. Specification: MUST be triggered when approve was called and the execution was successfully approved."
+				},
+				"ExecutionFailed(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execute operation was called and failed Specification: MUST be triggered when execute call failed"
+				},
+				"ExecutionRequested(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execution request was performed via `execute`. Specification: MUST be triggered when execute was successfully called."
+				},
+				"KeyAdded(bytes32,uint256,uint256)": {
+					"details": "Emitted when a key was added to the Identity. Specification: MUST be triggered when addKey was successfully called."
+				},
+				"KeyRemoved(bytes32,uint256,uint256)": {
+					"details": "Emitted when a key was removed from the Identity. Specification: MUST be triggered when removeKey was successfully called."
+				}
+			},
 			"kind": "dev",
 			"methods": {
 				"addClaim(uint256,uint256,address,bytes,bytes,string)": {
@@ -937,74 +966,74 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		".deps/npm/@onchain-id/solidity/contracts/Identity.sol": {
-			"keccak256": "0xbd274a761b24bcfd4c5ed725f3d1735739e57afc8986a1d64d6c6bbd8110237d",
+			"keccak256": "0x9da2ac61454d3c68b20eb7abb952fe0ab72c3c0f3eddb0d1c33daffbf4082319",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://1dc250a4297c56e0de53c02012f59ed5b3861ccc86fa00ddd6677e15bb0a3cca",
-				"dweb:/ipfs/QmZFhrBHJRcZoAVcGLp8K3SfRmwNfhoBcqCX2qxcRPdCgq"
+				"bzz-raw://d6c222c596c93de3d9e8bb4c2efadd0fe7210dc8986327bfe9ec8ed757e59521",
+				"dweb:/ipfs/QmVkyVm4rLFEF9Le6AERskXMWAhzgsAjJdjHLLySQ3ECgP"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
-			"keccak256": "0xa7372faa967bc7eaedf66ec51907a21ca789123ad8a6fd371b32f2d2a6f27817",
+			"keccak256": "0x5ee27a47afe166bd5cb8861cdcbf647a841e5be9fa78a583e19a6a0d0c5b87e4",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://dcf7cf65c7aff1f78a9071c47b05865c0fbce9d7c965430e8438ba7a451a2ba4",
-				"dweb:/ipfs/QmViSrFA2KQpFeWssbJWQtdpa62A9MeEWaxqgs8dyPssga"
+				"bzz-raw://1f11f4b192926d4095abd3bcbf57d19c4a8c266f2b2e6e41d9cb06b89bc1c200",
+				"dweb:/ipfs/QmVLKqwUGXrCayFuzcs2LLhPr6pjyvn9UinYp2CzKbVBAJ"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/interface/IERC734.sol": {
-			"keccak256": "0x8c8a5a7951ee25569288c0c6662b59599deec7d0f2fcb74c8f80a8fd9354e8af",
+			"keccak256": "0x1176024fe195d6776b18c639a7aae7f41cec2e42a1512a8653372d60c89e6b55",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f8d9b77d41bcd0f68eac91543b9e162dadb3078e13d558db153307f3ee01f819",
-				"dweb:/ipfs/QmXs6vjAfnXFz1VQxNBGQUv5i2DHr9AeJ9ezG5RQHy4bWd"
+				"bzz-raw://645998579c349ef1ff2dcf49477a21d0c1ed48784e54bda4e49c48de1de3cb8f",
+				"dweb:/ipfs/QmVpGS1VZ54KtzJapCaBZ7dBMCk5fFpKn1rybYzhQdbYiH"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/interface/IERC735.sol": {
-			"keccak256": "0xaaea6f3ecdc5f30e795e07aacdfc1b177741ef174910e943e96f6de7a8db6efb",
+			"keccak256": "0x8484095fb545237cbaf3ea70761bf168c77fc54323dab5f8ad74ee4dcd416aaa",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://ebb12c62267e4f33475cfe554bbc32740b8a1e2a620d88338490fb0dcb0d4523",
-				"dweb:/ipfs/QmTXg9XUuEcTMZBc3FbGRaSekxEv8rE3oyYJQUJ9Zi3qo9"
+				"bzz-raw://955c3fa2a62da7504d4d8be49b23c3ea31ac7f577038b204d7681573f8791b97",
+				"dweb:/ipfs/QmVFDPFZiGGcy3cbgYXAhRPRLGJfpEw3YvwWaGMMkdQf2d"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/interface/IIdentity.sol": {
-			"keccak256": "0x419198390ae57e3a090a454452931ac8a6605acfd296809c43d4966c9cea2d19",
+			"keccak256": "0x908fef4a1a0962facdd9c6b14417edc284864d78805e07eac256d54e415f6186",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://8f8c7d8d74a6e7dff2858abd7f10aefe1cc88bb629ec6a0c164e4043e2c70eb7",
-				"dweb:/ipfs/QmRg2WFW8T2YEt1zJ7PGSAFxcu1L46pNWxm6MZbuN7M4Qc"
+				"bzz-raw://cdf0abb91e57adc8111ebeec931a15ea28d86216354917e9de34f40a998bb264",
+				"dweb:/ipfs/QmarS6ikrWSV7vBY56WmC3ENbsLgf15PTPRoa5HYCfr9vo"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/storage/Storage.sol": {
-			"keccak256": "0x5656735571a3d856fd1aa3f3ca21f1053c338f052f517e7aaa72d9b65e967e5c",
+			"keccak256": "0x069cde4c6b907998363321117446ee2fa269732d3315f1f607123f5d8e3b4d13",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://8f26768949c1c9aa8cb0f3479c7f4d81dd65215be51f95b779675a636a45b0af",
-				"dweb:/ipfs/QmT1GSegmoSJLTsLjAQqERCgZvPGoSyiMLCR7mLiDJVHge"
+				"bzz-raw://2c95964f148d5f4dc150dc35807ee52af4238efad4dd9d834121f60c449cf473",
+				"dweb:/ipfs/QmNvdiMCXUrzfjeDEJtf92JGgWtKxt8kEB5LKeEF7TU9Nu"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/storage/Structs.sol": {
-			"keccak256": "0xe0058f3c22e8347e96387def25b6027b440273688b9f2a4cec113928b1cbf5c9",
+			"keccak256": "0x4cc1dc80265e110342fc791e6bb95392c8698ff701fd41c9e35bf9cf7ff5bd32",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a49321f35e3110069426c720a093356f75705673ff0a281b60142c3d5bd199f9",
-				"dweb:/ipfs/QmNMey1QZUw9QyG2NmLLTTv4coshP2dU6uhSTCUNyqKKL4"
+				"bzz-raw://3f2ad40831a23a7d8ea156b26a7ad9152785a78aa70ff0463bcdbbbda791cc2c",
+				"dweb:/ipfs/QmX8DicmSMnARZctXdMaKRatBb5e2djdqGHwrwLP3SFMVV"
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/version/Version.sol": {
-			"keccak256": "0x0ea0caa195ef01a298be3a7cdf6c897c3d0f06a2a2226f20df6af14343665f88",
+			"keccak256": "0x9edca39fb2e35af59f82ce30de0f2b7727e0a2df9cf9b703288db868ea4e8405",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://862cf4d2664ef6a284c10decfc53ca4a06892fdafaf9abff6fda84da821513e6",
-				"dweb:/ipfs/QmSXr4mifpj8qfwrVMXrvXwfefgM3PxMDZwKHzpYkeQdGW"
+				"bzz-raw://bf16acdc9fbada3d392c243f3ded28d654084f2c367c7103b1769f0ee0a7b1a4",
+				"dweb:/ipfs/QmeVUtHa9LGdiaxKav6swxHuWTYLhz3FXbQfY4wUMUKd97"
 			]
 		}
 	},

@@ -52,11 +52,11 @@
 	},
 	"sources": {
 		".deps/npm/@onchain-id/solidity/contracts/version/Version.sol": {
-			"keccak256": "0xfb08360ef0cdbdfeb29e616735d476f0b066c9866003da402e3f6af084dd4cfb",
+			"keccak256": "0x9edca39fb2e35af59f82ce30de0f2b7727e0a2df9cf9b703288db868ea4e8405",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://9c0744a6b47e7d8dd8a00a7e2f3684c6cc7923558c7d9afd8700425f4725cfca",
-				"dweb:/ipfs/QmfPLZ2zbBFUnCXY2rBVbkKsJneQKeh2CCykhzDbyt5mCp"
+				"bzz-raw://bf16acdc9fbada3d392c243f3ded28d654084f2c367c7103b1769f0ee0a7b1a4",
+				"dweb:/ipfs/QmeVUtHa9LGdiaxKav6swxHuWTYLhz3FXbQfY4wUMUKd97"
 			]
 		}
 	},

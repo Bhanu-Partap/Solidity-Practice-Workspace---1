@@ -1,0 +1,224 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "InvalidInitialization",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotInitializing",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint64",
+						"name": "version",
+						"type": "uint64"
+					}
+				],
+				"name": "Initialized",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "Admin",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "createidentity",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "getidentity",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"errors": {
+				"InvalidInitialization()": [
+					{
+						"details": "The contract is already initialized."
+					}
+				],
+				"NotInitializing()": [
+					{
+						"details": "The contract is not initializing."
+					}
+				]
+			},
+			"events": {
+				"Initialized(uint64)": {
+					"details": "Triggered when the contract has been initialized or reinitialized."
+				}
+			},
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"RVA/IdentityFactory.sol": "IDfactory"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@onchain-id/solidity/contracts/Identity.sol": {
+			"keccak256": "0x9da2ac61454d3c68b20eb7abb952fe0ab72c3c0f3eddb0d1c33daffbf4082319",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://d6c222c596c93de3d9e8bb4c2efadd0fe7210dc8986327bfe9ec8ed757e59521",
+				"dweb:/ipfs/QmVkyVm4rLFEF9Le6AERskXMWAhzgsAjJdjHLLySQ3ECgP"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IClaimIssuer.sol": {
+			"keccak256": "0x5ee27a47afe166bd5cb8861cdcbf647a841e5be9fa78a583e19a6a0d0c5b87e4",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://1f11f4b192926d4095abd3bcbf57d19c4a8c266f2b2e6e41d9cb06b89bc1c200",
+				"dweb:/ipfs/QmVLKqwUGXrCayFuzcs2LLhPr6pjyvn9UinYp2CzKbVBAJ"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x1176024fe195d6776b18c639a7aae7f41cec2e42a1512a8653372d60c89e6b55",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://645998579c349ef1ff2dcf49477a21d0c1ed48784e54bda4e49c48de1de3cb8f",
+				"dweb:/ipfs/QmVpGS1VZ54KtzJapCaBZ7dBMCk5fFpKn1rybYzhQdbYiH"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IERC735.sol": {
+			"keccak256": "0x8484095fb545237cbaf3ea70761bf168c77fc54323dab5f8ad74ee4dcd416aaa",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://955c3fa2a62da7504d4d8be49b23c3ea31ac7f577038b204d7681573f8791b97",
+				"dweb:/ipfs/QmVFDPFZiGGcy3cbgYXAhRPRLGJfpEw3YvwWaGMMkdQf2d"
+			]
+		},
+		"@onchain-id/solidity/contracts/interface/IIdentity.sol": {
+			"keccak256": "0x908fef4a1a0962facdd9c6b14417edc284864d78805e07eac256d54e415f6186",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://cdf0abb91e57adc8111ebeec931a15ea28d86216354917e9de34f40a998bb264",
+				"dweb:/ipfs/QmarS6ikrWSV7vBY56WmC3ENbsLgf15PTPRoa5HYCfr9vo"
+			]
+		},
+		"@onchain-id/solidity/contracts/storage/Storage.sol": {
+			"keccak256": "0x069cde4c6b907998363321117446ee2fa269732d3315f1f607123f5d8e3b4d13",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://2c95964f148d5f4dc150dc35807ee52af4238efad4dd9d834121f60c449cf473",
+				"dweb:/ipfs/QmNvdiMCXUrzfjeDEJtf92JGgWtKxt8kEB5LKeEF7TU9Nu"
+			]
+		},
+		"@onchain-id/solidity/contracts/storage/Structs.sol": {
+			"keccak256": "0x4cc1dc80265e110342fc791e6bb95392c8698ff701fd41c9e35bf9cf7ff5bd32",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://3f2ad40831a23a7d8ea156b26a7ad9152785a78aa70ff0463bcdbbbda791cc2c",
+				"dweb:/ipfs/QmX8DicmSMnARZctXdMaKRatBb5e2djdqGHwrwLP3SFMVV"
+			]
+		},
+		"@onchain-id/solidity/contracts/version/Version.sol": {
+			"keccak256": "0x9edca39fb2e35af59f82ce30de0f2b7727e0a2df9cf9b703288db868ea4e8405",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://bf16acdc9fbada3d392c243f3ded28d654084f2c367c7103b1769f0ee0a7b1a4",
+				"dweb:/ipfs/QmeVUtHa9LGdiaxKav6swxHuWTYLhz3FXbQfY4wUMUKd97"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable@5.0.0/proxy/utils/Initializable.sol": {
+			"keccak256": "0x631188737069917d2f909d29ce62c4d48611d326686ba6683e26b72a23bfac0b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7a61054ae84cd6c4d04c0c4450ba1d6de41e27e0a2c4f1bcdf58f796b401c609",
+				"dweb:/ipfs/QmUvtdp7X1mRVyC3CsHrtPbgoqWaXHp3S1ZR24tpAQYJWM"
+			]
+		},
+		"RVA/Identities/Identity.sol": {
+			"keccak256": "0x5ebaeefc7e74d0f04740263d7a3d9980fdc672bc2a7a2d0e371561da6a4ada6e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f2d83a0bcd04011be5add84e1d38b313f02c09090ce1415deedb461878f8108e",
+				"dweb:/ipfs/QmbApWMFKVKfFBD8MTB51vQ73zvYfCpNQZW1dUDTyPA2aW"
+			]
+		},
+		"RVA/IdentityFactory.sol": {
+			"keccak256": "0x50c4309c15fbc36d9f5d28864d338e9ed97142d7fe12225afa88833db7d57fa6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e9fe58b1d34fd03941800824d37cb46623ac9fffa3a880eff0e402631809f4d0",
+				"dweb:/ipfs/QmZqGZdZnsfNiiW2VzDbvUYDf4kneeZhC464aUsQ8L3p6c"
+			]
+		}
+	},
+	"version": 1
+}

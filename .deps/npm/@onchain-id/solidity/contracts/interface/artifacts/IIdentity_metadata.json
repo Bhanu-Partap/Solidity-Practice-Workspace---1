@@ -765,11 +765,11 @@
 			]
 		},
 		".deps/npm/@onchain-id/solidity/contracts/interface/IIdentity.sol": {
-			"keccak256": "0x206c93ed62a48802edcad87e229f53c74817349a49f5ef21ea4780ab27b39cdf",
+			"keccak256": "0x908fef4a1a0962facdd9c6b14417edc284864d78805e07eac256d54e415f6186",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://82a0e205a814739ac45b4d1fc490aa40f5f0da4e9a9f1fb1d998c595850a29c4",
-				"dweb:/ipfs/QmTqc9Z9mGmCPw3v76S2oAFkxjjQXrpgJ5YYzYj5gtbrnN"
+				"bzz-raw://cdf0abb91e57adc8111ebeec931a15ea28d86216354917e9de34f40a998bb264",
+				"dweb:/ipfs/QmarS6ikrWSV7vBY56WmC3ENbsLgf15PTPRoa5HYCfr9vo"
 			]
 		}
 	},

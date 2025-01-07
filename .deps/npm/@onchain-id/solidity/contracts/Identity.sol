@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity 0.8.17;
+pragma solidity ^0.8.17;
 
 import "./interface/IIdentity.sol";
+import "./interface/IClaimIssuer.sol";
 import "./version/Version.sol";
 import "./storage/Storage.sol";
 

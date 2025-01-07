@@ -1,0 +1,451 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "executionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "approved",
+						"type": "bool"
+					}
+				],
+				"name": "Approved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "executionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "Executed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "executionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "ExecutionFailed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "executionId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"name": "ExecutionRequested",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "key",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "purpose",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "keyType",
+						"type": "uint256"
+					}
+				],
+				"name": "KeyAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "key",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "purpose",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "keyType",
+						"type": "uint256"
+					}
+				],
+				"name": "KeyRemoved",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_key",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_purpose",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_keyType",
+						"type": "uint256"
+					}
+				],
+				"name": "addKey",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "_approve",
+						"type": "bool"
+					}
+				],
+				"name": "approve",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_data",
+						"type": "bytes"
+					}
+				],
+				"name": "execute",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "executionId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_key",
+						"type": "bytes32"
+					}
+				],
+				"name": "getKey",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "purposes",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "keyType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "key",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_key",
+						"type": "bytes32"
+					}
+				],
+				"name": "getKeyPurposes",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "_purposes",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_purpose",
+						"type": "uint256"
+					}
+				],
+				"name": "getKeysByPurpose",
+				"outputs": [
+					{
+						"internalType": "bytes32[]",
+						"name": "keys",
+						"type": "bytes32[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_key",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_purpose",
+						"type": "uint256"
+					}
+				],
+				"name": "keyHasPurpose",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_key",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_purpose",
+						"type": "uint256"
+					}
+				],
+				"name": "removeKey",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "success",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "interface of the ERC734 (Key Holder) standard as defined in the EIP.",
+			"events": {
+				"Approved(uint256,bool)": {
+					"details": "Emitted when an execution request was approved. Specification: MUST be triggered when approve was successfully called."
+				},
+				"Executed(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execute operation was approved and successfully performed. Specification: MUST be triggered when approve was called and the execution was successfully approved."
+				},
+				"ExecutionFailed(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execute operation was called and failed Specification: MUST be triggered when execute call failed"
+				},
+				"ExecutionRequested(uint256,address,uint256,bytes)": {
+					"details": "Emitted when an execution request was performed via `execute`. Specification: MUST be triggered when execute was successfully called."
+				},
+				"KeyAdded(bytes32,uint256,uint256)": {
+					"details": "Emitted when a key was added to the Identity. Specification: MUST be triggered when addKey was successfully called."
+				},
+				"KeyRemoved(bytes32,uint256,uint256)": {
+					"details": "Emitted when a key was removed from the Identity. Specification: MUST be triggered when removeKey was successfully called."
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"addKey(bytes32,uint256,uint256)": {
+					"details": "Adds a _key to the identity. The _purpose specifies the purpose of the key. Triggers Event: `KeyAdded` Specification: MUST only be done by keys of purpose 1, or the identity itself. If it's the identity itself, the approval process will determine its approval."
+				},
+				"approve(uint256,bool)": {
+					"details": "Approves an execution. Triggers Event: `Approved` Triggers on execution successful Event: `Executed` Triggers on execution failure Event: `ExecutionFailed`"
+				},
+				"execute(address,uint256,bytes)": {
+					"details": "Passes an execution instruction to an ERC734 identity. How the execution is handled is up to the identity implementation: An execution COULD be requested and require `approve` to be called with one or more keys of purpose 1 or 2 to approve this execution. Execute COULD be used as the only accessor for `addKey` and `removeKey`. Triggers Event: ExecutionRequested Triggers on direct execution Event: Executed"
+				},
+				"getKey(bytes32)": {
+					"details": "Returns the full key data, if present in the identity."
+				},
+				"getKeyPurposes(bytes32)": {
+					"details": "Returns the list of purposes associated with a key."
+				},
+				"getKeysByPurpose(uint256)": {
+					"details": "Returns an array of public key bytes32 held by this identity."
+				},
+				"keyHasPurpose(bytes32,uint256)": {
+					"details": "Returns TRUE if a key is present and has the given purpose. If the key is not present it returns FALSE."
+				},
+				"removeKey(bytes32,uint256)": {
+					"details": "Removes _purpose for _key from the identity. Triggers Event: `KeyRemoved` Specification: MUST only be done by keys of purpose 1, or the identity itself. If it's the identity itself, the approval process will determine its approval."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			".deps/npm/@onchain-id/solidity/contracts/interface/IERC734.sol": "IERC734"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		".deps/npm/@onchain-id/solidity/contracts/interface/IERC734.sol": {
+			"keccak256": "0x1176024fe195d6776b18c639a7aae7f41cec2e42a1512a8653372d60c89e6b55",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://645998579c349ef1ff2dcf49477a21d0c1ed48784e54bda4e49c48de1de3cb8f",
+				"dweb:/ipfs/QmVpGS1VZ54KtzJapCaBZ7dBMCk5fFpKn1rybYzhQdbYiH"
+			]
+		}
+	},
+	"version": 1
+}
