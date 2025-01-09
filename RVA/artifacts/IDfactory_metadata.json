@@ -77,6 +77,25 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "_useraddress",
+						"type": "address"
+					}
+				],
+				"name": "hasIdentity",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "admin",
 						"type": "address"
 					}
@@ -195,7 +214,7 @@
 				"dweb:/ipfs/QmeVUtHa9LGdiaxKav6swxHuWTYLhz3FXbQfY4wUMUKd97"
 			]
 		},
-		"@openzeppelin/contracts-upgradeable@5.0.0/proxy/utils/Initializable.sol": {
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
 			"keccak256": "0x631188737069917d2f909d29ce62c4d48611d326686ba6683e26b72a23bfac0b",
 			"license": "MIT",
 			"urls": [
@@ -212,11 +231,11 @@
 			]
 		},
 		"RVA/IdentityFactory.sol": {
-			"keccak256": "0x50c4309c15fbc36d9f5d28864d338e9ed97142d7fe12225afa88833db7d57fa6",
+			"keccak256": "0x3c83e44ddaf298287d5b369ffb2bbe0e781a514a65672f4405364983a371bb02",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e9fe58b1d34fd03941800824d37cb46623ac9fffa3a880eff0e402631809f4d0",
-				"dweb:/ipfs/QmZqGZdZnsfNiiW2VzDbvUYDf4kneeZhC464aUsQ8L3p6c"
+				"bzz-raw://82444b25de5cddff4d1c6d4bc7bcd60c6982de8f10d80ac312c9f8187bbffb27",
+				"dweb:/ipfs/QmUrtkMQyHtUfkYthbZX44Zv4bv46LcMe9WUYmh73SYuq2"
 			]
 		}
 	},

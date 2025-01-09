@@ -61,7 +61,7 @@ contract TokenVesting is Ownable {
             startTime: _startTime,
             lockUpEndTime: _startTime + _lockUpPeriod,
             vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod,
-            vestingInterval: _vestingInterval
+            vestingInterval: _startTime + _lockUpPeriod +_vestingInterval
         });
         emit VestingAllocated(_investor, _tokenAmount, _startTime + _lockUpPeriod, _startTime + _lockUpPeriod + _vestingPeriod, _vestingInterval);
     }

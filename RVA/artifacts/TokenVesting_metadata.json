@@ -534,11 +534,11 @@
 			]
 		},
 		"RVA/Vesting.sol": {
-			"keccak256": "0x051bc5f3c5912e993f206111206083bb5e0dcd36026dccc235e268d38a7c5ef5",
+			"keccak256": "0x50fdf9dd8f5cf9966c68f561c647a2c28c9343df64ec57544e2115d0ab7a1388",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e480f99804d8b358be74257d06ac3d5ae82009561e4c547618d4940a0206f2c0",
-				"dweb:/ipfs/QmSof4uiRvi63pCd2bNTdvH3Hd2BTdW4Qdg8EaUskGq2ru"
+				"bzz-raw://dc8ad691064b1383adebb87590bc37dc9bc7ee0b77dea8ff71066ec787746d65",
+				"dweb:/ipfs/QmapMrGWHcKXf9uMpPGbiCpMrcRTgvqnHZ9Syj33jXZBRH"
 			]
 		}
 	},
