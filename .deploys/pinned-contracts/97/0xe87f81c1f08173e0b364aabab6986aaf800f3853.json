@@ -1,6 +1,6 @@
 {
   "name": "icotoken",
-  "address": "0x42e8e0385743991fc031a1347ed012385bf0eda1",
+  "address": "0xe87f81c1f08173e0b364aabab6986aaf800f3853",
   "abi": [
     {
       "inputs": [
@@ -333,5 +333,5 @@
     }
   ],
   "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/Erc20.sol",
-  "pinnedAt": 1735897335806
+  "pinnedAt": 1736423811280
 }

@@ -1,6 +1,6 @@
 {
   "name": "ICO",
-  "address": "0xce97274abd7fbb162845402171381ffd3c03dbe5",
+  "address": "0x6824e74fbc2528265f2b089e51c44a85e958cf1c",
   "abi": [
     {
       "inputs": [],
@@ -821,5 +821,5 @@
     }
   ],
   "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/PriceIco.sol",
-  "pinnedAt": 1735897337485
+  "pinnedAt": 1736423812832
 }
