@@ -1404,11 +1404,11 @@
 			]
 		},
 		"RVA/ICO.sol": {
-			"keccak256": "0xb223decd6d578e706a1ceb93c498a59a7007df20090e23f57f394f67baa155d2",
+			"keccak256": "0xb19584a9ff90c864c6bb69b9477d94ff6397421e0ff6e98bd51eaf09f3c085af",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://35c438ea124dac08af28500bf48684de1d8382d9a192056bcb8c3a0e0670d421",
-				"dweb:/ipfs/QmVXKc1uwkvpTKZ8MMeaSnQvK6jq1qbHE9pjnkWBC3fTtD"
+				"bzz-raw://d3bbe437d4386d437c8bf687a50adb9a3af6c8f420acb207cd55c9a46350c6fa",
+				"dweb:/ipfs/QmRqKBy3YKu1vUDKeMNbXLtMAaJrH68d9u9JDKk1SwYsdv"
 			]
 		},
 		"RVA/Identities/Identity.sol": {

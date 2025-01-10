@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract ICO is Ownable, ReentrancyGuard,Pausable {
+contract ICO is Ownable, ReentrancyGuard, Pausable {
     using SafeMath for uint256;
 
     // Chainlink Price Feeds
@@ -494,16 +494,29 @@ contract ICO is Ownable, ReentrancyGuard,Pausable {
             "Vesting transfer failed"
         );
 
+        // vestingContract.registerVesting(
+        //     investor,
+        //     saleId,
+        //     tokenAmount, // Total tokens
+        //     initialRelease, // Claimed tokens
+        //     lockedTokens, // Locked tokens
+        //     block.timestamp, // Start time
+        //     0.5 * 365 days, // Lockup period
+        //     365 days, // Vesting period
+        //     30 days // Interval
+        // );
+
+        // test data 
         vestingContract.registerVesting(
-            investor,
-            saleId,
-            tokenAmount, // Total tokens
-            initialRelease, // Claimed tokens
-            lockedTokens, // Locked tokens
-            block.timestamp, // Start time
-            0.5 * 365 days, // Lockup period
-            365 days, // Vesting period
-            30 days // Interval
+            investor, // investor
+            saleId, // saleId
+            tokenAmount, // tokenAmount
+            initialRelease, // initialRelease (10% upfront)
+            lockedTokens, // lockedTokens (90% locked)
+            block.timestamp, // start time
+            5 * 60, // lockupPeriod (5 minutes)
+            30 * 60, // vestingPeriod (30 minutes)
+            5 * 60 // interval (5 minutes per release)
         );
     }
 
