@@ -7,9 +7,10 @@ import "./IdentityFactory.sol";
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Pausable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract ICO is Ownable, ReentrancyGuard {
+contract ICO is Ownable, ReentrancyGuard,Pausable {
     using SafeMath for uint256;
 
     // Chainlink Price Feeds
@@ -135,14 +136,28 @@ contract ICO is Ownable, ReentrancyGuard {
         _;
     }
 
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    function unpause() external onlyOwner {
+        _unpause();
+    }
+
     function whitelistUser(address _user) external onlyOwner {
         require(_user != address(0), "Invalid address");
+        if (blacklistedUsers[_user]) {
+            blacklistedUsers[_user] = false;
+        }
         whitelistedUsers[_user] = true;
         emit Whitelisted(_user);
     }
 
     function blacklistUser(address _user) external onlyOwner {
         require(_user != address(0), "Invalid address");
+        if (whitelistedUsers[_user]) {
+            whitelistedUsers[_user] = false;
+        }
         blacklistedUsers[_user] = true;
         emit Blacklisted(_user);
     }
@@ -195,8 +210,7 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 _maxPurchaseAmount,
         address[] memory _investors,
         string memory _saleName,
-        bool _isPrivate,
-        bool _immediateFinalizeSale
+        bool _isPrivate
     ) external onlyOwner icoNotFinalized {
         require(
             _startTime > block.timestamp,
@@ -320,6 +334,7 @@ contract ICO is Ownable, ReentrancyGuard {
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount)
         external
         payable
+        whenNotPaused
         icoNotFinalized
     {
         require(!blacklistedUsers[msg.sender], "Blacklisted");
@@ -366,12 +381,7 @@ contract ICO is Ownable, ReentrancyGuard {
         );
 
         // Lockup and vesting
-        distributeTokens(
-            msg.sender,
-            currentSaleId,
-            tokenAmount,
-            sale.tokenPrice
-        );
+        distributeTokens(msg.sender, currentSaleId, tokenAmount);
 
         emit TokensPurchased(
             msg.sender,
@@ -391,11 +401,10 @@ contract ICO is Ownable, ReentrancyGuard {
         require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
 
-        if(!sale.isPrivate){
+        if (!sale.isPrivate) {
             return IdentityContract.hasIdentity(_investor);
         }
-        require(whitelistedUsers[_investor], "Whitelist only");
-
+        return whitelistedUsers[_investor];
     }
 
     function processPayment(
@@ -464,8 +473,7 @@ contract ICO is Ownable, ReentrancyGuard {
     function distributeTokens(
         address investor,
         uint256 saleId,
-        uint256 tokenAmount,
-        uint256 tokenPriceUSD
+        uint256 tokenAmount
     ) internal {
         uint256 initialRelease = (tokenAmount * 10) / 100; // 10% initial release
         console.log("=====initialRelease====", initialRelease);
@@ -517,6 +525,7 @@ contract ICO is Ownable, ReentrancyGuard {
         public
         nonReentrant
         onlyOwner
+        whenNotPaused
         icoNotFinalized
     {
         bool allSalesHardCapReached = true;
@@ -583,7 +592,7 @@ contract ICO is Ownable, ReentrancyGuard {
         }
     }
 
-    function claimRefund(uint256 saleId) external nonReentrant {
+    function claimRefund(uint256 saleId) external nonReentrant whenNotPaused {
         require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
 
@@ -628,7 +637,6 @@ contract ICO is Ownable, ReentrancyGuard {
                 } else {
                     revert("Unsupported payment method for refund");
                 }
-
                 // Emit refund event for this sale
                 emit RefundClaimed(msg.sender, saleId, amount, paymentMethod);
             }
@@ -686,24 +694,23 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 
     function getInvestorCount(uint256 saleId)
-    public
-    view
-    returns (uint256 saleInvestorCount, uint256 overallInvestorCount)
-{
-    require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
+        public
+        view
+        returns (uint256 saleInvestorCount, uint256 overallInvestorCount)
+    {
+        require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
 
-    // Get the specific sale
-    Sale storage sale = sales[saleId];
+        // Get the specific sale
+        Sale storage sale = sales[saleId];
 
-    // Return the specific sale's investor count
-    saleInvestorCount = sale.investors.length;
+        // Return the specific sale's investor count
+        saleInvestorCount = sale.investors.length;
 
-    // Calculate the overall investor count by checking each sale
-    overallInvestorCount = 0;
-    uint256 countForSale = saleCount; 
-    for (uint256 i = 1; i <= countForSale; i++) {
-        overallInvestorCount += sales[i].investors.length;
+        // Calculate the overall investor count by checking each sale
+        overallInvestorCount = 0;
+        uint256 countForSale = saleCount;
+        for (uint256 i = 1; i <= countForSale; i++) {
+            overallInvestorCount += sales[i].investors.length;
+        }
     }
-}
-
 }

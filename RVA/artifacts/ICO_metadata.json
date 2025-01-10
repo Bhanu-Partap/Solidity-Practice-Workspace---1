@@ -52,6 +52,16 @@
 				"type": "constructor"
 			},
 			{
+				"inputs": [],
+				"name": "EnforcedPause",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ExpectedPause",
+				"type": "error"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -201,6 +211,19 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Paused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "investor",
@@ -269,6 +292,19 @@
 					}
 				],
 				"name": "TokensPurchased",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Unpaused",
 				"type": "event"
 			},
 			{
@@ -497,11 +533,6 @@
 						"internalType": "bool",
 						"name": "_isPrivate",
 						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "_immediateFinalizeSale",
-						"type": "bool"
 					}
 				],
 				"name": "createSale",
@@ -549,6 +580,30 @@
 						"internalType": "bool",
 						"name": "",
 						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "saleId",
+						"type": "uint256"
+					}
+				],
+				"name": "getInvestorCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "saleInvestorCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "overallInvestorCount",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -647,6 +702,26 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "paused",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -924,6 +999,13 @@
 			},
 			{
 				"inputs": [],
+				"name": "unpause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "usdc",
 				"outputs": [
 					{
@@ -1000,6 +1082,16 @@
 		],
 		"devdoc": {
 			"errors": {
+				"EnforcedPause()": [
+					{
+						"details": "The operation failed because the contract is paused."
+					}
+				],
+				"ExpectedPause()": [
+					{
+						"details": "The operation failed because the contract is not paused."
+					}
+				],
 				"OwnableInvalidOwner(address)": [
 					{
 						"details": "The owner is not a valid owner account. (eg. `address(0)`)"
@@ -1016,10 +1108,21 @@
 					}
 				]
 			},
+			"events": {
+				"Paused(address)": {
+					"details": "Emitted when the pause is triggered by `account`."
+				},
+				"Unpaused(address)": {
+					"details": "Emitted when the pause is lifted by `account`."
+				}
+			},
 			"kind": "dev",
 			"methods": {
 				"owner()": {
 					"details": "Returns the address of the current owner."
+				},
+				"paused()": {
+					"details": "Returns true if the contract is paused, and false otherwise."
 				},
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
@@ -1268,6 +1371,14 @@
 				"dweb:/ipfs/QmQ7iH2keLNUKgq2xSWcRmuBE5eZ3F5whYAkAGzCNNoEWB"
 			]
 		},
+		"@openzeppelin/contracts/utils/Pausable.sol": {
+			"keccak256": "0xb2e5f50762c27fb4b123e3619c3c02bdcba5e515309382e5bfb6f7d6486510bd",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1a4b83328c98d518a2699c2cbe9e9b055e78aa57fa8639f1b88deb8b3750b5dc",
+				"dweb:/ipfs/QmXdcYj5v7zQxXFPULShHkR5p4Wa2zYuupbHnFdV3cHYtc"
+			]
+		},
 		"@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
 			"keccak256": "0x11a5a79827df29e915a12740caf62fe21ebe27c08c9ae3e09abe9ee3ba3866d3",
 			"license": "MIT",
@@ -1293,11 +1404,11 @@
 			]
 		},
 		"RVA/ICO.sol": {
-			"keccak256": "0xaf9fbba4bf6556163eae1e0146db45e9ff09a713210dd96b2515f4c8cb0fd5e9",
+			"keccak256": "0xb223decd6d578e706a1ceb93c498a59a7007df20090e23f57f394f67baa155d2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9ac1271876174747e5826677217af1380530c8b6dbd04b52d4912f7890e7c18",
-				"dweb:/ipfs/QmSTXXXWN5uszSzEFPMLiKuceR4o3rR1dt5GunhMNFLFWG"
+				"bzz-raw://35c438ea124dac08af28500bf48684de1d8382d9a192056bcb8c3a0e0670d421",
+				"dweb:/ipfs/QmVXKc1uwkvpTKZ8MMeaSnQvK6jq1qbHE9pjnkWBC3fTtD"
 			]
 		},
 		"RVA/Identities/Identity.sol": {
@@ -1317,19 +1428,19 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x1565bb8fb960d9e3541052613775e2daa0002db521c1226a4481bed63971d69c",
+			"keccak256": "0x17534518d617f3d50868437507bc2d26d5d0b8afb5510c64eaf58b778180e38a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://189010a41f50f02ec42186c04e09e6ad3539906d38efafd42e0c4dbcdb90af06",
-				"dweb:/ipfs/QmQ4fzf1thBNaWKLSExTpnWprGBwQm3xN8ySnczeJNWEf9"
+				"bzz-raw://b59bfeee927849d2119aafc3b4fcdc1cad00026eee75dc14d9d7bf64c023ee87",
+				"dweb:/ipfs/QmWYie2Z7zPVGL48sHMEUtTYrampCktQM5Zuj9hjKsR7kL"
 			]
 		},
 		"RVA/Vesting.sol": {
-			"keccak256": "0x50fdf9dd8f5cf9966c68f561c647a2c28c9343df64ec57544e2115d0ab7a1388",
+			"keccak256": "0xdd5cd48fc0b6213cc57df881763925628f77b6957d3126ffb9f8d3d8e99cb899",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://dc8ad691064b1383adebb87590bc37dc9bc7ee0b77dea8ff71066ec787746d65",
-				"dweb:/ipfs/QmapMrGWHcKXf9uMpPGbiCpMrcRTgvqnHZ9Syj33jXZBRH"
+				"bzz-raw://72a6511c909954bf698a40855270c37cc5c9965e3a6dac0a3a87495966167204",
+				"dweb:/ipfs/QmTWkFLxjBhE8z2eHm1c69fJU4LnXL3368NFHLqY8DU5MC"
 			]
 		},
 		"hardhat/console.sol": {

@@ -49,9 +49,10 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         _unpause();
     }
 
-    function setLockup(address account, uint256 timestamp, uint256 amount) external onlyICOContract {
+    function setLockup(address account, uint256 timestamp, uint256 amount) external whenNotPaused onlyICOContract  {
     require(account != address(0), "Null Address");
     require(amount > 0, "Amount must be greater than zero");
+
 
     // Update the locked amount if necessary
     if (lockedUntil[account] != timestamp || lockedAmount[account] != amount) {
@@ -67,9 +68,9 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         emit Blacklisted(account, status);
     }
 
-    function isBlacklisted(address account) public view returns (bool) {
-        return blacklisted[account];
-    }
+    // function isBlacklisted(address account) public view returns (bool) {
+    //     return blacklisted[account];
+    // }
 
     function transfer(address recipient, uint256 amount) public override whenNotPaused returns (bool) {
         require(!blacklisted[msg.sender], "Transfer failed: Sender is blacklisted");
@@ -87,7 +88,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         return super.transferFrom(sender, recipient, amount);
     }
 
-    function setICOContract(address _icoContract) external onlyOwner {
+    function setICOContract(address _icoContract) external whenNotPaused onlyOwner  {
         require(_icoContract != address(0), "Null Address");
         require(_icoContract.isContract(), "Address is not a contract");
         icoContract = _icoContract;
@@ -107,5 +108,5 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         }
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+    function _authorizeUpgrade(address newImplementation) internal override whenNotPaused onlyOwner {}
 }

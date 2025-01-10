@@ -2,13 +2,11 @@
 pragma solidity 0.8.26;
 
 import "./UpgradableToken.sol";
-// import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract TokenVesting is Ownable {
     using SafeMath for uint256;
-    // using Address for address;
 
     ERC20Token public icoToken;
     address public icoContract;
@@ -30,9 +28,8 @@ contract TokenVesting is Ownable {
     event VestingAllocated(address indexed beneficiary, uint256 totalAmount, uint256 lockUpEndTime, uint256 vestingEndTime, uint256 vestingInterval);
     event TokensClaimed(address indexed beneficiary, uint256 amount);
 
-    constructor(address _tokenAddress, address _icoAddress) Ownable(msg.sender) {
+    constructor(address _tokenAddress) Ownable(msg.sender) {
         icoToken = ERC20Token(_tokenAddress);
-        icoContract = _icoAddress;
     }
 
     // Allocate vesting to a user
@@ -97,7 +94,6 @@ contract TokenVesting is Ownable {
     // Set the ICO contract address
     function setIcoContract(address _icoContract) external onlyOwner {
         require(_icoContract != address(0), "Null Address");
-        // require(isContract(_icoAddress), "Address is not a contract");
         icoContract = _icoContract;
     }
 }

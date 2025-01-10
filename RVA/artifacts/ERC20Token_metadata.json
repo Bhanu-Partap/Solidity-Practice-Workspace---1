@@ -543,25 +543,6 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "account",
-						"type": "address"
-					}
-				],
-				"name": "isBlacklisted",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
 						"name": "",
 						"type": "address"
 					}
@@ -1023,7 +1004,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1166,11 +1147,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x1565bb8fb960d9e3541052613775e2daa0002db521c1226a4481bed63971d69c",
+			"keccak256": "0x17534518d617f3d50868437507bc2d26d5d0b8afb5510c64eaf58b778180e38a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://189010a41f50f02ec42186c04e09e6ad3539906d38efafd42e0c4dbcdb90af06",
-				"dweb:/ipfs/QmQ4fzf1thBNaWKLSExTpnWprGBwQm3xN8ySnczeJNWEf9"
+				"bzz-raw://b59bfeee927849d2119aafc3b4fcdc1cad00026eee75dc14d9d7bf64c023ee87",
+				"dweb:/ipfs/QmWYie2Z7zPVGL48sHMEUtTYrampCktQM5Zuj9hjKsR7kL"
 			]
 		}
 	},

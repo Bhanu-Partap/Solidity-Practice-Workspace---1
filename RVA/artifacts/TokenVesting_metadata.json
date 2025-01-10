@@ -11,11 +11,6 @@
 						"internalType": "address",
 						"name": "_tokenAddress",
 						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_icoAddress",
-						"type": "address"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -359,7 +354,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -526,19 +521,19 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x1565bb8fb960d9e3541052613775e2daa0002db521c1226a4481bed63971d69c",
+			"keccak256": "0x17534518d617f3d50868437507bc2d26d5d0b8afb5510c64eaf58b778180e38a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://189010a41f50f02ec42186c04e09e6ad3539906d38efafd42e0c4dbcdb90af06",
-				"dweb:/ipfs/QmQ4fzf1thBNaWKLSExTpnWprGBwQm3xN8ySnczeJNWEf9"
+				"bzz-raw://b59bfeee927849d2119aafc3b4fcdc1cad00026eee75dc14d9d7bf64c023ee87",
+				"dweb:/ipfs/QmWYie2Z7zPVGL48sHMEUtTYrampCktQM5Zuj9hjKsR7kL"
 			]
 		},
 		"RVA/Vesting.sol": {
-			"keccak256": "0x50fdf9dd8f5cf9966c68f561c647a2c28c9343df64ec57544e2115d0ab7a1388",
+			"keccak256": "0xdd5cd48fc0b6213cc57df881763925628f77b6957d3126ffb9f8d3d8e99cb899",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://dc8ad691064b1383adebb87590bc37dc9bc7ee0b77dea8ff71066ec787746d65",
-				"dweb:/ipfs/QmapMrGWHcKXf9uMpPGbiCpMrcRTgvqnHZ9Syj33jXZBRH"
+				"bzz-raw://72a6511c909954bf698a40855270c37cc5c9965e3a6dac0a3a87495966167204",
+				"dweb:/ipfs/QmTWkFLxjBhE8z2eHm1c69fJU4LnXL3368NFHLqY8DU5MC"
 			]
 		}
 	},
