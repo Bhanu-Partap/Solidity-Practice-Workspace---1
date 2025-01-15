@@ -38,7 +38,8 @@ contract ICO is Ownable, ReentrancyGuard {
     uint256 constant PRECISION_18 = 1e18;
     bool public isICOFinalized = false;
     bool public isTokensAirdropped = false;
-    // bool public allowImmediateFinalization = false;
+    bool public isFreezed = false;
+
     address[] public investors;
     address public usdt;
     address public usdc;
@@ -49,8 +50,7 @@ contract ICO is Ownable, ReentrancyGuard {
     mapping(address => uint256) public tokensBoughtByInvestor;
     mapping(address => AggregatorV3Interface) private priceFeeds;
     mapping(address => PaymentMethod) public paymentMethodForInvestor;
-    mapping(address => mapping(PaymentMethod => uint256))
-        public investorPayments;
+    mapping(address => mapping(PaymentMethod => uint256))public investorPayments;
 
     // Events
     event ICOFinalized(uint256 indexed totalTokensSold);
@@ -101,6 +101,21 @@ contract ICO is Ownable, ReentrancyGuard {
         _;
     }
 
+    modifier freezed() {
+        require(!isFreezed, "freezed");
+        _;
+    }
+
+    function freeze() external onlyOwner {
+        require(!isFreezed ,"Already Freezed");
+        isFreezed = true;
+    }
+
+    function unFreeze() external onlyOwner {
+        require(isFreezed ,"Already UnFreezed");
+        isFreezed = false;
+    }
+
     function _getPriceFeed(PaymentMethod paymentMethod)
         public
         view
@@ -121,9 +136,9 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 
     //Constructor Data
-    // 0xAc5245b0A8B2ae25198F5456C1C541c66aFba306,
-    // 0x6e84dB430243a07aDd33aD0f11006ceDEd1C15e7,
-    // 0x0E599634133b74409A732a9DAD5Fa345076e8A56,
+    // 0x1076a267f94719aD63951a75Ff99652512bb1746,
+    // 0xc2BE4Cdb8Fd577d42a0f72796b64c24A5329AEc6,
+    // 0xc6ef04Dde62982A97e1fffD47691e13dF7311683,
     // 100000000000000000000,
     // 200000000000000000000,
     // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526,
@@ -134,7 +149,7 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 _startTime,
         uint256 _endTime,
         uint256 _tokenPriceUSD
-    ) external onlyOwner icoNotFinalized {
+    ) external onlyOwner icoNotFinalized freezed {
         require(
             _startTime > block.timestamp,
             "Start time must be greater than current time"
@@ -144,7 +159,7 @@ contract ICO is Ownable, ReentrancyGuard {
             "End time must be greater than start time"
         );
         require(
-            _startTime > getLatestSaleEndTime(),
+            block.timestamp > getLatestSaleEndTime(),
             "New sale must start after the last sale ends"
         );
 
@@ -233,6 +248,7 @@ contract ICO is Ownable, ReentrancyGuard {
         external
         payable
         icoNotFinalized
+        freezed
     {
         require(msg.sender != owner(), "Owner cannot buy tokens");
         require(saleCount != 0, "No sale");
@@ -296,7 +312,13 @@ contract ICO is Ownable, ReentrancyGuard {
         );
     }
 
-    function finalizeICO() public nonReentrant onlyOwner icoNotFinalized {
+    function finalizeICO()
+        public
+        nonReentrant
+        onlyOwner
+        icoNotFinalized
+        freezed
+    {
         require(
             totalFundsRaisedUSD >= softCapInUSD,
             "Cannot finalize: Soft cap not reached or sale is ongoing"
@@ -332,9 +354,18 @@ contract ICO is Ownable, ReentrancyGuard {
         }
     }
 
-    function airdropTokens() external nonReentrant onlyOwner icoNotFinalized {
+    function airdropTokens()
+        external
+        nonReentrant
+        onlyOwner
+        icoNotFinalized
+        freezed
+    {
         require(!isTokensAirdropped, "Airdrop already completed");
-        require(token.balanceOf(msg.sender)>=totalTokensSold ,"Insufficient Funds");
+        require(
+            token.balanceOf(msg.sender) >= totalTokensSold,
+            "Insufficient Funds"
+        );
         require(block.timestamp > getLatestSaleEndTime(), "Sale ongoing");
 
         uint256 investorLength = investors.length;
@@ -346,11 +377,11 @@ contract ICO is Ownable, ReentrancyGuard {
             investorsIterated = 0;
         }
         for (uint256 i = investorLength - 1; i >= investorsIterated; i--) {
-            console.log("investorsIterated",investorsIterated);
+            console.log("investorsIterated", investorsIterated);
             address investor = investors[i];
             uint256 tokensBought = tokensBoughtByInvestor[investor];
-            console.log("tokensBought",tokensBought);
-            console.log("investor",investor);
+            console.log("tokensBought", tokensBought);
+            console.log("investor", investor);
 
             if (tokensBought > 0) {
                 // Transfer the calculated token amount to the investor
@@ -364,14 +395,13 @@ contract ICO is Ownable, ReentrancyGuard {
                 // Emit the token airdrop event
                 emit TokenAirdropped(investor, tokensBought);
             }
-            if(i==0){
-            break;
-        }
+            if (i == 0) {
+                break;
+            }
         }
         if (investors.length == 0) {
             isTokensAirdropped = true;
         }
-        
     }
 
     function initiateRefund() external nonReentrant onlyOwner icoNotFinalized {
@@ -379,7 +409,16 @@ contract ICO is Ownable, ReentrancyGuard {
         require(totalFundsRaisedUSD < softCapInUSD, "Soft cap reached");
 
         uint256 investorLength = investors.length;
-        for (uint256 i = 0; i < investorLength; i++) {
+        uint256 investorsIterated;
+
+        if (investorLength > 10) {
+            investorsIterated = investorLength - 11;
+        } else {
+            investorsIterated = 0;
+        }
+
+        // uint256 investorLength = investors.length;
+        for (uint256 i = investorLength - 1; i >= investorsIterated; i--) {
             address investor = investors[i];
 
             // Refund contributions for all payment methods
@@ -405,14 +444,23 @@ contract ICO is Ownable, ReentrancyGuard {
                             stablecoin.transfer(investor, amount),
                             "Stablecoin refund failed"
                         );
+                        
                     } else {
                         revert("Unsupported payment method for refund");
                     }
+                    
                     emit RefundInitiated(investor, amount, paymentMethod);
                 }
+                
             }
+            investors.pop();
+            if (i == 0) {
+                    break;
+                }
         }
-        isICOFinalized = true;
+        if (investors.length == 0) {
+            isICOFinalized = true;
+        }
     }
 
     receive() external payable {
