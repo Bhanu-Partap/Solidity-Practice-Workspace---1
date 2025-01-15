@@ -9,3 +9,7 @@
             _mint(msg.sender, totalSupply_);
         }
     }
+
+    // EncryptedCash Token
+    // ECT
+    // 1500000000e18

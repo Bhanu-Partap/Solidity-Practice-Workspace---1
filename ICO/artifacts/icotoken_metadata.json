@@ -446,7 +446,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
@@ -493,11 +493,11 @@
 			]
 		},
 		"ICO/Erc20.sol": {
-			"keccak256": "0xe42770ced11fcabba52fb18828608fb070140ebc0c2d4d10b445b1decf38ccbb",
+			"keccak256": "0xc99122867b55178e4fb48a8d9b00840b2efa71e0cc6375f4c185882390853f9e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1bb74a5af2335b2113b913d8781b78b3ee1c0885129c1e0fdd54c6ea240538ca",
-				"dweb:/ipfs/QmPP7Nx1MNasWwnUpms3gewsoT5EkY7CaKCE7GBYhD1fjM"
+				"bzz-raw://5527934e2027d0a952cd4c44500563015cba96840646abc4f4fbf7c9f8391ec5",
+				"dweb:/ipfs/QmdtDoptYfBiKGHMyKmcAHknCfHKbWfr9bPe4Q9v9qJZLq"
 			]
 		}
 	},

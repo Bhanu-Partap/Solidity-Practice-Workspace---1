@@ -1,6 +1,6 @@
 {
   "name": "ICO",
-  "address": "0xf53c1a2467264fe34b2a4ac0b91a24c0cd3ecb45",
+  "address": "0x349b0d1c74c87b70400b1c56c486277c12870f38",
   "abi": [
     {
       "inputs": [],
@@ -246,24 +246,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "saleId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bool",
-          "name": "_allow",
-          "type": "bool"
-        }
-      ],
-      "name": "setAllowImmediateFinalization",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
@@ -356,19 +338,6 @@
           "internalType": "int256",
           "name": "",
           "type": "int256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "allowImmediateFinalization",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -484,7 +453,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "_saleId",
+          "name": "",
           "type": "uint256"
         }
       ],
@@ -820,6 +789,6 @@
       "type": "function"
     }
   ],
-  "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/PriceIco.sol",
-  "pinnedAt": 1736503992769
+  "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/IcoOptimized.sol",
+  "pinnedAt": 1736923662781
 }
