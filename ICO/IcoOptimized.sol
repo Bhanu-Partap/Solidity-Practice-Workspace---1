@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "./Erc20.sol";
-import "hardhat/console.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-contract ICO is Ownable, ReentrancyGuard {
+contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable {
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedBNB;
     AggregatorV3Interface public priceFeedUSDT;
@@ -28,7 +28,7 @@ contract ICO is Ownable, ReentrancyGuard {
     }
 
     // State variables
-    icotoken public token;
+    IERC20 public token;
     uint256 public softCapInUSD;
     uint256 public hardCapInUSD;
     uint256 public saleCount;
@@ -36,9 +36,9 @@ contract ICO is Ownable, ReentrancyGuard {
     uint256 public totalTokensSold;
     uint256 constant PRECISION_10 = 1e10;
     uint256 constant PRECISION_18 = 1e18;
-    bool public isICOFinalized = false;
-    bool public isTokensAirdropped = false;
-    bool public isFreezed = false;
+    bool public isICOFinalized ;
+    bool public isTokensAirdropped;
+    bool public isFreezed ;
 
     address[] public investors;
     address public usdt;
@@ -48,7 +48,6 @@ contract ICO is Ownable, ReentrancyGuard {
     mapping(uint256 => Sale) public sales;
     mapping(address => uint256) public contributionsInUSD;
     mapping(address => uint256) public tokensBoughtByInvestor;
-    mapping(address => AggregatorV3Interface) private priceFeeds;
     mapping(address => PaymentMethod) public paymentMethodForInvestor;
     mapping(address => mapping(PaymentMethod => uint256))public investorPayments;
 
@@ -76,8 +75,8 @@ contract ICO is Ownable, ReentrancyGuard {
         uint256 tokenPriceUSD
     );
 
-    constructor(
-        icotoken _token,
+    function initialize(
+        IERC20 _token,
         address _usdt,
         address _usdc,
         uint256 _softCapInUSD,
@@ -85,7 +84,9 @@ contract ICO is Ownable, ReentrancyGuard {
         address _priceFeedBNB,
         address _priceFeedUSDT,
         address _priceFeedUSDC
-    ) Ownable(msg.sender) {
+    ) public initializer {
+        __Ownable_init(msg.sender);
+        __UUPSUpgradeable_init(); 
         token = _token;
         softCapInUSD = _softCapInUSD;
         hardCapInUSD = _hardCapInUSD;
@@ -94,6 +95,12 @@ contract ICO is Ownable, ReentrancyGuard {
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
         priceFeedUSDT = AggregatorV3Interface(_priceFeedUSDT);
         priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
+
+
+
+//         isICOFinalized = false;
+//  isTokensAirdropped = false;
+//    isFreezed = false;
     }
 
     modifier icoNotFinalized() {
@@ -377,11 +384,10 @@ contract ICO is Ownable, ReentrancyGuard {
             investorsIterated = 0;
         }
         for (uint256 i = investorLength - 1; i >= investorsIterated; i--) {
-            console.log("investorsIterated", investorsIterated);
             address investor = investors[i];
             uint256 tokensBought = tokensBoughtByInvestor[investor];
-            console.log("tokensBought", tokensBought);
-            console.log("investor", investor);
+            // console.log("tokensBought", tokensBought);
+            // console.log("investor", investor);
 
             if (tokensBought > 0) {
                 // Transfer the calculated token amount to the investor
@@ -496,4 +502,5 @@ contract ICO is Ownable, ReentrancyGuard {
         investorCount = investors.length;
         return investorCount;
     }
+     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
 }

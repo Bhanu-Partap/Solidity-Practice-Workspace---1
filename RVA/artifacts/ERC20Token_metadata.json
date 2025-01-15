@@ -998,7 +998,7 @@
 		"compilationTarget": {
 			"RVA/UpgradableToken.sol": "ERC20Token"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
