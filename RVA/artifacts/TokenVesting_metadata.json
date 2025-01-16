@@ -360,7 +360,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -527,19 +527,19 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x17534518d617f3d50868437507bc2d26d5d0b8afb5510c64eaf58b778180e38a",
+			"keccak256": "0x2b459a82d511f2d258c885b57c7aa427f9bf40905678cf0e54b0a379e3e6160e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b59bfeee927849d2119aafc3b4fcdc1cad00026eee75dc14d9d7bf64c023ee87",
-				"dweb:/ipfs/QmWYie2Z7zPVGL48sHMEUtTYrampCktQM5Zuj9hjKsR7kL"
+				"bzz-raw://a0e8f4b6fa495784e449bab3803695663665c93369537e9b8ef093f74083d6c3",
+				"dweb:/ipfs/QmX8P5ncZkLLgESvjNLXaqjVVWCztF1ZyHsTPhSNgkaSSN"
 			]
 		},
 		"RVA/Vesting.sol": {
-			"keccak256": "0x65bce42be67dea9065210fa2682fba342105e4e8ce83b3695b1ff08d083c1707",
+			"keccak256": "0x72ab2b6512e3cd90e652cb29171b8573a5aef99b88464bc9afa55363eb29a884",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cbe86239ceb42586489bbf5044da500aa2c01ea2d8b46dfd188e0e6449bae769",
-				"dweb:/ipfs/QmeQb7XR3ipSgquR47QRvUpECQZzC9NJuySyr7met3ZDfD"
+				"bzz-raw://e11e7a4ab0182d9d48eb40b99acba939141d14d1f747ade3f991706f7d0782af",
+				"dweb:/ipfs/QmQJGzPb5UUXTLwtqcPmGxMKE4RJnKq3Jcy78tYHKKJEPR"
 			]
 		}
 	},

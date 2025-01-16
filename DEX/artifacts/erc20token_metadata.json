@@ -453,13 +453,13 @@
 		"compilationTarget": {
 			"DEX/Token.sol": "erc20token"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -506,11 +506,11 @@
 			]
 		},
 		"DEX/Token.sol": {
-			"keccak256": "0xa75a25220a4984d20de582a16f4c2124d4973c603d7c4b425a6998babb18effc",
+			"keccak256": "0x054147d5df31778c0aa79677dc7f9ad9bd6e74c3c6393878c92f2bbb3cd89270",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://17660900c739010fd9f4cea38a4821958a3b0385075bd51166b21f291369093d",
-				"dweb:/ipfs/QmfMRPrZ7XfapHdGtjHoHjRakKnEcBeuYUpVa2hxzmfTUd"
+				"bzz-raw://c99086f8ed2a5dd11cf3767a3c340c813ff9a22370b9543d589f06a5324ab2c2",
+				"dweb:/ipfs/QmXceeGZMBFtKD1QEFZB5BnARktEdaFYv1QHAUV9tDPaQT"
 			]
 		}
 	},

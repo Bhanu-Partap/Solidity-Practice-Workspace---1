@@ -61,7 +61,7 @@ contract TokenVesting is Ownable {
         );
         require(_investor != address(0), "Null Investor address");
         require(
-            _lockUpPeriod > 0 && _vestingPeriod > 0 && _vestingInterval > 0 &&_tokenAmount > 0,
+            _lockUpPeriod != 0 && _vestingPeriod != 0 && _vestingInterval != 0 &&_tokenAmount != 0,
             "Invalid data passed"
         );
         vestingSchedules[_saleId][_investor] = VestingSchedule({
@@ -83,36 +83,9 @@ contract TokenVesting is Ownable {
         );
     }
 
-    // Claim vested tokens
-    // function claimTokens(uint256 saleId) external {
-    //     VestingSchedule storage schedule = vestingSchedules[saleId][msg.sender];
-    //     require(schedule.totalTokens > 0, "No vesting schedule found");
-
-    //     uint256 currentTime = block.timestamp;
-    //     require(currentTime >= schedule.lockUpEndTime, "Lock-up period not ended");
-
-    //     // Calculate vested tokens
-    //     uint256 vestedTokens;
-    //     if (currentTime >= schedule.vestingEndTime) {
-    //         vestedTokens = schedule.totalTokens;
-    //     } else {
-    //         uint256 elapsedTime = currentTime - schedule.lockUpEndTime;
-    //         uint256 vestingDuration = schedule.vestingEndTime - schedule.lockUpEndTime;
-    //         vestedTokens = (schedule.totalTokens * elapsedTime) / vestingDuration;
-    //     }
-
-    //     uint256 claimableTokens = vestedTokens - schedule.claimedTokens;
-    //     require(claimableTokens > 0, "No tokens available for claim");
-
-    //     schedule.claimedTokens += claimableTokens;
-    //     icoToken.transfer(msg.sender, claimableTokens);
-
-    //     emit TokensClaimed(msg.sender, claimableTokens);
-    // }
-
     function claim(uint256 saleId) external {
         VestingSchedule storage schedule = vestingSchedules[saleId][msg.sender];
-        require(schedule.lockUpEndTime > 0, "No vesting schedule found");
+        require(schedule.lockUpEndTime != 0, "No vesting schedule found");
 
         uint256 currentTime = block.timestamp;
         require(

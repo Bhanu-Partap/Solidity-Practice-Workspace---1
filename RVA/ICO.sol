@@ -62,8 +62,6 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     mapping(address => bool) public blacklistedUsers;
     mapping(address => uint256) public contributionsInUSD;
     mapping(address => uint256) public tokensBoughtByInvestor;
-    mapping(address => AggregatorV3Interface) private priceFeeds;
-    // mapping(address => mapping(PaymentMethod => uint256))public investorPayments;
     mapping(uint256 => mapping(address => mapping(PaymentMethod => uint256))) public investorPayments;
     mapping(uint256 => mapping(address => uint256))public tokensBoughtByInvestorForSale;
     mapping(address => PaymentMethod) public paymentMethodForInvestor;
@@ -122,6 +120,11 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         priceFeedUSDT = AggregatorV3Interface(_priceFeedUSDT);
         priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
     }
+    
+
+    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
+    // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
+    // 0x90c069C4538adAc136E051052E14c1cD799C41B7
 
     modifier icoNotFinalized() {
         require(!isICOFinalized, "ICO already finalized");
@@ -160,7 +163,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     }
 
     // function batchWhitelistUsers(address[] calldata _users) external onlyOwner {
-    // require(_users.length > 0, "No addresses provided");
+    // require(_users.length !=0, "No addresses provided");
     // uint256 userLength = _users.length;
     // for (uint256 i = 0; i < userLength; i++) {
     //     address user = _users[i];
@@ -205,46 +208,35 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 _tokenPriceUSD, //(USD)
         uint256 _minPurchaseAmount,
         uint256 _maxPurchaseAmount,
-        address[] memory _investors,
         string memory _saleName,
         bool _isPrivate
     ) external onlyOwner icoNotFinalized {
         require(
-            _startTime > block.timestamp,
-            "Start time must be greater than current time"
+           _startTime > block.timestamp && _endTime > _startTime && block.timestamp > getLatestSaleEndTime(),
+            "Invalid start time range"
         );
-        require(
-            _endTime > _startTime,
-            "End time must be greater than start time"
-        );
-        require(
-            _startTime > getLatestSaleEndTime(),
-            "New sale must start after the last sale ends"
-        );
-        require(_tokenPriceUSD > 0, "Price can't be zero");
+        require(_tokenPriceUSD !=0, "Price can't be zero");
         require(
             _softCap <= _hardCap,
             "Soft cap must be less than or equal to hard cap"
         );
-        require(bytes(_saleName).length > 0, "Sale name cannot be empty");
+        require(bytes(_saleName).length !=0, "Sale name cannot be empty");
 
-        saleCount++;
-        sales[saleCount] = Sale({
-            startTime: _startTime,
-            endTime: _endTime,
-            softCap: _softCap,
-            hardCap: _hardCap,
-            tokenPrice: _tokenPriceUSD,
-            tokensSold: 0,
-            fundRaised: 0,
-            minPurchaseAmount: _minPurchaseAmount,
-            maxPurchaseAmount: _maxPurchaseAmount,
-            investors: _investors,
-            name: _saleName,
-            isPrivate: _isPrivate,
-            isFinalized: false,
-            immediateFinalizeSale: false
-        });
+        saleCount = saleCount +1;
+        Sale storage sale = sales[saleCount];
+            sale.startTime= _startTime;
+            sale.endTime= _endTime;
+            sale.softCap= _softCap;
+            sale.hardCap= _hardCap;
+            sale.tokenPrice= _tokenPriceUSD;
+            sale.tokensSold= 0;
+            sale.fundRaised= 0;
+            sale.minPurchaseAmount= _minPurchaseAmount;
+            sale.maxPurchaseAmount= _maxPurchaseAmount;
+            sale.name= _saleName;
+            sale.isPrivate= _isPrivate;
+            sale.isFinalized= false;
+            sale.immediateFinalizeSale= false;
 
         emit NewSaleCreated(
             saleCount,
@@ -264,7 +256,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 paymentAmount
     ) public view returns (uint256) {
         int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10);
-        require(price > 0, "Invalid price feed");
+        require(price !=0, "Invalid price feed");
 
         uint256 currentSaleId = getCurrentSaleId();
         Sale storage sale = sales[currentSaleId];
@@ -299,10 +291,10 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         PaymentMethod paymentMethod,
         uint256 tokenAmount
     ) public view returns (uint256) {
-        require(tokenAmount > 0, "Token amount must be greater than zero");
+        require(tokenAmount !=0, "Token amount must be greater than zero");
 
         int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
-        require(price > 0, "Invalid price feed");
+        require(price !=0, "Invalid price feed");
 
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
@@ -358,7 +350,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             paymentAmount,
             currentSaleId
         );
-        require(tokenAmount > 0, "Invalid token amount");
+        require(tokenAmount !=0, "Invalid token amount");
 
         // Ensure hard cap is not exceeded
         uint256 totalCostInUSD = (tokenAmount * sale.tokenPrice) / PRECISION_18;
@@ -393,7 +385,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         view
         returns (bool)
     {
-        require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
+        require(saleId !=0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
 
         if (!sale.isPrivate) {
@@ -408,7 +400,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 saleId
     ) internal returns (uint256) {
         if (paymentMethod == PaymentMethod.BNB) {
-            require(msg.value > 0, "Invalid BNB");
+            require(msg.value !=0, "Invalid BNB");
             uint256 tokenAmount = calculateTokenAmount(
                 paymentMethod,
                 msg.value
@@ -420,7 +412,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             paymentMethod == PaymentMethod.USDT ||
             paymentMethod == PaymentMethod.USDC
         ) {
-            require(paymentAmount > 0, "Invalid stablecoin");
+            require(paymentAmount !=0, "Invalid stablecoin");
             IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
                 ? IERC20(usdt)
                 : IERC20(usdc);
@@ -543,27 +535,22 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 _saleCount = saleCount;
         for (uint256 i = 1; i <= _saleCount; i++) {
             Sale storage sale = sales[i];
-
-            // Check if the sale's hard cap is reached
+            
             if (sale.fundRaised < sale.hardCap) {
                 allSalesHardCapReached = false; // hard cap not reached
             }
 
-            // Check if the sale's soft cap is reached and the sale has ended
             if (
                 sale.fundRaised >= sale.softCap ||
                 block.timestamp > sale.endTime
             ) {
-                allSalesSoftCapReachedAndEnded = false; // Not all sales have met the soft cap and ended
+                allSalesSoftCapReachedAndEnded = false; 
             }
-
-            // Finalize individual sales that are eligible
             if (block.timestamp >= sale.endTime && !sale.isFinalized) {
-                sale.isFinalized = true; // Mark sale as finalized
+                sale.isFinalized = true; 
             }
         }
 
-        // Determine whether to finalize the ICO
         if (allSalesHardCapReached || allSalesSoftCapReachedAndEnded) {
             isICOFinalized = true;
             _transferFunds(withdrawalAddress);
@@ -577,14 +564,14 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         require(withdrawalAddress != address(0), "Invalid address");
 
         uint256 nativeBalance = address(this).balance;
-        if (nativeBalance > 0) {
+        if (nativeBalance != 0) {
             (bool success, ) = withdrawalAddress.call{value: nativeBalance}("");
             require(success, "Transfer failed");
         }
 
         // Transfer stablecoin funds (USDT/USDC)
         uint256 usdtBalance = IERC20(usdt).balanceOf(address(this));
-        if (usdtBalance > 0) {
+        if (usdtBalance != 0) {
             require(
                 IERC20(usdt).transfer(withdrawalAddress, usdtBalance),
                 "USDT transfer failed"
@@ -592,7 +579,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         }
 
         uint256 usdcBalance = IERC20(usdc).balanceOf(address(this));
-        if (usdcBalance > 0) {
+        if (usdcBalance != 0) {
             require(
                 IERC20(usdc).transfer(withdrawalAddress, usdcBalance),
                 "USDC transfer failed"
@@ -601,7 +588,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     }
 
     function claimRefund(uint256 saleId) external nonReentrant whenNotPaused {
-        require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
+        require(saleId !=0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
 
         // Ensure the sale has ended or immediate finalization is allowed
@@ -624,7 +611,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
                 paymentMethod
             ];
 
-            if (amount > 0) {
+            if (amount !=0) {
                 investorPayments[saleId][msg.sender][paymentMethod] = 0;
                 totalRefund += amount;
 
@@ -650,7 +637,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             }
         }
 
-        require(totalRefund > 0, "No funds to refund for this sale");
+        require(totalRefund !=0, "No funds to refund for this sale");
     }
 
     receive() external payable {
@@ -691,13 +678,13 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     }
 
     function getSoftCapReached(uint256 saleId) public view returns (bool) {
-        require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
+        require(saleId !=0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
         return (sale.fundRaised >= sale.softCap);
     }
 
     function getHardCapReached(uint256 saleId) public view returns (bool) {
-        require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
+        require(saleId !=0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
         return (sale.fundRaised >= sale.hardCap);
     }
@@ -707,7 +694,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         view
         returns (uint256 saleInvestorCount, uint256 overallInvestorCount)
     {
-        require(saleId > 0 && saleId <= saleCount, "Invalid sale ID");
+        require(saleId !=0 && saleId <= saleCount, "Invalid sale ID");
         Sale storage sale = sales[saleId];
         saleInvestorCount = sale.investors.length;
         overallInvestorCount = 0;

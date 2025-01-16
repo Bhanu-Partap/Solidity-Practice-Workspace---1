@@ -51,7 +51,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
 
     function setLockup(address account, uint256 timestamp, uint256 amount) external whenNotPaused onlyICOContract  {
     require(account != address(0), "Null Address");
-    require(amount > 0, "Amount must be greater than zero");
+    require(amount != 0, "Amount must be greater than zero");
 
 
     // Update the locked amount if necessary
@@ -75,7 +75,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     function transfer(address recipient, uint256 amount) public override whenNotPaused returns (bool) {
         require(!blacklisted[msg.sender], "Transfer failed: Sender is blacklisted");
         require(!blacklisted[recipient], "Transfer failed: Recipient is blacklisted");
-        require(amount >0,"Amount shouldn't be zero");
+        require(amount !=0,"Amount shouldn't be zero");
         require(block.timestamp >= lockedUntil[msg.sender] || lockedUntil[msg.sender] == 0, "Transfer failed: Tokens are locked");
         return super.transfer(recipient, amount);
     }
@@ -83,7 +83,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     function transferFrom(address sender, address recipient, uint256 amount) public override whenNotPaused returns (bool) {
         require(!blacklisted[sender], "Transfer failed: Sender is blacklisted");
         require(!blacklisted[recipient], "Transfer failed: Recipient is blacklisted");
-        require(amount >0,"Amount shouldn't be zero");
+        require(amount !=0,"Amount shouldn't be zero");
         require(block.timestamp >= lockedUntil[sender] || lockedUntil[sender] == 0, "Transfer failed: Tokens are locked");
         return super.transferFrom(sender, recipient, amount);
     }
