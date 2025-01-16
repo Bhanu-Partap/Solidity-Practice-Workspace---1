@@ -1044,7 +1044,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ICO/IcoOptimized.sol": "ICO"
+			"ICO/ICOProxy.sol": "ICO"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -1052,7 +1052,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1170,7 +1170,7 @@
 				"dweb:/ipfs/QmarDJ5hZEgBtCmmrVzEZWjub9769eD686jmzb2XpSU1cM"
 			]
 		},
-		"ICO/IcoOptimized.sol": {
+		"ICO/ICOProxy.sol": {
 			"keccak256": "0xe65d8d94dff3c4e23ee70ce66a675a58b3d7e450a88a77b1ec36834ffbe78c12",
 			"license": "MIT",
 			"urls": [

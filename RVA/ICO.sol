@@ -611,7 +611,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         );
         // Ensure the soft cap for this specific sale was not reached
         require(
-            sale.fundRaised < sale.softCap,
+            sale.fundRaised <= sale.softCap,
             "Soft cap reached for this sale"
         );
 

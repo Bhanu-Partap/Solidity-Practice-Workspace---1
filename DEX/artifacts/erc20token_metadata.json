@@ -453,7 +453,7 @@
 		"compilationTarget": {
 			"DEX/Token.sol": "erc20token"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"

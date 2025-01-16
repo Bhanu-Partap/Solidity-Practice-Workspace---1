@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.17+commit.8df45f5f"
+		"version": "0.8.26+commit.8a97fa7a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -109,6 +109,11 @@
 			}
 		],
 		"devdoc": {
+			"events": {
+				"Upgraded(address)": {
+					"details": "Emitted when the implementation returned by the beacon is changed."
+				}
+			},
 			"kind": "dev",
 			"methods": {
 				"implementation()": {
@@ -137,7 +142,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"RWA/Proxy/UpgradableBeaconNftdynamic.sol": "UpgradeNftCollection"
+			"RWA/RWA/Proxy/UpgradableBeaconNftdynamic.sol": "UpgradeNftCollection"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -145,7 +150,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -191,7 +196,7 @@
 				"dweb:/ipfs/Qmd7JMpcxD9RuQjK3uM3EzJUgSqdN8vzp8eytEiuwxQJ6h"
 			]
 		},
-		"RWA/Proxy/UpgradableBeaconNftdynamic.sol": {
+		"RWA/RWA/Proxy/UpgradableBeaconNftdynamic.sol": {
 			"keccak256": "0x529ab0a1dc93f7ad92f783191269c7ea530c9a705dd72dc6a06e870d39ef538e",
 			"license": "MIT",
 			"urls": [

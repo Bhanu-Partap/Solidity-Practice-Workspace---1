@@ -440,7 +440,7 @@
 		"compilationTarget": {
 			"ICO/Erc20.sol": "icotoken"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"

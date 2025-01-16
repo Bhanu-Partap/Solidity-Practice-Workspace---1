@@ -2,12 +2,11 @@
 pragma solidity 0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable {
+contract ICO is ReentrancyGuard ,Ownable {
     // Chainlink Price Feeds
     AggregatorV3Interface public priceFeedBNB;
     AggregatorV3Interface public priceFeedUSDT;
@@ -75,7 +74,7 @@ contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable 
         uint256 tokenPriceUSD
     );
 
-    function initialize(
+    constructor(
         IERC20 _token,
         address _usdt,
         address _usdc,
@@ -84,9 +83,7 @@ contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable 
         address _priceFeedBNB,
         address _priceFeedUSDT,
         address _priceFeedUSDC
-    ) public initializer {
-        __Ownable_init(msg.sender);
-        __UUPSUpgradeable_init(); 
+    ) Ownable(msg.sender) {
         token = _token;
         softCapInUSD = _softCapInUSD;
         hardCapInUSD = _hardCapInUSD;
@@ -95,12 +92,6 @@ contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable 
         priceFeedBNB = AggregatorV3Interface(_priceFeedBNB);
         priceFeedUSDT = AggregatorV3Interface(_priceFeedUSDT);
         priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
-
-
-
-//         isICOFinalized = false;
-//  isTokensAirdropped = false;
-//    isFreezed = false;
     }
 
     modifier icoNotFinalized() {
@@ -502,5 +493,4 @@ contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable 
         investorCount = investors.length;
         return investorCount;
     }
-     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
-}
+    }
