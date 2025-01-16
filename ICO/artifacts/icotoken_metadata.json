@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.28+commit.7893614a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -493,11 +493,11 @@
 			]
 		},
 		"ICO/Erc20.sol": {
-			"keccak256": "0xc99122867b55178e4fb48a8d9b00840b2efa71e0cc6375f4c185882390853f9e",
+			"keccak256": "0xce8822ff6192e7d0d16d6cb2aefdc0fd26004b0ee1fa7737601c2bf259935dce",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5527934e2027d0a952cd4c44500563015cba96840646abc4f4fbf7c9f8391ec5",
-				"dweb:/ipfs/QmdtDoptYfBiKGHMyKmcAHknCfHKbWfr9bPe4Q9v9qJZLq"
+				"bzz-raw://f0f48edb3cb7f2074a338683fd66fabb363bffbf903d4297f232926da5b522ef",
+				"dweb:/ipfs/QmWb3jpErzppDB8PYya9Ho7GEVWP1dn4eQjLQ7H6yZu7bt"
 			]
 		}
 	},

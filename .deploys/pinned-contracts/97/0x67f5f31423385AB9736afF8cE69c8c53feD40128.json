@@ -1,6 +1,6 @@
 {
-  "name": "ICO",
-  "address": "0xDBfb256DD5146801d6E6001840EAE37F9c4313de",
+  "name": "ENCRYPTEDCASHICO",
+  "address": "0x67f5f31423385AB9736afF8cE69c8c53feD40128",
   "abi": [
     {
       "inputs": [
@@ -23,7 +23,7 @@
     {
       "inputs": [
         {
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "enum ENCRYPTEDCASHICO.PaymentMethod",
           "name": "paymentMethod",
           "type": "uint8"
         },
@@ -310,7 +310,7 @@
         },
         {
           "indexed": false,
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "enum ENCRYPTEDCASHICO.PaymentMethod",
           "name": "paymentMethod",
           "type": "uint8"
         }
@@ -379,7 +379,7 @@
         },
         {
           "indexed": false,
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "enum ENCRYPTEDCASHICO.PaymentMethod",
           "name": "paymentMethod",
           "type": "uint8"
         }
@@ -445,7 +445,7 @@
     {
       "inputs": [
         {
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "enum ENCRYPTEDCASHICO.PaymentMethod",
           "name": "paymentMethod",
           "type": "uint8"
         }
@@ -464,7 +464,7 @@
     {
       "inputs": [
         {
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "enum ENCRYPTEDCASHICO.PaymentMethod",
           "name": "paymentMethod",
           "type": "uint8"
         },
@@ -488,7 +488,7 @@
     {
       "inputs": [
         {
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "enum ENCRYPTEDCASHICO.PaymentMethod",
           "name": "paymentMethod",
           "type": "uint8"
         },
@@ -620,30 +620,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        },
-        {
-          "internalType": "enum ICO.PaymentMethod",
-          "name": "",
-          "type": "uint8"
-        }
-      ],
-      "name": "investorPayments",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
@@ -715,59 +691,77 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "val",
+          "type": "uint256"
         }
       ],
-      "name": "paymentMethodForInvestor",
+      "name": "precision_div_10",
       "outputs": [
         {
-          "internalType": "enum ICO.PaymentMethod",
+          "internalType": "uint256",
           "name": "",
-          "type": "uint8"
+          "type": "uint256"
         }
       ],
-      "stateMutability": "view",
+      "stateMutability": "pure",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "priceFeedBNB",
-      "outputs": [
+      "inputs": [
         {
-          "internalType": "contract AggregatorV3Interface",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "val",
+          "type": "uint256"
         }
       ],
-      "stateMutability": "view",
+      "name": "precision_div_18",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "priceFeedUSDC",
-      "outputs": [
+      "inputs": [
         {
-          "internalType": "contract AggregatorV3Interface",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "val",
+          "type": "uint256"
         }
       ],
-      "stateMutability": "view",
+      "name": "precision_mul_10",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "priceFeedUSDT",
-      "outputs": [
+      "inputs": [
         {
-          "internalType": "contract AggregatorV3Interface",
-          "name": "",
-          "type": "address"
+          "internalType": "uint256",
+          "name": "val",
+          "type": "uint256"
         }
       ],
-      "stateMutability": "view",
+      "name": "precision_mul_18",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
       "type": "function"
     },
     {
@@ -947,5 +941,5 @@
     }
   ],
   "filePath": "Solidity-Practice-Workspace---1-1734927795654/ICO/ICOProxy.sol",
-  "pinnedAt": 1737007029851
+  "pinnedAt": 1737029236865
 }
