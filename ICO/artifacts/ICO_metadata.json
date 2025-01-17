@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.28+commit.7893614a"
 	},
 	"language": "Solidity",
 	"output": {
@@ -587,30 +587,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					},
-					{
-						"internalType": "enum ICO.PaymentMethod",
-						"name": "",
-						"type": "uint8"
-					}
-				],
-				"name": "investorPayments",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
@@ -682,59 +658,77 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
 					}
 				],
-				"name": "paymentMethodForInvestor",
+				"name": "precision_div_10",
 				"outputs": [
 					{
-						"internalType": "enum ICO.PaymentMethod",
+						"internalType": "uint256",
 						"name": "",
-						"type": "uint8"
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "priceFeedBNB",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"name": "precision_div_18",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "priceFeedUSDC",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"name": "precision_mul_10",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "priceFeedUSDT",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"name": "precision_mul_18",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
@@ -1046,7 +1040,7 @@
 		"compilationTarget": {
 			"ICO/ICOProxy.sol": "ICO"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -1171,11 +1165,11 @@
 			]
 		},
 		"ICO/ICOProxy.sol": {
-			"keccak256": "0xe65d8d94dff3c4e23ee70ce66a675a58b3d7e450a88a77b1ec36834ffbe78c12",
+			"keccak256": "0x6e5b39e4492f76cd624fe90ab40ee52527dd789d8c9271aad0f5b095359904c2",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b46220fb01bf6b1fcb3bf634086b5b2e0f6618265e46f2f8eb403bd7516a890f",
-				"dweb:/ipfs/QmX3LmvHVfSj99DZSKQLWxviBV8HQGCoyX1wBqEz9i8JW6"
+				"bzz-raw://11ee13a0499d4eb09cdfd4eea9b8951b490cac28114790c6b6a0bdb7ce1824e0",
+				"dweb:/ipfs/QmdBL86V9H2xNkm5qf8afgvTeamQ8qwCCfiuJGZ4yfojEf"
 			]
 		}
 	},

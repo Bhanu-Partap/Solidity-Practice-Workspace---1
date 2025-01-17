@@ -194,6 +194,19 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Normalized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "previousOwner",
 						"type": "address"
 					},
@@ -690,6 +703,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "normalizeUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "owner",
 				"outputs": [
@@ -739,6 +765,101 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "precision_div_10",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "precision_div_18",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "precision_mul_10",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "precision_mul_12",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "precision_mul_18",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
@@ -1138,7 +1259,7 @@
 		"compilationTarget": {
 			"RVA/ICO.sol": "ICO"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -1399,11 +1520,11 @@
 			]
 		},
 		"RVA/ICO.sol": {
-			"keccak256": "0xe0261c3a9f81221c6e6d9257191fe01652c79cf492522e179de97e6c1f075af0",
+			"keccak256": "0x0d9a067a869ff7cb12d4ddbb169900b801c46339e5e3b89b16e4a37fe81c4582",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://054aa67f4152fd03b47a1b718c96f36799f17ffaa36991665f70b8aba560fd28",
-				"dweb:/ipfs/QmRpG9YfbsjURNb9ak64bQ7REzWLD5CxtiNnhUpnbpA7W1"
+				"bzz-raw://cfe10d6eee8a40788a54517885231316f74e3d5f9038ea0ed9d42a254d120282",
+				"dweb:/ipfs/QmWc1RD69LnHx4GQZS4gKo7qKsCS3xY3NNeDrYRuLbK3Ka"
 			]
 		},
 		"RVA/Identities/Identity.sol": {

@@ -7,7 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-contract ENCRYPTEDCASHICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable {
+contract ICO is ReentrancyGuardUpgradeable ,OwnableUpgradeable, UUPSUpgradeable {
     // Chainlink Price Feeds
     AggregatorV3Interface private priceFeedBNB;
     AggregatorV3Interface private priceFeedUSDT;

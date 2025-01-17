@@ -67,6 +67,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     mapping(address => PaymentMethod) public paymentMethodForInvestor;
 
     // Events
+    event Normalized(address indexed account);
     event Whitelisted(address indexed account);
     event Blacklisted(address indexed account);
     // event BatchWhitelisted(address[] users);
@@ -162,6 +163,18 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         emit Blacklisted(_user);
     }
 
+    function normalizeUser(address _user) external onlyOwner {
+        require(_user != address(0), "Invalid address");
+        if (whitelistedUsers[_user]) {
+            whitelistedUsers[_user] = false;
+        }
+        else if(blacklistedUsers[_user]){
+            blacklistedUsers[_user] = false;
+        }
+        emit Normalized(_user);
+    }
+
+
     // function batchWhitelistUsers(address[] calldata _users) external onlyOwner {
     // require(_users.length !=0, "No addresses provided");
     // uint256 userLength = _users.length;
@@ -193,6 +206,24 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             return price;
         }
         revert("Unsupported payment method");
+    }
+
+    function precision_mul_10(uint val) public pure returns(uint){
+        return  val * 1e10;
+    }
+
+    function precision_mul_18(uint val) public pure returns(uint){
+        return  val * 1e18;
+    }
+    function precision_div_10(uint val) public pure returns(uint){
+        return  val / 1e10;
+    }
+    function precision_div_18(uint val) public pure returns(uint){
+        return  val / 1e18;
+    }
+
+    function precision_mul_12(uint val) public pure returns(uint){
+        return  val * 1e12;
     }
 
     //Constructor Data
@@ -255,9 +286,8 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         PaymentMethod paymentMethod,
         uint256 paymentAmount
     ) public view returns (uint256) {
-        int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10);
-        require(price !=0, "Invalid price feed");
-
+        uint256 price = precision_mul_10(uint(_getPriceFeed(paymentMethod))) ;
+        require(price != 0, "Invalid price feed");
         uint256 currentSaleId = getCurrentSaleId();
         Sale storage sale = sales[currentSaleId];
 
@@ -267,8 +297,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
 
         if (paymentMethod == PaymentMethod.BNB) {
             paymentAmountInUSD =
-                (uint256(price) * paymentAmount) /
-                uint256(PRECISION_18);
+                precision_div_18(uint256(price) * paymentAmount);
         } else if (
             paymentMethod == PaymentMethod.USDC ||
             paymentMethod == PaymentMethod.USDT
@@ -277,36 +306,35 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             uint256 normalizedAmount = paymentAmount *
                 (10**(18 - stablecoinDecimals));
             paymentAmountInUSD =
-                (uint256(price) * normalizedAmount) /
-                uint256(PRECISION_18);
+                precision_div_18(uint256(price) * normalizedAmount);
         } else {
             revert("Unsupported payment method");
         }
-        uint256 tokenAmount = (paymentAmountInUSD * uint256(PRECISION_18)) /
+
+        uint256 tokenAmount = precision_mul_18(paymentAmountInUSD) /
             tokenPriceInUSD;
         return tokenAmount;
     }
 
+
     function calculatePaymentAmount(
         PaymentMethod paymentMethod,
         uint256 tokenAmount
-    ) public view returns (uint256) {
-        require(tokenAmount !=0, "Token amount must be greater than zero");
+    ) external view returns (uint256) {
+        require(tokenAmount != 0, "Amount must be positive");
 
-        int256 price = _getPriceFeed(paymentMethod) * int256(PRECISION_10); // Price is now 18 decimals
-        require(price !=0, "Invalid price feed");
+        uint256 price = precision_mul_10(uint(_getPriceFeed(paymentMethod))); 
+        require(price != 0, "Invalid price feed");
 
         uint256 currentSaleId = getCurrentSaleId();
         require(currentSaleId != 0, "No active sale");
-
         Sale storage sale = sales[currentSaleId];
-        uint256 tokenPriceInUSD = sale.tokenPrice; // Assumes token price is in 18 decimals
-        uint256 totalPaymentInUSD = (tokenAmount * tokenPriceInUSD) /
-            PRECISION_18;
+        uint256 tokenPriceInUSD = sale.tokenPrice; 
+        uint256 totalPaymentInUSD = precision_div_18(tokenAmount * tokenPriceInUSD);
 
         uint256 paymentAmount;
         if (paymentMethod == PaymentMethod.BNB) {
-            paymentAmount = (totalPaymentInUSD * PRECISION_18) / uint256(price);
+            paymentAmount = precision_mul_18(totalPaymentInUSD) / uint256(price);
         } else if (
             paymentMethod == PaymentMethod.USDT ||
             paymentMethod == PaymentMethod.USDC
@@ -315,7 +343,17 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         } else {
             revert("Unsupported payment method");
         }
+
         return paymentAmount;
+    }
+
+    function maxMinNormalize(PaymentMethod paymentMethod,uint256 paymentAmount ) internal pure returns (uint){
+        if(paymentMethod == PaymentMethod.BNB){
+            return paymentAmount;
+        }
+        else if(paymentMethod == PaymentMethod.USDT ||paymentMethod == PaymentMethod.USDC){
+            return precision_mul_12(paymentAmount);
+        }
     }
 
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount)
@@ -335,12 +373,13 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         isRestrictedSale(currentSaleId, msg.sender);
         uint256 userTotalPurchase = tokensBoughtByInvestorForSale[
             currentSaleId
-        ][msg.sender] + paymentAmount;
+        ][msg.sender] + maxMinNormalize(paymentMethod, paymentAmount);
+        console.log("==========userTotalPurchase",userTotalPurchase);
 
         // min max purchse restriciton
         require(
-            paymentAmount >= sale.minPurchaseAmount &&
-                paymentAmount <= sale.maxPurchaseAmount &&
+                maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount &&
+                maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount &&
                 userTotalPurchase <= sale.maxPurchaseAmount,
             "Invalid purchase amount"
         );
@@ -353,7 +392,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         require(tokenAmount !=0, "Invalid token amount");
 
         // Ensure hard cap is not exceeded
-        uint256 totalCostInUSD = (tokenAmount * sale.tokenPrice) / PRECISION_18;
+        uint256 totalCostInUSD = precision_div_18(tokenAmount * sale.tokenPrice);
         require(
             sale.fundRaised + totalCostInUSD <= sale.hardCap,
             "Hard cap reached"
@@ -443,9 +482,9 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 totalCostInUSD
     ) internal {
         Sale storage sale = sales[saleId];
-        contributionsInUSD[investor] += totalCostInUSD; // for overall contribution
+        contributionsInUSD[investor] += totalCostInUSD;
 
-        sale.fundRaised += totalCostInUSD; // updating the fund specific to sale
+        sale.fundRaised += totalCostInUSD; 
         totalFundsRaisedUSD += totalCostInUSD;
         sale.tokensSold += tokenAmount;
         totalTokensSold += tokenAmount;
@@ -531,13 +570,12 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         bool allSalesHardCapReached = true;
         bool allSalesSoftCapReachedAndEnded = true;
 
-        // Loop through all sales to evaluate their conditions
         uint256 _saleCount = saleCount;
         for (uint256 i = 1; i <= _saleCount; i++) {
             Sale storage sale = sales[i];
             
             if (sale.fundRaised < sale.hardCap) {
-                allSalesHardCapReached = false; // hard cap not reached
+                allSalesHardCapReached = false;
             }
 
             if (
