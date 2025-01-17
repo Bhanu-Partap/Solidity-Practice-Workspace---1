@@ -705,6 +705,30 @@
 			{
 				"inputs": [
 					{
+						"internalType": "enum ICO.PaymentMethod",
+						"name": "paymentMethod",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "paymentAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "maxMinNormalize",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "_user",
 						"type": "address"
@@ -860,45 +884,6 @@
 					}
 				],
 				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "priceFeedBNB",
-				"outputs": [
-					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "priceFeedUSDC",
-				"outputs": [
-					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "priceFeedUSDT",
-				"outputs": [
-					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -1520,11 +1505,11 @@
 			]
 		},
 		"RVA/ICO.sol": {
-			"keccak256": "0x0d9a067a869ff7cb12d4ddbb169900b801c46339e5e3b89b16e4a37fe81c4582",
+			"keccak256": "0xf413abf515a1c0915ee8b935c2cac82abab69392451d6f93afd588a2d0e729de",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cfe10d6eee8a40788a54517885231316f74e3d5f9038ea0ed9d42a254d120282",
-				"dweb:/ipfs/QmWc1RD69LnHx4GQZS4gKo7qKsCS3xY3NNeDrYRuLbK3Ka"
+				"bzz-raw://f8bd4d8dc8e197a4bc99ccf665c7b0ba601dcda0081c8cf38bfa85c6e736294d",
+				"dweb:/ipfs/QmT557GEdmd2jyPUrGtbfL8YfVgjRYxzE6hrcsvPER6ipB"
 			]
 		},
 		"RVA/Identities/Identity.sol": {
@@ -1544,11 +1529,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x2b459a82d511f2d258c885b57c7aa427f9bf40905678cf0e54b0a379e3e6160e",
+			"keccak256": "0xb4b07ccb3ece9c256713805da0539effaa9c16f6874dc5b7d9c6fe2b4626ee13",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a0e8f4b6fa495784e449bab3803695663665c93369537e9b8ef093f74083d6c3",
-				"dweb:/ipfs/QmX8P5ncZkLLgESvjNLXaqjVVWCztF1ZyHsTPhSNgkaSSN"
+				"bzz-raw://ae2e7d5768c3c0ca57a58769468b187a7717cad6304d1eca20749d6700350d56",
+				"dweb:/ipfs/QmZ76ovhHt5qjhJ6mm6div5xLWJyKTXd6DbTc3kDqNcprC"
 			]
 		},
 		"RVA/Vesting.sol": {

@@ -14,9 +14,9 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     using SafeMath for uint256;
 
     // Chainlink Price Feeds
-    AggregatorV3Interface public priceFeedBNB;
-    AggregatorV3Interface public priceFeedUSDT;
-    AggregatorV3Interface public priceFeedUSDC;
+    AggregatorV3Interface private priceFeedBNB;
+    AggregatorV3Interface private priceFeedUSDT;
+    AggregatorV3Interface private priceFeedUSDC;
 
     struct Sale {
         uint256 startTime;
@@ -62,9 +62,9 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     mapping(address => bool) public blacklistedUsers;
     mapping(address => uint256) public contributionsInUSD;
     mapping(address => uint256) public tokensBoughtByInvestor;
+    mapping(address => PaymentMethod) public paymentMethodForInvestor;
     mapping(uint256 => mapping(address => mapping(PaymentMethod => uint256))) public investorPayments;
     mapping(uint256 => mapping(address => uint256))public tokensBoughtByInvestorForSale;
-    mapping(address => PaymentMethod) public paymentMethodForInvestor;
 
     // Events
     event Normalized(address indexed account);
@@ -122,7 +122,11 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         priceFeedUSDC = AggregatorV3Interface(_priceFeedUSDC);
     }
     
-
+    // 0xc37E98De77afB7619FAE630BD2079E6BCd08e41b
+    // 0xf5e91E29E988cBdF668A8B3C838a69D6456b50d4
+    // 0x06E3481884f9080d309cF53Cd458D234929Bc9eB
+    // 0xEdfDe624325d9A799A8D0DC965F8DAECFC97f5f9
+    // 0xD00E367A7f6aCc9c1237e1212ca7292c14FcFB23
     // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
     // 0xEca2605f0BCF2BA5966372C99837b1F182d3D620
     // 0x90c069C4538adAc136E051052E14c1cD799C41B7
@@ -225,11 +229,6 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     function precision_mul_12(uint val) public pure returns(uint){
         return  val * 1e12;
     }
-
-    //Constructor Data
-    // 100000000000000000000
-    // 200000000000000000000
-    // 0x2514895c72f50D8bd4B4F9b1110F0D6bD2c97526
 
     function createSale(
         uint256 _startTime,
@@ -347,13 +346,16 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         return paymentAmount;
     }
 
-    function maxMinNormalize(PaymentMethod paymentMethod,uint256 paymentAmount ) internal pure returns (uint){
+    //internal at the end
+    function maxMinNormalize(PaymentMethod paymentMethod,uint256 paymentAmount ) public pure returns (uint){
         if(paymentMethod == PaymentMethod.BNB){
             return paymentAmount;
         }
         else if(paymentMethod == PaymentMethod.USDT ||paymentMethod == PaymentMethod.USDC){
+            console.log("==========precision_mul_12(paymentAmount)",precision_mul_12(paymentAmount));
             return precision_mul_12(paymentAmount);
         }
+        return 0;
     }
 
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount)
@@ -373,16 +375,16 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         isRestrictedSale(currentSaleId, msg.sender);
         uint256 userTotalPurchase = tokensBoughtByInvestorForSale[
             currentSaleId
-        ][msg.sender] + maxMinNormalize(paymentMethod, paymentAmount);
+        ][msg.sender] + paymentAmount;
         console.log("==========userTotalPurchase",userTotalPurchase);
 
         // min max purchse restriciton
-        require(
-                maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount &&
-                maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount &&
-                userTotalPurchase <= sale.maxPurchaseAmount,
-            "Invalid purchase amount"
-        );
+        // require(
+        //         maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount &&
+        //         maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount &&
+        //         userTotalPurchase <= sale.maxPurchaseAmount,
+        //     "Invalid purchase amount"
+        // );
 
         uint256 tokenAmount = processPayment(
             paymentMethod,
@@ -393,6 +395,8 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
 
         // Ensure hard cap is not exceeded
         uint256 totalCostInUSD = precision_div_18(tokenAmount * sale.tokenPrice);
+        console.log("==========totalCostInUSD",totalCostInUSD);
+
         require(
             sale.fundRaised + totalCostInUSD <= sale.hardCap,
             "Hard cap reached"
@@ -508,7 +512,8 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
 
         token.setLockup(
             investor,
-            block.timestamp + (0.5 * 365 days),
+            // block.timestamp + (0.5 * 365 days),
+            block.timestamp + (5 * 60), // for testing purpose
             initialRelease
         );
         require(

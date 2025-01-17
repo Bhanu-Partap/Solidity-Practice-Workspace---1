@@ -110,3 +110,8 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
 
     function _authorizeUpgrade(address newImplementation) internal override whenNotPaused onlyOwner {}
 }
+
+
+    // RichmindVirtualAsset Token
+    // RVA
+    // 1500000000e18

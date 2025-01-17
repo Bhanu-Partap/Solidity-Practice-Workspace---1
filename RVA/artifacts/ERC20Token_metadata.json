@@ -998,7 +998,7 @@
 		"compilationTarget": {
 			"RVA/UpgradableToken.sol": "ERC20Token"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -1147,11 +1147,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x2b459a82d511f2d258c885b57c7aa427f9bf40905678cf0e54b0a379e3e6160e",
+			"keccak256": "0xb4b07ccb3ece9c256713805da0539effaa9c16f6874dc5b7d9c6fe2b4626ee13",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://a0e8f4b6fa495784e449bab3803695663665c93369537e9b8ef093f74083d6c3",
-				"dweb:/ipfs/QmX8P5ncZkLLgESvjNLXaqjVVWCztF1ZyHsTPhSNgkaSSN"
+				"bzz-raw://ae2e7d5768c3c0ca57a58769468b187a7717cad6304d1eca20749d6700350d56",
+				"dweb:/ipfs/QmZ76ovhHt5qjhJ6mm6div5xLWJyKTXd6DbTc3kDqNcprC"
 			]
 		}
 	},
