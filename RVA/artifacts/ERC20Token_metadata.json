@@ -1147,11 +1147,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0xb4b07ccb3ece9c256713805da0539effaa9c16f6874dc5b7d9c6fe2b4626ee13",
+			"keccak256": "0x0fc4e178b46088650d6c2acbc7e4ba3efc995a57f0e0fa865dfe8e5bbcad7775",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ae2e7d5768c3c0ca57a58769468b187a7717cad6304d1eca20749d6700350d56",
-				"dweb:/ipfs/QmZ76ovhHt5qjhJ6mm6div5xLWJyKTXd6DbTc3kDqNcprC"
+				"bzz-raw://5c3a63a472f323c93dc79bea747af1b36d04701f74cb73dd3775852a43e0324e",
+				"dweb:/ipfs/QmNxqqxBuf9NTNnrfYXga2Tn1YptnazXJkDdZqaNBEiZQN"
 			]
 		}
 	},

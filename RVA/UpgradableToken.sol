@@ -52,12 +52,10 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
     function setLockup(address account, uint256 timestamp, uint256 amount) external whenNotPaused onlyICOContract  {
     require(account != address(0), "Null Address");
     require(amount != 0, "Amount must be greater than zero");
-
-
-    // Update the locked amount if necessary
+   
     if (lockedUntil[account] != timestamp || lockedAmount[account] != amount) {
         lockedUntil[account] = timestamp;
-        lockedAmount[account] = amount;  // Storing the amount to lock
+        lockedAmount[account] = amount;  
         emit LockupSet(account, timestamp, amount);
     }
 }
