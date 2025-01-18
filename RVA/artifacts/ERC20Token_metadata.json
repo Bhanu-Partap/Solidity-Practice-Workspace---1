@@ -125,6 +125,16 @@
 			},
 			{
 				"inputs": [],
+				"name": "EnforcedPause",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ExpectedPause",
+				"type": "error"
+			},
+			{
+				"inputs": [],
 				"name": "FailedCall",
 				"type": "error"
 			},
@@ -884,6 +894,16 @@
 						}
 					}
 				],
+				"EnforcedPause()": [
+					{
+						"details": "The operation failed because the contract is paused."
+					}
+				],
+				"ExpectedPause()": [
+					{
+						"details": "The operation failed because the contract is not paused."
+					}
+				],
 				"FailedCall()": [
 					{
 						"details": "A call to an address target failed. The target may have reverted."
@@ -998,7 +1018,7 @@
 		"compilationTarget": {
 			"RVA/UpgradableToken.sol": "ERC20Token"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -1034,14 +1054,6 @@
 				"dweb:/ipfs/QmZnxgPmCCHosdvbh4J65uTaFYeGtZGzQ1sXRdeh1y68Zr"
 			]
 		},
-		"@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol": {
-			"keccak256": "0xad32f6821f860555f9530902a65b54203a4f5db2117f4384ae47a124958078db",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://6d362da7417bc7d7cc8623f3d3f8f04c3808d043ee6379568c63a63ec14a124e",
-				"dweb:/ipfs/QmYm3wDHUcfGh3MNiRqpWEBbSSYnDSyUsppDATy5DVsfui"
-			]
-		},
 		"@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol": {
 			"keccak256": "0xbb96dc9c468170c3224126e953de917e06332ec5909a3d85e6e5bb0df10c5139",
 			"license": "MIT",
@@ -1064,6 +1076,14 @@
 			"urls": [
 				"bzz-raw://08e39f23d5b4692f9a40803e53a8156b72b4c1f9902a88cd65ba964db103dab9",
 				"dweb:/ipfs/QmPKn6EYDgpga7KtpkA8wV2yJCYGMtc9K4LkJfhKX2RVSV"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol": {
+			"keccak256": "0x92915b7f7f642c6be3f65bfd1522feb5d5b6ef25f755f4dbb51df32c868f2f97",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://85ad36d5cc7e190e1ee6c94b24659bc3a31396c4c36b6ffa6a509e10661f8007",
+				"dweb:/ipfs/QmPFyc4zMh2zo6YWZt25gjm3YdR2hg6wGETaWw256fMmJJ"
 			]
 		},
 		"@openzeppelin/contracts/interfaces/IERC1967.sol": {
@@ -1147,11 +1167,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0x0fc4e178b46088650d6c2acbc7e4ba3efc995a57f0e0fa865dfe8e5bbcad7775",
+			"keccak256": "0xbefb49ec05d593713a7368ee847d3cd7dd29357c042a2f261a941ca9df07990e",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5c3a63a472f323c93dc79bea747af1b36d04701f74cb73dd3775852a43e0324e",
-				"dweb:/ipfs/QmNxqqxBuf9NTNnrfYXga2Tn1YptnazXJkDdZqaNBEiZQN"
+				"bzz-raw://4c7806a8797c7e5144c47b10dc4c715281328724f45b35d4448d0098d3dcf52e",
+				"dweb:/ipfs/QmcfmQKcxSGxzLgnwrkNetXCakohJyqVoQMAuKqcqTKjdk"
 			]
 		}
 	},

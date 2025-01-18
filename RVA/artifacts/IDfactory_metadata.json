@@ -138,7 +138,7 @@
 		"compilationTarget": {
 			"RVA/IdentityFactory.sol": "IDfactory"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"

@@ -88,8 +88,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 amount,
         PaymentMethod paymentMethod
     );
-    // event TokensPurchased(address indexed buyer, uint256 saleId, uint256 tokenPurchaseAmount, uint256 tokenPriceUSD,uint256 amountPaid);
-
+    
     event NewSaleCreated(
         uint256 indexed saleId,
         uint256 startTime,
@@ -197,17 +196,19 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         returns (int256)
     {
         if (paymentMethod == PaymentMethod.BNB) {
-            (, int256 price, , , ) = priceFeedBNB.latestRoundData();
-            return price;
+            // (, int256 price, , , ) = priceFeedBNB.latestRoundData();
+            // return price;
+            return 70602571140;
+
         }
         if (paymentMethod == PaymentMethod.USDT) {
-            (, int256 price, , , ) = priceFeedUSDT.latestRoundData();
-            return price;
+            // (, int256 price, , , ) = priceFeedUSDT.latestRoundData();
+            return 99996778;
         }
 
         if (paymentMethod == PaymentMethod.USDC) {
-            (, int256 price, , , ) = priceFeedUSDC.latestRoundData();
-            return price;
+            // (, int256 price, , , ) = priceFeedUSDC.latestRoundData();
+            return 99996778;
         }
         revert("Unsupported payment method");
     }
@@ -247,10 +248,10 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         );
         require(_tokenPriceUSD !=0, "Price can't be zero");
         require(
-            _softCap <= _hardCap,
-            "Soft cap must be less than or equal to hard cap"
+            _softCap < _hardCap,
+            "Soft cap must be less than hard cap"
         );
-        require(bytes(_saleName).length !=0, "Sale name cannot be empty");
+        // require(bytes(_saleName).length !=0, "Sale name cannot be empty");
 
         saleCount = saleCount +1;
         Sale storage sale = sales[saleCount];
@@ -372,19 +373,33 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale finalized");
 
-        isRestrictedSale(currentSaleId, msg.sender);
+        // isRestrictedSale(currentSaleId, msg.sender);
+        console.log("tokensinvestor",tokensBoughtByInvestorForSale[
+            currentSaleId
+        ][msg.sender] );
         uint256 userTotalPurchase = tokensBoughtByInvestorForSale[
             currentSaleId
-        ][msg.sender] + paymentAmount;
+        ][msg.sender] + maxMinNormalize(paymentMethod, paymentAmount);
         console.log("==========userTotalPurchase",userTotalPurchase);
 
         // min max purchse restriciton
-        // require(
-        //         maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount &&
-        //         maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount &&
-        //         userTotalPurchase <= sale.maxPurchaseAmount,
-        //     "Invalid purchase amount"
-        // );
+        require(
+                maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount,
+            "Invalid min purchase amount"
+        );
+
+        require(
+               
+                maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount,
+            "Invalid max purchase amount"
+        );
+        console.log("==========sale.maxPurchaseACmount",sale.maxPurchaseAmount);
+        console.log("=====+++++",userTotalPurchase,sale.maxPurchaseAmount);
+        require(
+                userTotalPurchase <= sale.maxPurchaseAmount,
+            "Invalid total purchase amount"
+        );
+        console.log("==========crossing max purchase check");
 
         uint256 tokenAmount = processPayment(
             paymentMethod,
@@ -424,18 +439,21 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     }
 
     function isRestrictedSale(uint256 saleId, address _investor)
-        internal
-        view
-        returns (bool)
-    {
-        require(saleId !=0 && saleId <= saleCount, "Invalid sale ID");
-        Sale storage sale = sales[saleId];
-
-        if (!sale.isPrivate) {
-            return IdentityContract.hasIdentity(_investor);
-        }
-        return whitelistedUsers[_investor];
+    internal
+    view
+{
+    require(saleId != 0 && saleId <= saleCount, "Invalid sale ID");
+    Sale storage sale = sales[saleId];
+    if (sale.isPrivate == true) {
+        console.log("entered whitelist check");
+        require(whitelistedUsers[_investor], "Not whitelisted");
+    } 
+    else {
+        console.log("entered on-chain identity check");
+        require(IdentityContract.hasIdentity(_investor), "on-chain identity requiredd!");
     }
+}
+
 
     function processPayment(
         PaymentMethod paymentMethod,
