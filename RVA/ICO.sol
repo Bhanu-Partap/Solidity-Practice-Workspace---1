@@ -383,29 +383,32 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         console.log("==========userTotalPurchase",userTotalPurchase);
 
         // min max purchse restriciton
-        require(
-                maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount,
-            "Invalid min purchase amount"
-        );
+        // require(
+        //         maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount,
+        //     "Invalid min purchase amount"
+        // );
 
-        require(
+        // require(
                
-                maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount,
-            "Invalid max purchase amount"
-        );
-        console.log("==========sale.maxPurchaseACmount",sale.maxPurchaseAmount);
-        console.log("=====+++++",userTotalPurchase,sale.maxPurchaseAmount);
-        require(
-                userTotalPurchase <= sale.maxPurchaseAmount,
-            "Invalid total purchase amount"
-        );
+        //         maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount,
+        //     "Invalid max purchase amount"
+        // );
+        // console.log("==========sale.maxPurchaseACmount",sale.maxPurchaseAmount);
+        // console.log("=====+++++",userTotalPurchase,sale.maxPurchaseAmount);
+        // require(
+        //         userTotalPurchase <= sale.maxPurchaseAmount,
+        //     "Invalid total purchase amount"
+        // );
         console.log("==========crossing max purchase check");
 
         uint256 tokenAmount = processPayment(
+            msg.sender,
             paymentMethod,
             paymentAmount,
             currentSaleId
         );
+        console.log("==========crossed tokenAmount",tokenAmount);
+
         require(tokenAmount !=0, "Invalid token amount");
 
         // Ensure hard cap is not exceeded
@@ -456,40 +459,58 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
 
 
     function processPayment(
+        address _investor,
         PaymentMethod paymentMethod,
         uint256 paymentAmount,
         uint256 saleId
     ) internal returns (uint256) {
         if (paymentMethod == PaymentMethod.BNB) {
+        console.log("==========entered bnb");
+
             require(msg.value !=0, "Invalid BNB");
             uint256 tokenAmount = calculateTokenAmount(
                 paymentMethod,
                 msg.value
             );
-            investorPayments[saleId][msg.sender][PaymentMethod.BNB] += msg
+        console.log("==========tokenAmount bnb",tokenAmount);
+
+            investorPayments[saleId][_investor][PaymentMethod.BNB] += msg
                 .value;
             return tokenAmount;
         } else if (
             paymentMethod == PaymentMethod.USDT ||
             paymentMethod == PaymentMethod.USDC
         ) {
+        console.log("==========entered usdc/usdt");
+
             require(paymentAmount !=0, "Invalid stablecoin");
-            IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-                ? IERC20(usdt)
-                : IERC20(usdc);
+        console.log("==========required crossed");
+
+            ERC20Token stablecoin = paymentMethod == PaymentMethod.USDT
+                ? ERC20Token(usdt)
+                : ERC20Token(usdc);
+        console.log("==========stablecoin");
+        console.log("==========_investor",_investor);
+        console.log("==========address(this)",address(this));
+        console.log("==========paymentAmount",paymentAmount);
+
             require(
                 stablecoin.transferFrom(
-                    msg.sender,
+                    _investor,
                     address(this),
                     paymentAmount
                 ),
                 "Stablecoin transfer failed"
             );
+        console.log("==========rrequired crossed transfer completed");
+            
             uint256 tokenAmount = calculateTokenAmount(
                 paymentMethod,
                 paymentAmount
             );
-            investorPayments[saleId][msg.sender][
+        console.log("==========tokenAmount",tokenAmount);
+
+            investorPayments[saleId][_investor][
                 paymentMethod
             ] += paymentAmount;
             return tokenAmount;
@@ -534,14 +555,19 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             block.timestamp + (5 * 60), // for testing purpose
             initialRelease
         );
+        console.log("=====tokens lockedd====");
+
         require(
             token.transfer(investor, initialRelease),
             "Initial transfer failed"
-        );
+        );  
+        console.log("=====10% to user====");
         require(
             token.transfer(address(vestingContract), lockedTokens),
             "Vesting transfer failed"
         );
+        console.log("=====rest in vesting contract====");
+
 
         // vestingContract.registerVesting(
         //     investor,
@@ -567,7 +593,14 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             30 * 60, // vestingPeriod (30 minutes)
             5 * 60 // interval (5 minutes per release)
         );
+        console.log("=====vesting registered====");
     }
+
+    
+    function claimTokens(uint256 saleId) external {
+        TokenVesting(vestingContract).claim(saleId);
+    }
+
 
     // Owner decides whether immediate finalization is allowed
     function setAllowImmediateFinalization(uint256 saleId, bool _allow)
@@ -631,18 +664,18 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         }
 
         // Transfer stablecoin funds (USDT/USDC)
-        uint256 usdtBalance = IERC20(usdt).balanceOf(address(this));
+        uint256 usdtBalance = ERC20Token(usdt).balanceOf(address(this));
         if (usdtBalance != 0) {
             require(
-                IERC20(usdt).transfer(withdrawalAddress, usdtBalance),
+                ERC20Token(usdt).transfer(withdrawalAddress, usdtBalance),
                 "USDT transfer failed"
             );
         }
 
-        uint256 usdcBalance = IERC20(usdc).balanceOf(address(this));
+        uint256 usdcBalance = ERC20Token(usdc).balanceOf(address(this));
         if (usdcBalance != 0) {
             require(
-                IERC20(usdc).transfer(withdrawalAddress, usdcBalance),
+                ERC20Token(usdc).transfer(withdrawalAddress, usdcBalance),
                 "USDC transfer failed"
             );
         }
@@ -683,9 +716,9 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
                     paymentMethod == PaymentMethod.USDT ||
                     paymentMethod == PaymentMethod.USDC
                 ) {
-                    IERC20 stablecoin = paymentMethod == PaymentMethod.USDT
-                        ? IERC20(usdt)
-                        : IERC20(usdc);
+                    ERC20Token stablecoin = paymentMethod == PaymentMethod.USDT
+                        ? ERC20Token(usdt)
+                        : ERC20Token(usdc);
                     require(
                         stablecoin.transfer(msg.sender, amount),
                         "Stablecoin refund failed"

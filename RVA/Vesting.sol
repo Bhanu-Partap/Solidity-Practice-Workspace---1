@@ -2,6 +2,7 @@
 pragma solidity 0.8.26;
 
 import "./UpgradableToken.sol";
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
@@ -85,30 +86,54 @@ contract TokenVesting is Ownable {
 
     function claim(uint256 saleId) external {
         VestingSchedule storage schedule = vestingSchedules[saleId][msg.sender];
+        console.log("====schedule found");
         require(schedule.lockUpEndTime != 0, "No vesting schedule found");
+        console.log("====vesting schedule found");
 
         uint256 currentTime = block.timestamp;
+        console.log("========currentTime",currentTime);
+
         require(
             currentTime >= schedule.lockUpEndTime,
             "Lockup period not ended"
         );
+        console.log("========lockup period check");
+
 
         // Calculate the total claimable tokens based on elapsed intervals
         uint256 elapsedTime = currentTime - schedule.lockUpEndTime;
+        console.log("========elapsedTime",elapsedTime);
+
         uint256 totalIntervals = (schedule.vestingEndTime -schedule.lockUpEndTime) / schedule.vestingInterval;
+        console.log("========totalIntervals",totalIntervals);
+        
         uint256 tokensPerInterval = schedule.lockedTokens / totalIntervals;
+        console.log("========tokensPerInterval",tokensPerInterval);
+
         uint256 intervalsElapsed = elapsedTime / schedule.vestingInterval;
+        console.log("========intervalsElapsed",intervalsElapsed);
+
         uint256 totalClaimable = intervalsElapsed * tokensPerInterval;
+        console.log("========totalClaimable",totalClaimable);
+
         require(
             totalClaimable > schedule.claimedTokens,
             "No tokens available to claim"
         );
+        console.log("========crossed Claimable check");
+
         uint256 tokensToClaim = totalClaimable - schedule.claimedTokens;
-        schedule.claimedTokens += tokensToClaim;
+        console.log("========tokensToClaim",tokensToClaim);
+
+        schedule.claimedTokens = schedule.claimedTokens + tokensToClaim;
+        console.log("========claimed token updated");
+
         require(
             icoToken.transfer(msg.sender, tokensToClaim),
             "Token transfer failed"
         );
+        console.log("========token transfered to investor");
+
         emit TokensClaimed(msg.sender, saleId, tokensToClaim);
     }
 
