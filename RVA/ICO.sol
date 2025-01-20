@@ -148,7 +148,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         _unpause();
     }
 
-    function whitelistUser(address _user) external onlyOwner {
+    function whitelistUser(address _user) external whenNotPaused onlyOwner {
         require(_user != address(0), "Invalid address");
         if (blacklistedUsers[_user]) {
             blacklistedUsers[_user] = false;
@@ -157,7 +157,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         emit Whitelisted(_user);
     }
 
-    function blacklistUser(address _user) external onlyOwner {
+    function blacklistUser(address _user) external whenNotPaused onlyOwner {
         require(_user != address(0), "Invalid address");
         if (whitelistedUsers[_user]) {
             whitelistedUsers[_user] = false;
@@ -166,7 +166,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         emit Blacklisted(_user);
     }
 
-    function normalizeUser(address _user) external onlyOwner {
+    function normalizeUser(address _user) external whenNotPaused onlyOwner {
         require(_user != address(0), "Invalid address");
         if (whitelistedUsers[_user]) {
             whitelistedUsers[_user] = false;
@@ -241,7 +241,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         uint256 _maxPurchaseAmount,
         string memory _saleName,
         bool _isPrivate
-    ) external onlyOwner icoNotFinalized {
+    ) external nonReentrant onlyOwner whenNotPaused icoNotFinalized {
         require(
            _startTime > block.timestamp && _endTime > _startTime && block.timestamp > getLatestSaleEndTime(),
             "Invalid start time range"
@@ -362,6 +362,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     function buyTokens(PaymentMethod paymentMethod, uint256 paymentAmount)
         external
         payable
+        nonReentrant
         whenNotPaused
         icoNotFinalized
     {
@@ -373,7 +374,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
         Sale storage sale = sales[currentSaleId];
         require(!sale.isFinalized, "Sale finalized");
 
-        // isRestrictedSale(currentSaleId, msg.sender);
+        isRestrictedSale(currentSaleId, msg.sender);
         console.log("tokensinvestor",tokensBoughtByInvestorForSale[
             currentSaleId
         ][msg.sender] );
@@ -381,24 +382,14 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
             currentSaleId
         ][msg.sender] + maxMinNormalize(paymentMethod, paymentAmount);
         console.log("==========userTotalPurchase",userTotalPurchase);
-
-        // min max purchse restriciton
-        // require(
-        //         maxMinNormalize(paymentMethod, paymentAmount) >= sale.minPurchaseAmount,
-        //     "Invalid min purchase amount"
-        // );
-
-        // require(
-               
-        //         maxMinNormalize(paymentMethod, paymentAmount) <= sale.maxPurchaseAmount,
-        //     "Invalid max purchase amount"
-        // );
-        // console.log("==========sale.maxPurchaseACmount",sale.maxPurchaseAmount);
-        // console.log("=====+++++",userTotalPurchase,sale.maxPurchaseAmount);
-        // require(
-        //         userTotalPurchase <= sale.maxPurchaseAmount,
-        //     "Invalid total purchase amount"
-        // );
+        require(
+                userTotalPurchase >= sale.minPurchaseAmount,
+            "Invalid min purchase amount"
+        );
+        require(
+                userTotalPurchase <= sale.maxPurchaseAmount,
+            "Limit Exceed"
+        );
         console.log("==========crossing max purchase check");
 
         uint256 tokenAmount = processPayment(
@@ -597,7 +588,7 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     }
 
     
-    function claimTokens(uint256 saleId) external {
+    function claimTokens(uint256 saleId) external nonReentrant whenNotPaused {
         TokenVesting(vestingContract).claim(saleId);
     }
 
@@ -605,7 +596,9 @@ contract ICO is Ownable, ReentrancyGuard, Pausable {
     // Owner decides whether immediate finalization is allowed
     function setAllowImmediateFinalization(uint256 saleId, bool _allow)
         public
+        nonReentrant
         onlyOwner
+        
     {
         Sale storage sale = sales[saleId];
         sale.immediateFinalizeSale = _allow;

@@ -23,9 +23,13 @@ contract TokenVesting is Ownable {
         uint256 vestingInterval;
     }
 
-    // Mapping: saleId => (investor => VestingSchedule)
-    mapping(uint256 => mapping(address => VestingSchedule))
-        public vestingSchedules;
+    // saleid>address >investor
+
+    // sale>addres>index
+    mapping(uint256 => mapping(address => mapping(uint256 => VestingSchedule))) public vestingSchedules;
+    // index
+    mapping(uint256 => mapping(address => uint256)) public vestingCounters;
+
 
     event VestingAllocated(
         address indexed beneficiary,
@@ -65,16 +69,19 @@ contract TokenVesting is Ownable {
             _lockUpPeriod != 0 && _vestingPeriod != 0 && _vestingInterval != 0 &&_tokenAmount != 0,
             "Invalid data passed"
         );
-        vestingSchedules[_saleId][_investor] = VestingSchedule({
-            saleId: _saleId,
-            totalTokens: _tokenAmount,
-            claimedTokens: _claimedTokens,
-            lockedTokens: _lockedTokens,
-            startTime: _startTime,
-            lockUpEndTime: _startTime + _lockUpPeriod,
-            vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod,
-            vestingInterval: _startTime + _lockUpPeriod + _vestingInterval
-        });
+        uint256 currentIndex = vestingCounters[_saleId][_investor];
+        vestingCounters[_saleId][_investor]= vestingCounters[_saleId][_investor]+ 1;
+
+    vestingSchedules[_saleId][_investor][currentIndex] = VestingSchedule({
+        saleId: _saleId,
+        totalTokens: _tokenAmount,
+        claimedTokens: _claimedTokens,
+        lockedTokens: _lockedTokens,
+        startTime: _startTime,
+        lockUpEndTime: _startTime + _lockUpPeriod,
+        vestingEndTime: _startTime + _lockUpPeriod + _vestingPeriod,
+        vestingInterval: _startTime + _lockUpPeriod + _vestingInterval
+    });
         emit VestingAllocated(
             _investor,
             _tokenAmount,

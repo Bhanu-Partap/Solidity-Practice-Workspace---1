@@ -479,6 +479,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "saleId",
+						"type": "uint256"
+					}
+				],
+				"name": "claimTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "",
 						"type": "address"
@@ -1244,7 +1257,7 @@
 		"compilationTarget": {
 			"RVA/ICO.sol": "ICO"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -1505,11 +1518,11 @@
 			]
 		},
 		"RVA/ICO.sol": {
-			"keccak256": "0xa90d97368d553801d160b97957351987febe6fccd954558f6d1c7a4ce5f10d2f",
+			"keccak256": "0x0b3a5cdfb56d4128dd2fc90d679ea4fc587c4aee629819f3cf731e43be414d0a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b803d0c419db914bb1d43505b371c82d95293b3f15d38c4561051b1df2367786",
-				"dweb:/ipfs/QmcvA2GUCJ1mMzVJhKkYFftz3SizvBJT6TXPXK8ajskrQL"
+				"bzz-raw://ce6378988b30c201abac052f5b14c1514637ce84ad6cfb85811ce6c792dc86af",
+				"dweb:/ipfs/QmbKQ7S9ZhTNoWEPuAm3pBo7mv59V7zXhHnBs3fYfhx77f"
 			]
 		},
 		"RVA/Identities/Identity.sol": {
@@ -1537,11 +1550,11 @@
 			]
 		},
 		"RVA/Vesting.sol": {
-			"keccak256": "0x72ab2b6512e3cd90e652cb29171b8573a5aef99b88464bc9afa55363eb29a884",
+			"keccak256": "0xef47432636b9402296e3e537423daaea104ac9b393e32583db0e83479037c808",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e11e7a4ab0182d9d48eb40b99acba939141d14d1f747ade3f991706f7d0782af",
-				"dweb:/ipfs/QmQJGzPb5UUXTLwtqcPmGxMKE4RJnKq3Jcy78tYHKKJEPR"
+				"bzz-raw://5fff1f97f5a5f5db9ca6126cdc697830dac460d131cc9096df23d954c7688d66",
+				"dweb:/ipfs/Qme7ktBgtK9nUPoYiGHCbZhrzaqcmju9UzVSvdwT4XFtwU"
 			]
 		},
 		"hardhat/console.sol": {

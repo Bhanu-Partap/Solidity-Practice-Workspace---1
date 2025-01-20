@@ -6,8 +6,9 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable, UUPSUpgradeable {
+contract ERC20Token is ERC20Upgradeable,ReentrancyGuardUpgradeable, OwnableUpgradeable, PausableUpgradeable, UUPSUpgradeable {
     address public icoContract;
     uint256 private _totalSupply;
     using AddressUpgradeable for address;
@@ -49,7 +50,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         _unpause();
     }
 
-    function setLockup(address account, uint256 timestamp, uint256 amount) external whenNotPaused onlyICOContract  {
+    function setLockup(address account, uint256 timestamp, uint256 amount) external nonReentrant whenNotPaused onlyICOContract  {
     require(account != address(0), "Null Address");
     require(amount != 0, "Amount must be greater than zero");
    
@@ -66,11 +67,11 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         emit Blacklisted(account, status);
     }
 
-    // function isBlacklisted(address account) public view returns (bool) {
-    //     return blacklisted[account];
-    // }
+    function isBlacklisted(address account) public view returns (bool) {
+        return blacklisted[account];
+    }
 
-    function transfer(address recipient, uint256 amount) public override whenNotPaused returns (bool) {
+    function transfer(address recipient, uint256 amount) public override nonReentrant whenNotPaused returns (bool) {
         require(!blacklisted[msg.sender], "Transfer failed: Sender is blacklisted");
         require(!blacklisted[recipient], "Transfer failed: Recipient is blacklisted");
         require(amount !=0,"Amount shouldn't be zero");
@@ -78,7 +79,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         return super.transfer(recipient, amount);
     }
 
-    function transferFrom(address sender, address recipient, uint256 amount) public override whenNotPaused returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) public override nonReentrant whenNotPaused returns (bool) {
         require(!blacklisted[sender], "Transfer failed: Sender is blacklisted");
         require(!blacklisted[recipient], "Transfer failed: Recipient is blacklisted");
         require(amount !=0,"Amount shouldn't be zero");
@@ -86,14 +87,14 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         return super.transferFrom(sender, recipient, amount);
     }
 
-    function setICOContract(address _icoContract) external whenNotPaused onlyOwner  {
+    function setICOContract(address _icoContract) external nonReentrant whenNotPaused onlyOwner  {
         require(_icoContract != address(0), "Null Address");
         require(_icoContract.isContract(), "Address is not a contract");
         icoContract = _icoContract;
         emit ICOContractSet(_icoContract);
     }
 
-    function batchTransfer(address[] calldata recipients, uint256[] calldata amounts) external whenNotPaused {
+    function batchTransfer(address[] calldata recipients, uint256[] calldata amounts) external nonReentrant whenNotPaused {
         require(recipients.length == amounts.length, "BatchTransfer failed: Mismatched arrays");
         uint256 recipientLength = recipients.length;
         for (uint256 i = 0; i < recipientLength; i++) {
@@ -106,7 +107,7 @@ contract ERC20Token is ERC20Upgradeable, OwnableUpgradeable, PausableUpgradeable
         }
     }
 
-    function _authorizeUpgrade(address newImplementation) internal override whenNotPaused onlyOwner {}
+    function _authorizeUpgrade(address newImplementation) internal override nonReentrant whenNotPaused onlyOwner {}
 }
 
 

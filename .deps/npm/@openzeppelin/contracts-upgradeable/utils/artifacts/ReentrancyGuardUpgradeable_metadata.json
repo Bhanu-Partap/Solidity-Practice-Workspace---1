@@ -72,13 +72,13 @@
 		"compilationTarget": {
 			".deps/npm/@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol": "ReentrancyGuardUpgradeable"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []

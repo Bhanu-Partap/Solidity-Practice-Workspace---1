@@ -354,7 +354,7 @@
 		"compilationTarget": {
 			"RVA/Vesting.sol": "TokenVesting"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -420,6 +420,14 @@
 			"urls": [
 				"bzz-raw://85ad36d5cc7e190e1ee6c94b24659bc3a31396c4c36b6ffa6a509e10661f8007",
 				"dweb:/ipfs/QmPFyc4zMh2zo6YWZt25gjm3YdR2hg6wGETaWw256fMmJJ"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol": {
+			"keccak256": "0x361126a17677994081cd9cb69c3f50cffff6e920d25cb7e428acdb1ae41d1866",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://19ae787a7dd001269cd60a394b1a5261b78925a0fc3a6f927beb2986a9aa56cf",
+				"dweb:/ipfs/QmYLfXiuKmcRgTDBEDXMMjXU8t6JxsspUmjxYzqWS55oEv"
 			]
 		},
 		"@openzeppelin/contracts/access/Ownable.sol": {
@@ -527,11 +535,11 @@
 			]
 		},
 		"RVA/UpgradableToken.sol": {
-			"keccak256": "0xbefb49ec05d593713a7368ee847d3cd7dd29357c042a2f261a941ca9df07990e",
+			"keccak256": "0xcbfced0de3c849815ad08083407d1a6f9d059c175bc121b5ae201c11a0538c15",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4c7806a8797c7e5144c47b10dc4c715281328724f45b35d4448d0098d3dcf52e",
-				"dweb:/ipfs/QmcfmQKcxSGxzLgnwrkNetXCakohJyqVoQMAuKqcqTKjdk"
+				"bzz-raw://0750baaccee8ff7c66ae444ccf0b8bcafc6432861ebc7e13d4dc8f85ce780730",
+				"dweb:/ipfs/QmdabK9o9Fox1mA3NZ8mmFL9zgMBMwoZAFhuth2MRUzkdQ"
 			]
 		},
 		"RVA/Vesting.sol": {

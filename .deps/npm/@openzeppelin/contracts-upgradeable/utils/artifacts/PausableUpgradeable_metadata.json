@@ -131,7 +131,7 @@
 		"compilationTarget": {
 			".deps/npm/@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol": "PausableUpgradeable"
 		},
-		"evmVersion": "london",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
